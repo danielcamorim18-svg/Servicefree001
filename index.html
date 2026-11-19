@@ -36,7 +36,7 @@
       box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 25px rgba(245, 194, 107, 0.18);
     }
     .glass-panel {
-      background: rgba(15, 10, 7, 0.62);
+      background: rgba(15, 10, 7, 0.65);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.18);
@@ -310,7 +310,7 @@
       </form>
     </div>
 
-    <!-- ABA 2: MINHAS VAGAS + CANDIDATOS + CONTRATAÇÃO + AVALIAÇÃO -->
+    <!-- ABA 2: MINHAS VAGAS + CANDIDATOS (CLICAR NA FOTO ABRE FICHA COMPLETA) + CONTRATAÇÃO + AVALIAÇÃO -->
     <div id="bar-panel-myjobs" class="hidden w-full max-w-4xl mx-auto space-y-4 fade-in mb-8">
       <div id="bar-jobs-list" class="space-y-4"></div>
     </div>
@@ -478,7 +478,7 @@
 
       <div class="glass-btn px-3.5 py-1.5 rounded-full text-xs text-emerald-300 flex items-center gap-1.5">
         <i data-lucide="shield-check" class="w-4 h-4"></i>
-        <span>PIX Recebimento CPF: 42488240869</span>
+        <span>PIX Recebimento (Celular): (11) 97216-8719</span>
       </div>
     </div>
 
@@ -504,7 +504,6 @@
 
     <!-- Adesão de Usuário + Lista para Exclusão -->
     <div class="w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
-      <!-- Formulário de Adesão de Usuário -->
       <div class="glass-panel rounded-3xl p-6 h-fit">
         <h3 class="font-display text-xl font-bold text-white mb-1">Adesão de Usuário</h3>
         <p class="text-xs text-stone-300 mb-4">Cadastre manualmente um novo prestador ou bar/restaurante na base.</p>
@@ -536,12 +535,22 @@
         </form>
       </div>
 
-      <!-- Lista de Usuários com Exclusão -->
       <div class="lg:col-span-2 glass-panel rounded-3xl p-6">
         <h3 class="font-display text-xl font-bold text-white mb-1">Usuários Cadastrados</h3>
         <p class="text-xs text-stone-300 mb-4">Gerencie a adesão ou remova usuários da plataforma.</p>
         <div id="admin-users-list" class="space-y-3"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL FICHA COMPLETA DO PROFISSIONAL (AO CLICAR NA FOTO) ==================== -->
+  <div id="worker-details-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-lg rounded-3xl p-6 sm:p-7 fade-in relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeWorkerDetailsModal()" class="absolute top-4 right-4 text-stone-300 hover:text-white cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div id="worker-details-content"></div>
     </div>
   </div>
 
@@ -564,8 +573,8 @@
 
       <div class="glass-btn rounded-2xl p-3.5 text-left text-xs space-y-1.5 mb-4">
         <div class="flex justify-between">
-          <span class="text-stone-300">Chave PIX (CPF):</span>
-          <strong class="text-amber-300 font-mono">42488240869</strong>
+          <span class="text-stone-300">Chave PIX (Celular):</span>
+          <strong class="text-amber-300 font-mono">11972168719</strong>
         </div>
         <div class="flex justify-between">
           <span class="text-stone-300">Valor da Taxa:</span>
@@ -648,7 +657,7 @@
         <p class="text-xs text-stone-300 mt-1 mb-5">para continuar no <strong class="text-amber-300">Servicefree</strong></p>
 
         <div class="space-y-2.5 mb-5">
-          <button onclick="selectGoogleAccount('Lucas Mendes', 'lucas.mendes.bar@gmail.com', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80')" class="glass-btn w-full p-3.5 rounded-2xl flex items-center gap-3.5 text-left cursor-pointer">
+          <button onclick="selectGoogleAccount('Lucas Mendes', 'lucas.mendes.bar@gmail.com', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', '(11) 99412-8830', 'Bartender & Mixologista', '4 anos em bares de coquetelaria e eventos')" class="glass-btn w-full p-3.5 rounded-2xl flex items-center gap-3.5 text-left cursor-pointer">
             <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Lucas" class="w-10 h-10 rounded-full object-cover border border-amber-300/50" />
             <div class="overflow-hidden">
               <p class="text-sm font-semibold text-white truncate">Lucas Mendes</p>
@@ -656,7 +665,7 @@
             </div>
           </button>
 
-          <button onclick="selectGoogleAccount('Mariana Costa', 'mariana.costa.eventos@gmail.com', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80')" class="glass-btn w-full p-3.5 rounded-2xl flex items-center gap-3.5 text-left cursor-pointer">
+          <button onclick="selectGoogleAccount('Mariana Costa', 'mariana.costa.eventos@gmail.com', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', '(11) 98320-5519', 'Garçonete & Hostess', '5 anos em restaurantes à la carte e casas noturnas')" class="glass-btn w-full p-3.5 rounded-2xl flex items-center gap-3.5 text-left cursor-pointer">
             <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Mariana" class="w-10 h-10 rounded-full object-cover border border-amber-300/50" />
             <div class="overflow-hidden">
               <p class="text-sm font-semibold text-white truncate">Mariana Costa</p>
@@ -722,7 +731,9 @@
     lucide.createIcons();
 
     const ADMIN_PASS = '7512';
-    const PIX_KEY_CPF = '42488240869';
+    // Chave PIX Celular do dono do app: 11972168719 (no padrão EMV Bacen usa +5511972168719)
+    const PIX_KEY_PHONE_DISPLAY = '11972168719';
+    const PIX_KEY_PHONE_BACEN = '+5511972168719';
     const WORKER_FEE = 3.50;
     const BAR_FEE = 8.50;
 
@@ -778,6 +789,7 @@
       }
     ];
 
+    // Armazena dados completos do profissional para o restaurante visualizar ao clicar na foto
     let applications = [];
 
     let adminUsers = [
@@ -896,6 +908,121 @@
       lucide.createIcons();
     }
 
+    // ==================== FICHA COMPLETA DO PROFISSIONAL (AO CLICAR NA FOTO) ====================
+    function openWorkerDetailsModal(appId) {
+      const app = applications.find(a => a.id === appId);
+      if (!app) return;
+      const job = jobs.find(j => j.id === app.jobId);
+      const isHired = app.status === 'Contratado';
+
+      // Busca todas as avaliações recebidas por esse profissional na plataforma
+      const workerReviews = applications
+        .filter(a => a.workerEmail === app.workerEmail && a.barReview)
+        .map(a => a.barReview);
+
+      const avgStars = workerReviews.length
+        ? (workerReviews.reduce((s, r) => s + Number(r.stars), 0) / workerReviews.length).toFixed(1)
+        : 'Novo';
+
+      const cleanWhatsApp = (app.workerPhone || '').replace(/\D/g, '');
+      const waLink = cleanWhatsApp ? `https://wa.me/55${cleanWhatsApp}` : '#';
+
+      document.getElementById('worker-details-content').innerHTML = `
+        <div class="flex flex-col items-center text-center pb-5 border-b border-white/15">
+          <div class="relative">
+            <img src="${app.workerAvatar}" alt="${app.workerName}" class="w-24 h-24 rounded-full object-cover border-2 border-amber-300 shadow-xl" />
+            <span class="absolute -bottom-1 right-0 bg-emerald-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-full">
+              Google OK
+            </span>
+          </div>
+
+          <h3 class="font-display text-2xl font-bold text-white mt-3">${app.workerName}</h3>
+          <p class="text-xs text-amber-300 font-semibold">${app.workerSpecialty || 'Profissional de Gastronomia'}</p>
+
+          <div class="flex items-center gap-2 mt-2">
+            <span class="px-3 py-1 rounded-full text-[11px] font-semibold ${isHired ? 'bg-emerald-500/20 text-emerald-200 border border-emerald-400/50' : 'bg-amber-400/15 text-amber-200 border border-amber-300/40'}">
+              ${isHired ? 'Contratado Confirmado' : 'Candidato na Vaga'}
+            </span>
+            <span class="px-3 py-1 rounded-full text-[11px] bg-white/10 text-amber-200">
+              ★ ${avgStars} ${workerReviews.length ? `(${workerReviews.length})` : ''}
+            </span>
+          </div>
+        </div>
+
+        <div class="space-y-3 py-4 text-xs">
+          <div class="glass-btn rounded-2xl p-3.5 flex items-center justify-between gap-2">
+            <div>
+              <span class="text-stone-400 block text-[10px] uppercase">WhatsApp / Telefone</span>
+              <strong class="text-white text-sm">${app.workerPhone || '(11) 99412-8830'}</strong>
+            </div>
+            ${cleanWhatsApp ? `
+              <a href="${waLink}" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-emerald-500/25 border border-emerald-400/50 text-emerald-200 font-semibold flex items-center gap-1.5 hover:bg-emerald-500/35">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>Chamar WhatsApp</span>
+              </a>
+            ` : ''}
+          </div>
+
+          <div class="glass-btn rounded-2xl p-3.5">
+            <span class="text-stone-400 block text-[10px] uppercase">E-mail Google Verificado</span>
+            <strong class="text-white text-sm">${app.workerEmail}</strong>
+          </div>
+
+          <div class="glass-btn rounded-2xl p-3.5">
+            <span class="text-stone-400 block text-[10px] uppercase">Experiência Profissional</span>
+            <strong class="text-white text-sm">${app.workerExperience || 'Experiência comprovada em bares, restaurantes e eventos'}</strong>
+          </div>
+
+          <div class="glass-btn rounded-2xl p-3.5">
+            <span class="text-stone-400 block text-[10px] uppercase">Chave PIX do Profissional (para pagamento da diária)</span>
+            <strong class="text-amber-300 text-sm font-mono">${app.workerPix || app.workerEmail}</strong>
+          </div>
+
+          ${job ? `
+            <div class="glass-btn rounded-2xl p-3.5">
+              <span class="text-stone-400 block text-[10px] uppercase">Vaga Vinculada</span>
+              <strong class="text-white text-sm">${job.role} &bull; ${job.venue}</strong>
+              <span class="block text-stone-300 mt-0.5">${job.date} (${job.hours}) — R$ ${job.payAmount}</span>
+            </div>
+          ` : ''}
+        </div>
+
+        <div class="pt-3 border-t border-white/15">
+          <h4 class="text-[11px] uppercase tracking-wider text-amber-200 font-semibold mb-2">Avaliações de Estabelecimentos</h4>
+          ${workerReviews.length
+            ? workerReviews.map(r => `
+                <div class="glass-btn rounded-xl p-3 text-xs mb-2">
+                  <span class="text-amber-300 font-semibold">★ ${r.stars}/5</span> — "${r.comment}"
+                </div>
+              `).join('')
+            : `<p class="text-xs text-stone-400">Ainda não possui avaliações registradas.</p>`
+          }
+        </div>
+
+        <div class="mt-5 flex gap-2.5">
+          ${!isHired ? `
+            <button onclick="confirmHireApplication(${app.id}); closeWorkerDetailsModal();" class="flex-1 py-3 rounded-xl text-xs font-semibold bg-emerald-500/25 border border-emerald-400/50 text-emerald-200 hover:bg-emerald-500/35 cursor-pointer">
+              Confirmar Contratação
+            </button>
+          ` : `
+            <button onclick="closeWorkerDetailsModal(); openReviewModal(${app.id}, 'bar', '${app.workerName.replace(/'/g, "\\'")}');" class="glass-btn flex-1 py-3 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/60 cursor-pointer">
+              ${app.barReview ? 'Editar Avaliação' : 'Avaliar Profissional'}
+            </button>
+          `}
+          <button onclick="closeWorkerDetailsModal()" class="glass-btn px-5 py-3 rounded-xl text-xs text-stone-200 cursor-pointer">
+            Fechar
+          </button>
+        </div>
+      `;
+
+      document.getElementById('worker-details-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeWorkerDetailsModal() {
+      document.getElementById('worker-details-modal').classList.add('hidden');
+    }
+
     // ==================== BARES E RESTAURANTES + CONTRATAÇÃO + AVALIAÇÃO ====================
     function switchBarTab(tab) {
       ['publish', 'myjobs', 'profile'].forEach(t => {
@@ -978,7 +1105,7 @@
       app.status = 'Contratado';
       renderBarJobs();
       renderWorkerApps();
-      showToast(`Contratação de ${app.workerName} confirmada! Taxas PIX (R$ 8,50 bar / R$ 3,50 candidato) liberadas.`);
+      showToast(`Contratação de ${app.workerName} confirmada! Clique na foto para ver a ficha completa.`);
     }
 
     function renderBarJobs() {
@@ -1020,22 +1147,33 @@
               </div>
             </div>
 
-            <!-- Candidatos desta vaga -->
+            <!-- Candidatos desta vaga (clicar na foto abre todos os dados do profissional) -->
             <div class="bg-black/30 border-t border-white/15 px-5 py-4">
-              <p class="text-xs uppercase tracking-wider text-amber-200 font-semibold mb-3">
-                Candidatos na vaga (${jobApps.length})
-              </p>
+              <div class="flex items-center justify-between mb-3">
+                <p class="text-xs uppercase tracking-wider text-amber-200 font-semibold">
+                  Candidatos na vaga (${jobApps.length})
+                </p>
+                ${jobApps.length ? `<span class="text-[11px] text-stone-300">Toque na foto para ver os dados completos</span>` : ''}
+              </div>
               ${!jobApps.length
                 ? `<p class="text-xs text-stone-400">Nenhum candidato aplicou ainda.</p>`
                 : `<div class="space-y-2.5">` + jobApps.map(app => {
                     const isHired = app.status === 'Contratado';
                     return `
                       <div class="glass-btn rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3">
-                        <div class="flex items-center gap-3">
-                          <img src="${app.workerAvatar}" alt="${app.workerName}" class="w-10 h-10 rounded-full object-cover border border-amber-300/60" />
+                        <div onclick="openWorkerDetailsModal(${app.id})" title="Clique para ver todos os dados do profissional" class="flex items-center gap-3 cursor-pointer group">
+                          <div class="relative">
+                            <img src="${app.workerAvatar}" alt="${app.workerName}" class="w-12 h-12 rounded-full object-cover border-2 border-amber-300/70 group-hover:scale-105 transition-transform" />
+                            <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-amber-400 text-black flex items-center justify-center shadow">
+                              <i data-lucide="id-card" class="w-3 h-3"></i>
+                            </span>
+                          </div>
                           <div>
-                            <p class="text-sm font-semibold text-white">${app.workerName}</p>
-                            <p class="text-[11px] text-stone-300">${app.workerEmail}</p>
+                            <p class="text-sm font-semibold text-white group-hover:text-amber-300 transition-colors flex items-center gap-1.5">
+                              <span>${app.workerName}</span>
+                              <span class="text-[10px] font-normal text-amber-200/80 underline">(Ver ficha)</span>
+                            </p>
+                            <p class="text-[11px] text-stone-300">${app.workerSpecialty || 'Profissional'} &bull; ${app.workerPhone || app.workerEmail}</p>
                             ${app.workerReview ? `<p class="text-[11px] text-amber-300 mt-0.5">Avaliação do candidato: ★ ${app.workerReview.stars}/5 — "${app.workerReview.comment}"</p>` : ''}
                           </div>
                         </div>
@@ -1046,9 +1184,10 @@
                                 Confirmar Contratação
                                </button>`
                             : `
-                              <span class="px-3 py-1.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-400/40">
-                                Contratado
-                              </span>
+                              <button onclick="openWorkerDetailsModal(${app.id})" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-400/50 hover:bg-emerald-500/30 flex items-center gap-1.5 cursor-pointer">
+                                <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
+                                <span>Ficha do Profissional</span>
+                              </button>
                               <button onclick="openPixModal(${app.id}, 'bar', ${BAR_FEE})" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-400/20 border border-amber-300/60 text-amber-200 hover:bg-amber-400/30 cursor-pointer">
                                 ${app.barFeePaid ? 'Taxa Bar Paga (R$ 8,50)' : 'Pagar Taxa Bar (R$ 8,50 PIX)'}
                               </button>
@@ -1081,14 +1220,14 @@
       pendingApplyJobId = null;
     }
 
-    function selectGoogleAccount(name, email, avatar) {
+    function selectGoogleAccount(name, email, avatar, phone = '(11) 99412-8830', specialty = 'Bartender / Garçom', experience = '3 anos em bares e eventos') {
       pendingGoogleUser = {
         name,
         email,
         avatar,
-        phone: '(11) 99412-8830',
-        specialty: 'Bartender / Garçom',
-        experience: '3 anos em bares e eventos',
+        phone,
+        specialty,
+        experience,
         pix: email
       };
       showGoogleConsentStep();
@@ -1208,6 +1347,10 @@
           workerName: workerUser.name,
           workerEmail: workerUser.email,
           workerAvatar: workerUser.avatar,
+          workerPhone: workerUser.phone,
+          workerSpecialty: workerUser.specialty,
+          workerExperience: workerUser.experience,
+          workerPix: workerUser.pix,
           status: 'Candidatado',
           workerFeePaid: false,
           barFeePaid: false,
@@ -1219,6 +1362,18 @@
         renderWorkerJobs();
         renderWorkerApps();
       }
+    }
+
+    function syncWorkerProfileToApps() {
+      if (!workerUser) return;
+      applications.forEach(app => {
+        if (app.workerEmail === workerUser.email) {
+          app.workerPhone = workerUser.phone;
+          app.workerSpecialty = workerUser.specialty;
+          app.workerExperience = workerUser.experience;
+          app.workerPix = workerUser.pix;
+        }
+      });
     }
 
     function updateWorkerAppsCount() {
@@ -1384,23 +1539,23 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">WhatsApp para Contato</label>
-            <input type="text" value="${workerUser.phone}" onchange="workerUser.phone = this.value" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+            <input type="text" value="${workerUser.phone}" onchange="workerUser.phone = this.value; syncWorkerProfileToApps();" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
           </div>
           <div>
             <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Função Principal</label>
-            <input type="text" value="${workerUser.specialty}" onchange="workerUser.specialty = this.value" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+            <input type="text" value="${workerUser.specialty}" onchange="workerUser.specialty = this.value; syncWorkerProfileToApps();" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
           </div>
           <div>
             <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Experiência Resumida</label>
-            <input type="text" value="${workerUser.experience}" onchange="workerUser.experience = this.value" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+            <input type="text" value="${workerUser.experience}" onchange="workerUser.experience = this.value; syncWorkerProfileToApps();" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
           </div>
           <div>
             <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Chave PIX (para receber diárias)</label>
-            <input type="text" value="${workerUser.pix}" onchange="workerUser.pix = this.value" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+            <input type="text" value="${workerUser.pix}" onchange="workerUser.pix = this.value; syncWorkerProfileToApps();" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
           </div>
         </div>
 
-        <button onclick="showToast('Perfil profissional e chave PIX atualizados!')" class="glass-btn mt-6 px-6 py-3 rounded-xl text-sm font-medium text-amber-200 cursor-pointer">
+        <button onclick="syncWorkerProfileToApps(); showToast('Perfil profissional e chave PIX atualizados!');" class="glass-btn mt-6 px-6 py-3 rounded-xl text-sm font-medium text-amber-200 cursor-pointer">
           Salvar Perfil
         </button>
       `;
@@ -1595,7 +1750,7 @@
       const job = jobs.find(j => j.id === app.jobId);
 
       const txid = `SF${payerType === 'worker' ? 'CAND' : 'BAR'}${appId}`.substring(0, 20);
-      const payload = buildBacenPixPayload(PIX_KEY_CPF, amount, 'SERVICEFREE', 'SAO PAULO', txid);
+      const payload = buildBacenPixPayload(PIX_KEY_PHONE_BACEN, amount, 'SERVICEFREE', 'SAO PAULO', txid);
 
       activePixContext = { appId, payerType, amount, payload };
 
