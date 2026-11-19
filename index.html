@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servicefree - Conectando Talentos à Hospitalidade</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0c0805;
+    }
+    .font-display {
+      font-family: 'Playfair Display', serif;
+    }
+    .bar-bg {
+      background-image: url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1920&q=85');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .glass-btn {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .glass-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(245, 194, 107, 0.75);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 25px rgba(245, 194, 107, 0.18);
+    }
+    .glass-panel {
+      background: rgba(15, 10, 7, 0.62);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    .glass-input {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      transition: all 0.2s ease;
+    }
+    .glass-input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(245, 194, 107, 0.8);
+    }
+    .glass-input option {
+      background-color: #1c130d;
+      color: #ffffff;
+    }
+    .tab-active {
+      background: rgba(245, 194, 107, 0.2);
+      border-color: rgba(245, 194, 107, 0.75);
+      color: #fde68a;
+    }
+    .fade-in {
+      animation: fadeIn 0.35s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bar-bg min-h-screen text-white relative selection:bg-amber-500/30">
+
+  <!-- Sombras suaves nas bordas preservando a visibilidade do salão amadeirado -->
+  <div class="fixed inset-0 bg-gradient-to-b from-black/65 via-black/15 to-black/75 pointer-events-none z-0"></div>
+  <div class="fixed inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgba(0,0,0,0.55)_100%)] pointer-events-none z-0"></div>
+
+  <!-- ==================== TELA 1: INÍCIO ==================== -->
+  <div id="view-home" class="relative z-10 min-h-screen flex flex-col justify-between px-5 py-8 sm:px-8 sm:py-10">
+    
+    <!-- Cabeçalho com o nome Servicefree em destaque -->
+    <header class="w-full max-w-4xl mx-auto text-center pt-2 sm:pt-4 fade-in">
+      <div class="inline-flex items-center gap-3 mb-2">
+        <span class="h-[1px] w-7 bg-amber-300/60"></span>
+        <span class="text-[11px] sm:text-xs uppercase tracking-[0.32em] text-amber-200/90 font-medium">
+          Hospitalidade &amp; Eventos
+        </span>
+        <span class="h-[1px] w-7 bg-amber-300/60"></span>
+      </div>
+
+      <h1 class="font-display text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight text-white drop-shadow-[0_6px_28px_rgba(0,0,0,0.85)]">
+        Service<span class="text-amber-300 italic font-semibold">free</span>
+      </h1>
+
+      <p class="mt-3 text-sm sm:text-base text-stone-200/90 max-w-md mx-auto font-light drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+        A conexão imediata entre os melhores estabelecimentos e profissionais da gastronomia.
+      </p>
+    </header>
+
+    <!-- Dois botões principais translúcidos com letras em amarelo forte combinando com o "free" -->
+    <main class="w-full max-w-2xl mx-auto my-auto py-8 fade-in">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
+        
+        <!-- Botão 1: Bares e Restaurantes -->
+        <button onclick="openSection('bars')" class="glass-btn group rounded-3xl p-7 sm:p-9 flex flex-col items-center justify-center text-center min-h-[190px] sm:min-h-[225px] cursor-pointer">
+          <div class="w-14 h-14 rounded-2xl bg-white/10 border border-amber-300/40 flex items-center justify-center mb-4 group-hover:bg-amber-400/20 group-hover:border-amber-300/70 transition-colors">
+            <i data-lucide="wine" class="w-7 h-7 text-amber-300"></i>
+          </div>
+          <span class="text-xl sm:text-2xl font-bold tracking-wide text-amber-300 group-hover:text-amber-200 drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
+            Bares e Restaurantes
+          </span>
+          <span class="mt-2 text-xs sm:text-sm text-stone-200/90 font-light">
+            Publique vagas e encontre equipe extra
+          </span>
+        </button>
+
+        <!-- Botão 2: Prestador de Serviços -->
+        <button onclick="openSection('workers')" class="glass-btn group rounded-3xl p-7 sm:p-9 flex flex-col items-center justify-center text-center min-h-[190px] sm:min-h-[225px] cursor-pointer">
+          <div class="w-14 h-14 rounded-2xl bg-white/10 border border-amber-300/40 flex items-center justify-center mb-4 group-hover:bg-amber-400/20 group-hover:border-amber-300/70 transition-colors">
+            <i data-lucide="user-check" class="w-7 h-7 text-amber-300"></i>
+          </div>
+          <span class="text-xl sm:text-2xl font-bold tracking-wide text-amber-300 group-hover:text-amber-200 drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
+            Prestador de Serviços
+          </span>
+          <span class="mt-2 text-xs sm:text-sm text-stone-200/90 font-light">
+            Cadastre-se e veja vagas disponíveis
+          </span>
+        </button>
+
+      </div>
+    </main>
+
+    <!-- Rodapé com botão discreto do Administrador -->
+    <footer class="w-full flex items-end justify-between text-xs text-stone-300/75">
+      <span class="drop-shadow">&copy; 2026 Servicefree</span>
+
+      <button onclick="openAdminModal()" title="Área do Administrador" class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-1.5 text-[11px] text-stone-200/85 hover:text-amber-200 cursor-pointer">
+        <i data-lucide="lock" class="w-3.5 h-3.5 text-amber-300/80"></i>
+        <span>Admin</span>
+      </button>
+    </footer>
+  </div>
+
+  <!-- ==================== TELA 2: BARES E RESTAURANTES ==================== -->
+  <div id="view-bars" class="hidden relative z-10 min-h-screen flex flex-col px-4 py-6 sm:px-8 sm:py-8">
+    <div class="w-full max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3 mb-6">
+      <div class="flex items-center gap-3">
+        <button onclick="goHome()" class="glass-btn px-4 py-2 rounded-full flex items-center gap-2 text-xs sm:text-sm text-white cursor-pointer">
+          <i data-lucide="arrow-left" class="w-4 h-4 text-amber-300"></i>
+          <span>Início</span>
+        </button>
+        <div class="flex items-center gap-2">
+          <span class="font-display text-xl sm:text-2xl font-bold text-white">Service<span class="text-amber-300 italic">free</span></span>
+          <span class="text-stone-400">|</span>
+          <span class="text-xs sm:text-sm text-amber-300 font-semibold">Área de Bares e Restaurantes</span>
+        </div>
+      </div>
+
+      <div class="glass-btn px-3.5 py-1.5 rounded-full flex items-center gap-2 text-xs text-amber-200">
+        <i data-lucide="store" class="w-3.5 h-3.5"></i>
+        <span id="header-bar-name">Oak &amp; Barrel Lounge Bar</span>
+        <span id="header-bar-rating" class="text-amber-300 font-semibold"></span>
+      </div>
+    </div>
+
+    <!-- Sub-abas translúcidas -->
+    <div class="w-full max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-6">
+      <button onclick="switchBarTab('publish')" id="tab-bar-publish" class="glass-btn tab-active py-3 px-4 rounded-2xl text-xs sm:text-sm font-medium flex items-center justify-center gap-2 cursor-pointer">
+        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+        <span>Publicar Nova Vaga</span>
+      </button>
+      <button onclick="switchBarTab('myjobs')" id="tab-bar-myjobs" class="glass-btn py-3 px-4 rounded-2xl text-xs sm:text-sm font-medium flex items-center justify-center gap-2 cursor-pointer">
+        <i data-lucide="briefcase" class="w-4 h-4"></i>
+        <span>Minhas Vagas (<span id="bar-jobs-count">2</span>)</span>
+      </button>
+      <button onclick="switchBarTab('profile')" id="tab-bar-profile" class="glass-btn py-3 px-4 rounded-2xl text-xs sm:text-sm font-medium flex items-center justify-center gap-2 cursor-pointer">
+        <i data-lucide="building-2" class="w-4 h-4"></i>
+        <span>Perfil do Estabelecimento</span>
+      </button>
+    </div>
+
+    <!-- ABA 1: PUBLICAR NOVA VAGA -->
+    <div id="bar-panel-publish" class="w-full max-w-4xl mx-auto glass-panel rounded-3xl p-6 sm:p-8 fade-in mb-8">
+      <div class="mb-6">
+        <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Anunciar Oportunidade de Trabalho</h2>
+        <p class="text-xs sm:text-sm text-stone-300 mt-1">Preencha os detalhes abaixo para que o freelancer veja o ambiente, a função exata e quanto vai receber. Taxa do bar na contratação confirmada: <strong class="text-amber-300">R$ 8,50</strong>.</p>
+      </div>
+
+      <form id="form-new-job" onsubmit="publishJob(event)" class="space-y-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Nome do Bar / Restaurante *</label>
+            <input type="text" id="job-venue" value="Oak & Barrel Lounge Bar" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Cargo / Função Procurada *</label>
+            <select id="job-role" onchange="autoFillRoleDescription()" class="glass-input w-full rounded-xl px-4 py-3 text-sm">
+              <option value="Garçom / Garçonete">Garçom / Garçonete</option>
+              <option value="Bartender / Barman">Bartender / Barman</option>
+              <option value="Cozinheiro(a) / Chapeiro">Cozinheiro(a) / Chapeiro</option>
+              <option value="Auxiliar de Cozinha">Auxiliar de Cozinha</option>
+              <option value="Cumim (Apoio de Salão)">Cumim (Apoio de Salão)</option>
+              <option value="Hostess / Recepção">Hostess / Recepção</option>
+              <option value="Caixa / Operador de PDV">Caixa / Operador de PDV</option>
+              <option value="Copeiro / Limpeza">Copeiro / Limpeza</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Endereço / Bairro do Trabalho *</label>
+          <input type="text" id="job-location" placeholder="Ex: Rua Augusta, 1420 - Consolação" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+        </div>
+
+        <!-- Foto do Estabelecimento -->
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Foto do Estabelecimento / Ambiente</label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+            <div class="sm:col-span-2 flex flex-col gap-2">
+              <label class="glass-btn rounded-xl px-4 py-3 text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer text-amber-100">
+                <i data-lucide="camera" class="w-4 h-4 text-amber-300"></i>
+                <span>Enviar foto real do local</span>
+                <input type="file" accept="image/*" onchange="handlePhotoUpload(event)" class="hidden" />
+              </label>
+              <button type="button" onclick="cycleSamplePhoto()" class="text-left text-xs text-stone-300 hover:text-amber-300 underline cursor-pointer">
+                Ou alternar foto ilustrativa do salão/bar
+              </button>
+            </div>
+            <div class="relative h-24 rounded-xl overflow-hidden border border-white/25">
+              <img id="job-photo-preview" src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80" alt="Prévia do estabelecimento" class="w-full h-full object-cover" />
+              <span class="absolute bottom-1 right-1 bg-black/70 text-[10px] px-2 py-0.5 rounded text-stone-200">Prévia</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">O que o profissional vai fazer na função *</label>
+          <textarea id="job-description" rows="3" required class="glass-input w-full rounded-xl px-4 py-3 text-sm">Atendimento às mesas do salão principal, anotação de pedidos no tablet, entrega de bebidas e pratos, organização e fechamento da praça.</textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Modalidade de Pagamento *</label>
+            <select id="job-pay-type" class="glass-input w-full rounded-xl px-4 py-3 text-sm">
+              <option value="Por Diária / Turno">Por Diária / Turno</option>
+              <option value="Semanal">Semanal</option>
+              <option value="Fim de Semana (Sex-Dom)">Fim de Semana (Sex-Dom)</option>
+              <option value="Por Hora">Por Hora</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Valor a Pagar (R$) *</label>
+            <input type="number" id="job-pay-amount" placeholder="180" value="180" min="1" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Quando recebe *</label>
+            <select id="job-pay-when" class="glass-input w-full rounded-xl px-4 py-3 text-sm">
+              <option value="PIX ao final do turno">PIX ao final do turno</option>
+              <option value="Dinheiro no encerramento">Dinheiro no encerramento</option>
+              <option value="Toda segunda-feira via PIX">Toda segunda-feira via PIX</option>
+              <option value="Em até 24h após o evento">Em até 24h após o evento</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Data / Dias *</label>
+            <input type="text" id="job-date" placeholder="Ex: Sexta e Sábado (20 e 21)" value="Sexta e Sábado" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Horário do Turno *</label>
+            <input type="text" id="job-hours" placeholder="Ex: 18:00 às 02:00" value="18:00 às 02:00" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Vagas Disponíveis *</label>
+            <input type="number" id="job-spots" value="2" min="1" max="30" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-2">Benefícios &amp; Dress Code</label>
+          <div class="flex flex-wrap gap-2.5 text-xs">
+            <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" value="Refeição no local" checked class="accent-amber-400 job-benefit" />
+              <span>Refeição no local</span>
+            </label>
+            <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" value="Rateio de 10% / Gorjetas" checked class="accent-amber-400 job-benefit" />
+              <span>Rateio de 10% / Gorjetas</span>
+            </label>
+            <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" value="Auxílio Transporte" class="accent-amber-400 job-benefit" />
+              <span>Auxílio Transporte</span>
+            </label>
+            <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" value="Roupa preta / Sapato fechado" checked class="accent-amber-400 job-benefit" />
+              <span>Roupa preta / Sapato fechado</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button type="submit" class="glass-btn w-full py-4 rounded-2xl text-base font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 flex items-center justify-center gap-2 cursor-pointer">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>Publicar Vaga Agora</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ABA 2: MINHAS VAGAS + CANDIDATOS + CONTRATAÇÃO + AVALIAÇÃO -->
+    <div id="bar-panel-myjobs" class="hidden w-full max-w-4xl mx-auto space-y-4 fade-in mb-8">
+      <div id="bar-jobs-list" class="space-y-4"></div>
+    </div>
+
+    <!-- ABA 3: PERFIL DO ESTABELECIMENTO -->
+    <div id="bar-panel-profile" class="hidden w-full max-w-4xl mx-auto glass-panel rounded-3xl p-6 sm:p-8 fade-in mb-8">
+      <h2 class="font-display text-2xl font-bold text-white mb-1">Dados do Estabelecimento</h2>
+      <p class="text-xs text-stone-300 mb-6">Essas informações aparecem para dar segurança aos freelancers antes de aceitarem o turno.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Nome Fantasia</label>
+          <input type="text" id="profile-bar-name" value="Oak & Barrel Lounge Bar" oninput="syncBarName(this.value)" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Tipo de Casa</label>
+          <input type="text" value="Bar de Coquetelaria & Gastrobar" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">WhatsApp do Gerente / Responsável</label>
+          <input type="text" value="(11) 99842-1190" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">CNPJ (Opcional - Selo Verificado)</label>
+          <input type="text" value="42.819.304/0001-19" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+        </div>
+      </div>
+      <div id="bar-reviews-received" class="mt-6 pt-5 border-t border-white/15"></div>
+      <button onclick="showToast('Dados do estabelecimento salvos com sucesso!')" class="glass-btn mt-6 px-6 py-3 rounded-xl text-sm font-medium text-amber-200 cursor-pointer">
+        Salvar Alterações
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== TELA 3: PRESTADOR DE SERVIÇOS (CADASTRO GOOGLE + VAGAS) ==================== -->
+  <div id="view-workers" class="hidden relative z-10 min-h-screen flex flex-col px-4 py-6 sm:px-8 sm:py-8">
+    <!-- Barra superior -->
+    <div class="w-full max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3 mb-6">
+      <div class="flex items-center gap-3">
+        <button onclick="goHome()" class="glass-btn px-4 py-2 rounded-full flex items-center gap-2 text-xs sm:text-sm text-white cursor-pointer">
+          <i data-lucide="arrow-left" class="w-4 h-4 text-amber-300"></i>
+          <span>Início</span>
+        </button>
+        <div class="flex items-center gap-2">
+          <span class="font-display text-xl sm:text-2xl font-bold text-white">Service<span class="text-amber-300 italic">free</span></span>
+          <span class="text-stone-400">|</span>
+          <span class="text-xs sm:text-sm text-amber-300 font-semibold">Área do Prestador</span>
+        </div>
+      </div>
+
+      <!-- Status da Conta Google no topo -->
+      <div id="worker-google-badge">
+        <button onclick="openGoogleAuthModal()" class="glass-btn px-4 py-2 rounded-full flex items-center gap-2 text-xs font-medium text-white cursor-pointer">
+          <svg class="w-4 h-4" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24Z"/>
+            <path fill="#FBBC05" d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14Z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96Z"/>
+          </svg>
+          <span>Conectar com Google</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Banner de Cadastro Rápido via Google -->
+    <div id="worker-google-cta" class="w-full max-w-4xl mx-auto glass-panel rounded-3xl p-6 sm:p-7 mb-6 fade-in">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-5">
+        <div class="text-center sm:text-left">
+          <span class="inline-block text-[11px] uppercase tracking-widest text-amber-300 font-semibold mb-1">Cadastro Instantâneo</span>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Entre com sua Conta Google</h2>
+          <p class="text-xs sm:text-sm text-stone-200/90 mt-1 max-w-xl">
+            Puxamos automaticamente seu nome, foto e e-mail com sua permissão. Taxa de <strong class="text-amber-300">R$ 3,50</strong> só é cobrada após a confirmação da contratação pelo restaurante.
+          </p>
+        </div>
+
+        <button onclick="openGoogleAuthModal()" class="glass-btn shrink-0 px-6 py-4 rounded-2xl flex items-center gap-3 text-sm sm:text-base font-semibold text-white border-amber-300/60 hover:bg-white/15 cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24Z"/>
+            <path fill="#FBBC05" d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14Z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96Z"/>
+          </svg>
+          <span>Continuar com Google</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Abas do Prestador -->
+    <div class="w-full max-w-4xl mx-auto grid grid-cols-3 gap-2.5 mb-6">
+      <button onclick="switchWorkerTab('jobs')" id="tab-worker-jobs" class="glass-btn tab-active py-3 px-3 rounded-2xl text-xs sm:text-sm font-medium flex items-center justify-center gap-2 cursor-pointer">
+        <i data-lucide="search" class="w-4 h-4"></i>
+        <span>Vagas (<span id="worker-jobs-count">2</span>)</span>
+      </button>
+      <button onclick="switchWorkerTab('apps')" id="tab-worker-apps" class="glass-btn py-3 px-3 rounded-2xl text-xs sm:text-sm font-medium flex items-center justify-center gap-2 cursor-pointer">
+        <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+        <span>Candidaturas (<span id="worker-apps-count">0</span>)</span>
+      </button>
+      <button onclick="switchWorkerTab('profile')" id="tab-worker-profile" class="glass-btn py-3 px-3 rounded-2xl text-xs sm:text-sm font-medium flex items-center justify-center gap-2 cursor-pointer">
+        <i data-lucide="user-cog" class="w-4 h-4"></i>
+        <span>Meu Perfil &amp; PIX</span>
+      </button>
+    </div>
+
+    <!-- ABA 1 DO PRESTADOR: LISTA DE VAGAS DISPONÍVEIS -->
+    <div id="worker-panel-jobs" class="w-full max-w-4xl mx-auto fade-in mb-8">
+      <div class="flex gap-2 overflow-x-auto pb-3 mb-4">
+        <button onclick="filterWorkerJobs('Todas')" class="role-filter glass-btn tab-active px-4 py-1.5 rounded-full text-xs whitespace-nowrap cursor-pointer">Todas</button>
+        <button onclick="filterWorkerJobs('Garçom')" class="role-filter glass-btn px-4 py-1.5 rounded-full text-xs whitespace-nowrap cursor-pointer">Garçom</button>
+        <button onclick="filterWorkerJobs('Bartender')" class="role-filter glass-btn px-4 py-1.5 rounded-full text-xs whitespace-nowrap cursor-pointer">Bartender</button>
+        <button onclick="filterWorkerJobs('Cozinha')" class="role-filter glass-btn px-4 py-1.5 rounded-full text-xs whitespace-nowrap cursor-pointer">Cozinha</button>
+        <button onclick="filterWorkerJobs('Cumim')" class="role-filter glass-btn px-4 py-1.5 rounded-full text-xs whitespace-nowrap cursor-pointer">Cumim</button>
+        <button onclick="filterWorkerJobs('Hostess')" class="role-filter glass-btn px-4 py-1.5 rounded-full text-xs whitespace-nowrap cursor-pointer">Hostess</button>
+      </div>
+
+      <div id="worker-jobs-list" class="space-y-4"></div>
+    </div>
+
+    <!-- ABA 2 DO PRESTADOR: MINHAS CANDIDATURAS -->
+    <div id="worker-panel-apps" class="hidden w-full max-w-4xl mx-auto space-y-4 fade-in mb-8">
+      <div id="worker-apps-list" class="space-y-4"></div>
+    </div>
+
+    <!-- ABA 3 DO PRESTADOR: MEU PERFIL & CHAVE PIX -->
+    <div id="worker-panel-profile" class="hidden w-full max-w-4xl mx-auto glass-panel rounded-3xl p-6 sm:p-8 fade-in mb-8">
+      <div id="worker-profile-content"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL SENHA ADMINISTRADOR (7512) ==================== -->
+  <div id="admin-auth-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-sm rounded-3xl p-6 sm:p-7 fade-in relative text-center">
+      <button onclick="closeAdminAuthModal()" class="absolute top-4 right-4 text-stone-300 hover:text-white cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="w-12 h-12 rounded-2xl bg-amber-400/15 border border-amber-300/40 flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="key-round" class="w-6 h-6 text-amber-300"></i>
+      </div>
+
+      <h3 class="font-display text-2xl font-bold text-white">Acesso Administrador</h3>
+      <p class="text-xs text-stone-300 mt-1 mb-5">Digite a senha de 4 dígitos para gerenciar usuários e taxas.</p>
+
+      <form onsubmit="verifyAdminPassword(event)" class="space-y-4">
+        <input type="password" id="admin-password-input" maxlength="8" placeholder="••••" required class="glass-input w-full rounded-xl px-4 py-3 text-center text-lg tracking-[0.4em] font-semibold" />
+        <button type="submit" class="glass-btn w-full py-3 rounded-xl text-sm font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 cursor-pointer">
+          Entrar no Painel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== TELA 4: ADMINISTRADOR (ADESÃO, EXCLUSÃO E CONTROLE) ==================== -->
+  <div id="view-admin" class="hidden relative z-10 min-h-screen flex flex-col px-4 py-6 sm:px-8 sm:py-8">
+    <div class="w-full max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3 mb-6">
+      <div class="flex items-center gap-3">
+        <button onclick="goHome()" class="glass-btn px-4 py-2 rounded-full flex items-center gap-2 text-xs sm:text-sm text-white cursor-pointer">
+          <i data-lucide="arrow-left" class="w-4 h-4 text-amber-300"></i>
+          <span>Início</span>
+        </button>
+        <div class="flex items-center gap-2">
+          <span class="font-display text-xl sm:text-2xl font-bold text-white">Service<span class="text-amber-300 italic">free</span></span>
+          <span class="text-stone-400">|</span>
+          <span class="text-xs sm:text-sm text-amber-200 font-semibold">Painel do Administrador</span>
+        </div>
+      </div>
+
+      <div class="glass-btn px-3.5 py-1.5 rounded-full text-xs text-emerald-300 flex items-center gap-1.5">
+        <i data-lucide="shield-check" class="w-4 h-4"></i>
+        <span>PIX Recebimento CPF: 42488240869</span>
+      </div>
+    </div>
+
+    <!-- Resumo administrativo -->
+    <div class="w-full max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+      <div class="glass-panel rounded-2xl p-4">
+        <span class="text-[11px] text-stone-300 uppercase">Usuários Ativos</span>
+        <p id="admin-count-users" class="text-2xl font-bold text-amber-300 mt-1">0</p>
+      </div>
+      <div class="glass-panel rounded-2xl p-4">
+        <span class="text-[11px] text-stone-300 uppercase">Vagas Publicadas</span>
+        <p id="admin-count-jobs" class="text-2xl font-bold text-white mt-1">0</p>
+      </div>
+      <div class="glass-panel rounded-2xl p-4">
+        <span class="text-[11px] text-stone-300 uppercase">Contratações</span>
+        <p id="admin-count-hired" class="text-2xl font-bold text-emerald-300 mt-1">0</p>
+      </div>
+      <div class="glass-panel rounded-2xl p-4">
+        <span class="text-[11px] text-stone-300 uppercase">Taxas Geradas (R$)</span>
+        <p id="admin-total-fees" class="text-2xl font-bold text-amber-300 mt-1">R$ 0,00</p>
+      </div>
+    </div>
+
+    <!-- Adesão de Usuário + Lista para Exclusão -->
+    <div class="w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
+      <!-- Formulário de Adesão de Usuário -->
+      <div class="glass-panel rounded-3xl p-6 h-fit">
+        <h3 class="font-display text-xl font-bold text-white mb-1">Adesão de Usuário</h3>
+        <p class="text-xs text-stone-300 mb-4">Cadastre manualmente um novo prestador ou bar/restaurante na base.</p>
+
+        <form onsubmit="adminAddUser(event)" class="space-y-3.5">
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-amber-200/90 mb-1">Tipo de Usuário</label>
+            <select id="admin-user-type" class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs">
+              <option value="Prestador de Serviços">Prestador de Serviços</option>
+              <option value="Bar / Restaurante">Bar / Restaurante</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-amber-200/90 mb-1">Nome / Estabelecimento</label>
+            <input type="text" id="admin-user-name" placeholder="Ex: Rafael Souza / Bistrô Central" required class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-amber-200/90 mb-1">E-mail ou Contato</label>
+            <input type="text" id="admin-user-contact" placeholder="rafael@gmail.com" required class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-amber-200/90 mb-1">Especialidade / Categoria</label>
+            <input type="text" id="admin-user-role" placeholder="Ex: Bartender / Gastrobar" required class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
+          </div>
+          <button type="submit" class="glass-btn w-full py-3 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 flex items-center justify-center gap-1.5 cursor-pointer">
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+            <span>Confirmar Adesão</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Lista de Usuários com Exclusão -->
+      <div class="lg:col-span-2 glass-panel rounded-3xl p-6">
+        <h3 class="font-display text-xl font-bold text-white mb-1">Usuários Cadastrados</h3>
+        <p class="text-xs text-stone-300 mb-4">Gerencie a adesão ou remova usuários da plataforma.</p>
+        <div id="admin-users-list" class="space-y-3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL QR CODE PIX (PADRÃO BANCO CENTRAL / EMV) ==================== -->
+  <div id="pix-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md rounded-3xl p-6 sm:p-7 fade-in relative text-center">
+      <button onclick="closePixModal()" class="absolute top-4 right-4 text-stone-300 hover:text-white cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <span class="inline-block text-[11px] uppercase tracking-widest text-emerald-300 font-semibold mb-1">
+        Vaga Confirmada &bull; Pagamento PIX (Padrão Bacen)
+      </span>
+      <h3 id="pix-modal-title" class="font-display text-2xl font-bold text-white">Taxa da Contratação</h3>
+      <p id="pix-modal-subtitle" class="text-xs text-stone-300 mt-1 mb-4"></p>
+
+      <div class="bg-white p-4 rounded-2xl w-fit mx-auto mb-4 shadow-xl">
+        <canvas id="pix-qr-canvas" width="184" height="184"></canvas>
+      </div>
+
+      <div class="glass-btn rounded-2xl p-3.5 text-left text-xs space-y-1.5 mb-4">
+        <div class="flex justify-between">
+          <span class="text-stone-300">Chave PIX (CPF):</span>
+          <strong class="text-amber-300 font-mono">42488240869</strong>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-stone-300">Valor da Taxa:</span>
+          <strong id="pix-modal-amount-label" class="text-emerald-300 text-sm">R$ 3,50</strong>
+        </div>
+      </div>
+
+      <div class="text-left mb-4">
+        <label class="block text-[11px] uppercase tracking-wider text-amber-200/90 mb-1">PIX Copia e Cola (EMV + CRC16 Banco Central)</label>
+        <textarea id="pix-emv-payload" rows="3" readonly class="glass-input w-full rounded-xl p-2.5 text-[11px] font-mono text-amber-100"></textarea>
+      </div>
+
+      <div class="flex gap-2.5">
+        <button onclick="copyPixPayload()" class="glass-btn flex-1 py-3 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/60 flex items-center justify-center gap-1.5 cursor-pointer">
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          <span>Copiar Código PIX</span>
+        </button>
+        <button onclick="markPixPaid()" id="pix-confirm-paid-btn" class="glass-btn flex-1 py-3 rounded-xl text-xs font-semibold text-emerald-200 border-emerald-400/60 hover:bg-emerald-500/20 flex items-center justify-center gap-1.5 cursor-pointer">
+          <i data-lucide="check-check" class="w-4 h-4"></i>
+          <span>Já Paguei</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL DE AVALIAÇÃO (RESTAURANTE <-> CANDIDATO) ==================== -->
+  <div id="review-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md rounded-3xl p-6 sm:p-7 fade-in relative">
+      <button onclick="closeReviewModal()" class="absolute top-4 right-4 text-stone-300 hover:text-white cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <h3 id="review-modal-title" class="font-display text-2xl font-bold text-white mb-1">Avaliar</h3>
+      <p id="review-modal-target" class="text-xs text-amber-300 mb-5"></p>
+
+      <form onsubmit="submitReview(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Nota (1 a 5 estrelas)</label>
+          <select id="review-stars" class="glass-input w-full rounded-xl px-4 py-3 text-sm">
+            <option value="5">★★★★★ — Excelente (5.0)</option>
+            <option value="4">★★★★☆ — Muito bom (4.0)</option>
+            <option value="3">★★★☆☆ — Bom (3.0)</option>
+            <option value="2">★★☆☆☆ — Regular (2.0)</option>
+            <option value="1">★☆☆☆☆ — Ruim (1.0)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Comentário sobre a experiência</label>
+          <textarea id="review-comment" rows="3" placeholder="Escreva como foi o trabalho, pontualidade, ambiente ou pagamento..." required class="glass-input w-full rounded-xl px-4 py-3 text-sm"></textarea>
+        </div>
+
+        <button type="submit" class="glass-btn w-full py-3.5 rounded-xl text-sm font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 cursor-pointer">
+          Enviar Avaliação
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL DE CONEXÃO COM GOOGLE ==================== -->
+  <div id="google-auth-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md rounded-3xl p-6 sm:p-7 fade-in relative">
+      <button onclick="closeGoogleAuthModal()" class="absolute top-4 right-4 text-stone-300 hover:text-white cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Passo 1: Escolher conta Google -->
+      <div id="google-step-accounts">
+        <div class="flex items-center gap-2.5 mb-4">
+          <svg class="w-6 h-6" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24Z"/>
+            <path fill="#FBBC05" d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14Z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96Z"/>
+          </svg>
+          <span class="text-sm font-medium text-stone-200">Fazer login com o Google</span>
+        </div>
+
+        <h3 class="font-display text-2xl font-bold text-white">Escolha uma conta</h3>
+        <p class="text-xs text-stone-300 mt-1 mb-5">para continuar no <strong class="text-amber-300">Servicefree</strong></p>
+
+        <div class="space-y-2.5 mb-5">
+          <button onclick="selectGoogleAccount('Lucas Mendes', 'lucas.mendes.bar@gmail.com', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80')" class="glass-btn w-full p-3.5 rounded-2xl flex items-center gap-3.5 text-left cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Lucas" class="w-10 h-10 rounded-full object-cover border border-amber-300/50" />
+            <div class="overflow-hidden">
+              <p class="text-sm font-semibold text-white truncate">Lucas Mendes</p>
+              <p class="text-xs text-stone-300 truncate">lucas.mendes.bar@gmail.com</p>
+            </div>
+          </button>
+
+          <button onclick="selectGoogleAccount('Mariana Costa', 'mariana.costa.eventos@gmail.com', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80')" class="glass-btn w-full p-3.5 rounded-2xl flex items-center gap-3.5 text-left cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Mariana" class="w-10 h-10 rounded-full object-cover border border-amber-300/50" />
+            <div class="overflow-hidden">
+              <p class="text-sm font-semibold text-white truncate">Mariana Costa</p>
+              <p class="text-xs text-stone-300 truncate">mariana.costa.eventos@gmail.com</p>
+            </div>
+          </button>
+        </div>
+
+        <div class="border-t border-white/15 pt-4">
+          <p class="text-xs text-stone-300 mb-2">Ou vincule seu próprio Gmail agora:</p>
+          <form onsubmit="selectCustomGoogleAccount(event)" class="space-y-2.5">
+            <input type="text" id="custom-google-name" placeholder="Seu nome completo" required class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
+            <div class="flex gap-2">
+              <input type="email" id="custom-google-email" placeholder="seuemail@gmail.com" required class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
+              <button type="submit" class="glass-btn px-4 py-2.5 rounded-xl text-xs font-semibold text-amber-200 whitespace-nowrap cursor-pointer">Avançar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Passo 2: Tela de Permissão do Google -->
+      <div id="google-step-consent" class="hidden">
+        <div class="flex items-center gap-3 mb-4">
+          <img id="consent-avatar" src="" alt="Avatar" class="w-11 h-11 rounded-full object-cover border border-amber-300/60" />
+          <div>
+            <p id="consent-name" class="text-sm font-semibold text-white"></p>
+            <p id="consent-email" class="text-xs text-stone-300"></p>
+          </div>
+        </div>
+
+        <h3 class="font-display text-xl font-bold text-white mb-2">
+          O <span class="text-amber-300">Servicefree</span> deseja acessar sua Conta Google
+        </h3>
+        <p class="text-xs text-stone-300 mb-4">Isso permitirá preencher automaticamente seu cadastro de prestador de serviços:</p>
+
+        <ul class="space-y-2.5 text-xs text-stone-200 bg-white/5 border border-white/15 rounded-2xl p-4 mb-5">
+          <li class="flex items-center gap-2.5">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+            <span>Ver seu nome completo e foto de perfil</span>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+            <span>Associar seu endereço de e-mail Google ao perfil</span>
+          </li>
+        </ul>
+
+        <div class="flex gap-3">
+          <button onclick="backToGoogleAccounts()" class="glass-btn flex-1 py-3 rounded-xl text-xs font-medium text-stone-200 cursor-pointer">
+            Cancelar
+          </button>
+          <button onclick="confirmGooglePermission()" class="glass-btn flex-1 py-3 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 cursor-pointer">
+            Permitir e Entrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notificação flutuante -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden glass-panel px-5 py-3 rounded-full text-xs sm:text-sm text-amber-200 border-amber-300/50 shadow-2xl"></div>
+
+  <script>
+    lucide.createIcons();
+
+    const ADMIN_PASS = '7512';
+    const PIX_KEY_CPF = '42488240869';
+    const WORKER_FEE = 3.50;
+    const BAR_FEE = 8.50;
+
+    const samplePhotos = [
+      'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80'
+    ];
+    let currentSampleIndex = 0;
+
+    const roleDescriptions = {
+      'Garçom / Garçonete': 'Atendimento às mesas do salão principal, anotação de pedidos no tablet, entrega de bebidas e pratos, organização e fechamento da praça.',
+      'Bartender / Barman': 'Preparo de coquetéis clássicos e autorais da casa, mise en place do balcão, controle de insumos e atendimento direto aos clientes do bar.',
+      'Cozinheiro(a) / Chapeiro': 'Preparo de porções, lanches artesanais e pratos quentes na praça de grelha/fritura seguindo ficha técnica e agilidade no pico.',
+      'Auxiliar de Cozinha': 'Pré-preparo de ingredientes, montagem de entradas, higienização de utensílios e apoio direto aos cozinheiros durante o movimento.',
+      'Cumim (Apoio de Salão)': 'Apoio rápido aos garçons na retirada de pratos, reposição de talheres/copos, limpeza de mesas e organização do salão.',
+      'Hostess / Recepção': 'Recepção cordial na porta, controle de lista de espera, acomodação dos clientes nas mesas e apresentação inicial da casa.',
+      'Caixa / Operador de PDV': 'Abertura e fechamento de comandas, recebimento em cartão/PIX/dinheiro e conferência de caixa ao final do turno.',
+      'Copeiro / Limpeza': 'Lavagem contínua de taças, copos e louças do bar/cozinha e manutenção da limpeza das áreas comuns durante o evento.'
+    };
+
+    let jobs = [
+      {
+        id: 1,
+        venue: 'Oak & Barrel Lounge Bar',
+        role: 'Bartender / Barman',
+        location: 'Rua Augusta, 1420 - Consolação',
+        photo: 'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80',
+        description: 'Preparo de drinks clássicos e autorais, organização do balcão e atendimento ágil no horário de pico.',
+        payType: 'Por Diária / Turno',
+        payAmount: '220',
+        payWhen: 'PIX ao final do turno',
+        date: 'Sexta e Sábado',
+        hours: '19:00 às 03:00',
+        spots: 2,
+        benefits: ['Refeição no local', 'Rateio de 10% / Gorjetas', 'Roupa preta / Sapato fechado']
+      },
+      {
+        id: 2,
+        venue: 'Varanda Gastrô & Chopp',
+        role: 'Garçom / Garçonete',
+        location: 'Av. Faria Lima, 2100 - Pinheiros',
+        photo: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+        description: 'Atendimento de mesas na área externa, serviço de chopp e porções, organização da praça.',
+        payType: 'Semanal',
+        payAmount: '680',
+        payWhen: 'Toda segunda-feira via PIX',
+        date: 'Quinta a Domingo',
+        hours: '17:30 às 00:30',
+        spots: 3,
+        benefits: ['Refeição no local', 'Auxílio Transporte', 'Rateio de 10% / Gorjetas']
+      }
+    ];
+
+    let applications = [];
+
+    let adminUsers = [
+      { id: 101, type: 'Bar / Restaurante', name: 'Oak & Barrel Lounge Bar', contact: '(11) 99842-1190', role: 'Lounge & Coquetelaria' },
+      { id: 102, type: 'Bar / Restaurante', name: 'Varanda Gastrô & Chopp', contact: '(11) 98711-4402', role: 'Gastrobar & Chopp' },
+      { id: 103, type: 'Prestador de Serviços', name: 'Rafael Silva', contact: 'rafael.bartender@gmail.com', role: 'Bartender' }
+    ];
+
+    let workerUser = null;
+    let pendingGoogleUser = null;
+    let pendingApplyJobId = null;
+    let currentRoleFilter = 'Todas';
+
+    let activePixContext = null;
+    let activeReviewContext = null;
+
+    function openSection(section) {
+      ['view-home', 'view-bars', 'view-workers', 'view-admin'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById('view-' + section).classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      updateBarRatingHeader();
+      if (section === 'bars') renderBarJobs();
+      if (section === 'workers') {
+        renderWorkerJobs();
+        renderWorkerApps();
+        renderWorkerProfile();
+      }
+      if (section === 'admin') renderAdminPanel();
+    }
+
+    function goHome() {
+      openSection('home');
+    }
+
+    // ==================== SENHA E PAINEL ADMINISTRADOR ====================
+    function openAdminModal() {
+      document.getElementById('admin-password-input').value = '';
+      document.getElementById('admin-auth-modal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('admin-password-input').focus(), 100);
+    }
+
+    function closeAdminAuthModal() {
+      document.getElementById('admin-auth-modal').classList.add('hidden');
+    }
+
+    function verifyAdminPassword(e) {
+      e.preventDefault();
+      const pass = document.getElementById('admin-password-input').value.trim();
+      if (pass === ADMIN_PASS) {
+        closeAdminAuthModal();
+        openSection('admin');
+        showToast('Acesso administrativo autorizado.');
+      } else {
+        showToast('Senha incorreta! Tente novamente.');
+      }
+    }
+
+    function adminAddUser(e) {
+      e.preventDefault();
+      const type = document.getElementById('admin-user-type').value;
+      const name = document.getElementById('admin-user-name').value.trim();
+      const contact = document.getElementById('admin-user-contact').value.trim();
+      const role = document.getElementById('admin-user-role').value.trim();
+
+      adminUsers.unshift({
+        id: Date.now(),
+        type,
+        name,
+        contact,
+        role
+      });
+
+      e.target.reset();
+      renderAdminPanel();
+      showToast(`Usuário "${name}" adicionado com sucesso.`);
+    }
+
+    function adminDeleteUser(id) {
+      const target = adminUsers.find(u => u.id === id);
+      adminUsers = adminUsers.filter(u => u.id !== id);
+      renderAdminPanel();
+      showToast(`Usuário "${target ? target.name : ''}" removido.`);
+    }
+
+    function renderAdminPanel() {
+      const hiredApps = applications.filter(a => a.status === 'Contratado');
+      const totalFees = hiredApps.length * (WORKER_FEE + BAR_FEE);
+
+      document.getElementById('admin-count-users').textContent = adminUsers.length;
+      document.getElementById('admin-count-jobs').textContent = jobs.length;
+      document.getElementById('admin-count-hired').textContent = hiredApps.length;
+      document.getElementById('admin-total-fees').textContent = `R$ ${totalFees.toFixed(2).replace('.', ',')}`;
+
+      const listEl = document.getElementById('admin-users-list');
+      if (!adminUsers.length) {
+        listEl.innerHTML = `<p class="text-xs text-stone-300">Nenhum usuário cadastrado no momento.</p>`;
+        return;
+      }
+
+      listEl.innerHTML = adminUsers.map(u => `
+        <div class="glass-btn rounded-2xl p-3.5 flex items-center justify-between gap-3">
+          <div>
+            <span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-200 border border-amber-300/30">${u.type}</span>
+            <h4 class="text-sm font-semibold text-white mt-1">${u.name}</h4>
+            <p class="text-xs text-stone-300">${u.role} &bull; ${u.contact}</p>
+          </div>
+          <button onclick="adminDeleteUser(${u.id})" class="px-3 py-2 rounded-xl text-xs font-medium bg-red-500/20 border border-red-400/40 text-red-200 hover:bg-red-500/30 flex items-center gap-1 cursor-pointer">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span>Excluir</span>
+          </button>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // ==================== BARES E RESTAURANTES + CONTRATAÇÃO + AVALIAÇÃO ====================
+    function switchBarTab(tab) {
+      ['publish', 'myjobs', 'profile'].forEach(t => {
+        document.getElementById('bar-panel-' + t).classList.add('hidden');
+        document.getElementById('tab-bar-' + t).classList.remove('tab-active');
+      });
+      document.getElementById('bar-panel-' + tab).classList.remove('hidden');
+      document.getElementById('tab-bar-' + tab).classList.add('tab-active');
+      if (tab === 'myjobs') renderBarJobs();
+      if (tab === 'profile') renderBarReviewsInProfile();
+    }
+
+    function autoFillRoleDescription() {
+      const role = document.getElementById('job-role').value;
+      if (roleDescriptions[role]) {
+        document.getElementById('job-description').value = roleDescriptions[role];
+      }
+    }
+
+    function cycleSamplePhoto() {
+      currentSampleIndex = (currentSampleIndex + 1) % samplePhotos.length;
+      document.getElementById('job-photo-preview').src = samplePhotos[currentSampleIndex];
+    }
+
+    function handlePhotoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('job-photo-preview').src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function syncBarName(val) {
+      const name = val.trim() || 'Meu Estabelecimento';
+      document.getElementById('header-bar-name').textContent = name;
+      document.getElementById('job-venue').value = name;
+    }
+
+    function publishJob(e) {
+      e.preventDefault();
+      const benefits = Array.from(document.querySelectorAll('.job-benefit:checked')).map(el => el.value);
+
+      const newJob = {
+        id: Date.now(),
+        venue: document.getElementById('job-venue').value,
+        role: document.getElementById('job-role').value,
+        location: document.getElementById('job-location').value,
+        photo: document.getElementById('job-photo-preview').src,
+        description: document.getElementById('job-description').value,
+        payType: document.getElementById('job-pay-type').value,
+        payAmount: document.getElementById('job-pay-amount').value,
+        payWhen: document.getElementById('job-pay-when').value,
+        date: document.getElementById('job-date').value,
+        hours: document.getElementById('job-hours').value,
+        spots: document.getElementById('job-spots').value,
+        benefits
+      };
+
+      jobs.unshift(newJob);
+      document.getElementById('bar-jobs-count').textContent = jobs.length;
+      document.getElementById('worker-jobs-count').textContent = jobs.length;
+      showToast('Vaga publicada com sucesso! Já visível para prestadores.');
+      switchBarTab('myjobs');
+    }
+
+    function deleteJob(id) {
+      jobs = jobs.filter(j => j.id !== id);
+      applications = applications.filter(a => a.jobId !== id);
+      document.getElementById('bar-jobs-count').textContent = jobs.length;
+      document.getElementById('worker-jobs-count').textContent = jobs.length;
+      renderBarJobs();
+      showToast('Vaga encerrada.');
+    }
+
+    function confirmHireApplication(appId) {
+      const app = applications.find(a => a.id === appId);
+      if (!app) return;
+      app.status = 'Contratado';
+      renderBarJobs();
+      renderWorkerApps();
+      showToast(`Contratação de ${app.workerName} confirmada! Taxas PIX (R$ 8,50 bar / R$ 3,50 candidato) liberadas.`);
+    }
+
+    function renderBarJobs() {
+      const container = document.getElementById('bar-jobs-list');
+      document.getElementById('bar-jobs-count').textContent = jobs.length;
+
+      if (!jobs.length) {
+        container.innerHTML = `<div class="glass-panel rounded-3xl p-8 text-center text-sm text-stone-300">Nenhuma vaga ativa no momento. Clique em "Publicar Nova Vaga".</div>`;
+        return;
+      }
+
+      container.innerHTML = jobs.map(job => {
+        const jobApps = applications.filter(a => a.jobId === job.id);
+        return `
+          <div class="glass-panel rounded-3xl overflow-hidden">
+            <div class="flex flex-col sm:flex-row">
+              <img src="${job.photo}" alt="${job.venue}" class="w-full sm:w-48 h-44 sm:h-auto object-cover" />
+              <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <div class="flex flex-wrap items-start justify-between gap-2">
+                    <div>
+                      <span class="text-[11px] uppercase tracking-wider text-amber-300 font-semibold">${job.venue}</span>
+                      <h3 class="font-display text-xl sm:text-2xl font-bold text-white">${job.role}</h3>
+                    </div>
+                    <div class="text-right">
+                      <span class="text-lg sm:text-xl font-bold text-amber-300">R$ ${job.payAmount}</span>
+                      <span class="block text-[11px] text-stone-300">${job.payType}</span>
+                    </div>
+                  </div>
+                  <p class="text-xs text-stone-300 mt-1 flex items-center gap-1.5">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-300"></i> ${job.location}
+                  </p>
+                  <p class="text-xs sm:text-sm text-stone-200 mt-3 leading-relaxed">${job.description}</p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/15 flex flex-wrap items-center justify-between gap-2 text-xs text-stone-300">
+                  <span>${job.date} &bull; ${job.hours} &bull; <strong>${job.spots} vaga(s)</strong></span>
+                  <button onclick="deleteJob(${job.id})" class="text-red-300 hover:text-red-200 underline cursor-pointer">Encerrar vaga</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Candidatos desta vaga -->
+            <div class="bg-black/30 border-t border-white/15 px-5 py-4">
+              <p class="text-xs uppercase tracking-wider text-amber-200 font-semibold mb-3">
+                Candidatos na vaga (${jobApps.length})
+              </p>
+              ${!jobApps.length
+                ? `<p class="text-xs text-stone-400">Nenhum candidato aplicou ainda.</p>`
+                : `<div class="space-y-2.5">` + jobApps.map(app => {
+                    const isHired = app.status === 'Contratado';
+                    return `
+                      <div class="glass-btn rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                          <img src="${app.workerAvatar}" alt="${app.workerName}" class="w-10 h-10 rounded-full object-cover border border-amber-300/60" />
+                          <div>
+                            <p class="text-sm font-semibold text-white">${app.workerName}</p>
+                            <p class="text-[11px] text-stone-300">${app.workerEmail}</p>
+                            ${app.workerReview ? `<p class="text-[11px] text-amber-300 mt-0.5">Avaliação do candidato: ★ ${app.workerReview.stars}/5 — "${app.workerReview.comment}"</p>` : ''}
+                          </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-2">
+                          ${!isHired
+                            ? `<button onclick="confirmHireApplication(${app.id})" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 border border-emerald-400/50 text-emerald-200 hover:bg-emerald-500/30 cursor-pointer">
+                                Confirmar Contratação
+                               </button>`
+                            : `
+                              <span class="px-3 py-1.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-400/40">
+                                Contratado
+                              </span>
+                              <button onclick="openPixModal(${app.id}, 'bar', ${BAR_FEE})" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-400/20 border border-amber-300/60 text-amber-200 hover:bg-amber-400/30 cursor-pointer">
+                                ${app.barFeePaid ? 'Taxa Bar Paga (R$ 8,50)' : 'Pagar Taxa Bar (R$ 8,50 PIX)'}
+                              </button>
+                              <button onclick="openReviewModal(${app.id}, 'bar', '${app.workerName.replace(/'/g, "\\'")}')" class="glass-btn px-3.5 py-2 rounded-xl text-xs font-medium text-white cursor-pointer">
+                                ${app.barReview ? 'Editar Avaliação' : 'Avaliar Candidato'}
+                              </button>
+                            `
+                          }
+                        </div>
+                      </div>
+                    `;
+                  }).join('') + `</div>`
+              }
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    // ==================== PRESTADOR DE SERVIÇOS + GOOGLE ====================
+    function openGoogleAuthModal() {
+      document.getElementById('google-step-accounts').classList.remove('hidden');
+      document.getElementById('google-step-consent').classList.add('hidden');
+      document.getElementById('google-auth-modal').classList.remove('hidden');
+    }
+
+    function closeGoogleAuthModal() {
+      document.getElementById('google-auth-modal').classList.add('hidden');
+      pendingApplyJobId = null;
+    }
+
+    function selectGoogleAccount(name, email, avatar) {
+      pendingGoogleUser = {
+        name,
+        email,
+        avatar,
+        phone: '(11) 99412-8830',
+        specialty: 'Bartender / Garçom',
+        experience: '3 anos em bares e eventos',
+        pix: email
+      };
+      showGoogleConsentStep();
+    }
+
+    function selectCustomGoogleAccount(e) {
+      e.preventDefault();
+      const name = document.getElementById('custom-google-name').value.trim();
+      const email = document.getElementById('custom-google-email').value.trim();
+      const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f59e0b&color=1c130d&bold=true`;
+      selectGoogleAccount(name, email, avatar);
+    }
+
+    function showGoogleConsentStep() {
+      document.getElementById('consent-avatar').src = pendingGoogleUser.avatar;
+      document.getElementById('consent-name').textContent = pendingGoogleUser.name;
+      document.getElementById('consent-email').textContent = pendingGoogleUser.email;
+      document.getElementById('google-step-accounts').classList.add('hidden');
+      document.getElementById('google-step-consent').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function backToGoogleAccounts() {
+      document.getElementById('google-step-consent').classList.add('hidden');
+      document.getElementById('google-step-accounts').classList.remove('hidden');
+    }
+
+    function confirmGooglePermission() {
+      workerUser = { ...pendingGoogleUser };
+      document.getElementById('google-auth-modal').classList.add('hidden');
+      document.getElementById('worker-google-cta').classList.add('hidden');
+
+      if (!adminUsers.some(u => u.contact === workerUser.email)) {
+        adminUsers.unshift({
+          id: Date.now(),
+          type: 'Prestador de Serviços',
+          name: workerUser.name,
+          contact: workerUser.email,
+          role: workerUser.specialty
+        });
+      }
+
+      document.getElementById('worker-google-badge').innerHTML = `
+        <div class="glass-btn px-3.5 py-1.5 rounded-full flex items-center gap-2.5 text-xs">
+          <img src="${workerUser.avatar}" alt="${workerUser.name}" class="w-6 h-6 rounded-full object-cover border border-amber-300" />
+          <div class="text-left">
+            <span class="block font-semibold text-white leading-tight">${workerUser.name}</span>
+            <span class="block text-[10px] text-emerald-300 leading-tight">Vinculado ao Google</span>
+          </div>
+          <button onclick="disconnectGoogle()" title="Desconectar" class="ml-1 text-stone-300 hover:text-red-300 cursor-pointer">
+            <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      `;
+      lucide.createIcons();
+
+      showToast(`Bem-vindo(a), ${workerUser.name}! Conta Google vinculada.`);
+
+      if (pendingApplyJobId) {
+        const jobId = pendingApplyJobId;
+        pendingApplyJobId = null;
+        applyToJob(jobId);
+      }
+
+      renderWorkerJobs();
+      renderWorkerApps();
+      renderWorkerProfile();
+    }
+
+    function disconnectGoogle() {
+      workerUser = null;
+      document.getElementById('worker-google-cta').classList.remove('hidden');
+      document.getElementById('worker-google-badge').innerHTML = `
+        <button onclick="openGoogleAuthModal()" class="glass-btn px-4 py-2 rounded-full flex items-center gap-2 text-xs font-medium text-white cursor-pointer">
+          <span>Conectar com Google</span>
+        </button>
+      `;
+      renderWorkerJobs();
+      renderWorkerApps();
+      renderWorkerProfile();
+      showToast('Conta Google desconectada.');
+    }
+
+    function switchWorkerTab(tab) {
+      ['jobs', 'apps', 'profile'].forEach(t => {
+        document.getElementById('worker-panel-' + t).classList.add('hidden');
+        document.getElementById('tab-worker-' + t).classList.remove('tab-active');
+      });
+      document.getElementById('worker-panel-' + tab).classList.remove('hidden');
+      document.getElementById('tab-worker-' + tab).classList.add('tab-active');
+
+      if (tab === 'jobs') renderWorkerJobs();
+      if (tab === 'apps') renderWorkerApps();
+      if (tab === 'profile') renderWorkerProfile();
+    }
+
+    function filterWorkerJobs(role) {
+      currentRoleFilter = role;
+      document.querySelectorAll('.role-filter').forEach(btn => {
+        btn.classList.toggle('tab-active', btn.textContent.trim() === role);
+      });
+      renderWorkerJobs();
+    }
+
+    function applyToJob(jobId) {
+      if (!workerUser) {
+        pendingApplyJobId = jobId;
+        openGoogleAuthModal();
+        return;
+      }
+
+      const already = applications.some(a => a.jobId === jobId && a.workerEmail === workerUser.email);
+      if (!already) {
+        applications.unshift({
+          id: Date.now() + Math.floor(Math.random() * 1000),
+          jobId,
+          workerName: workerUser.name,
+          workerEmail: workerUser.email,
+          workerAvatar: workerUser.avatar,
+          status: 'Candidatado',
+          workerFeePaid: false,
+          barFeePaid: false,
+          barReview: null,
+          workerReview: null
+        });
+        updateWorkerAppsCount();
+        showToast('Candidatura enviada! A taxa de R$ 3,50 só será cobrada se a contratação for confirmada.');
+        renderWorkerJobs();
+        renderWorkerApps();
+      }
+    }
+
+    function updateWorkerAppsCount() {
+      const count = workerUser
+        ? applications.filter(a => a.workerEmail === workerUser.email).length
+        : applications.length;
+      document.getElementById('worker-apps-count').textContent = count;
+    }
+
+    function renderWorkerJobs() {
+      const container = document.getElementById('worker-jobs-list');
+      document.getElementById('worker-jobs-count').textContent = jobs.length;
+
+      const filtered = currentRoleFilter === 'Todas'
+        ? jobs
+        : jobs.filter(j => j.role.toLowerCase().includes(currentRoleFilter.toLowerCase()));
+
+      if (!filtered.length) {
+        container.innerHTML = `<div class="glass-panel rounded-3xl p-8 text-center text-sm text-stone-300">Nenhuma vaga encontrada para "${currentRoleFilter}".</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(job => {
+        const myApp = workerUser ? applications.find(a => a.jobId === job.id && a.workerEmail === workerUser.email) : null;
+        return `
+          <div class="glass-panel rounded-3xl overflow-hidden flex flex-col sm:flex-row">
+            <img src="${job.photo}" alt="${job.venue}" class="w-full sm:w-52 h-48 sm:h-auto object-cover" />
+            <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex flex-wrap items-start justify-between gap-2">
+                  <div>
+                    <span class="text-[11px] uppercase tracking-wider text-amber-300 font-semibold">${job.venue}</span>
+                    <h3 class="font-display text-xl sm:text-2xl font-bold text-white">${job.role}</h3>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xl sm:text-2xl font-bold text-amber-300">R$ ${job.payAmount}</span>
+                    <span class="block text-[11px] text-stone-200">${job.payType}</span>
+                    <span class="block text-[10px] text-emerald-300">${job.payWhen}</span>
+                  </div>
+                </div>
+
+                <p class="text-xs text-stone-300 mt-1 flex items-center gap-1.5">
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-300"></i> ${job.location}
+                </p>
+
+                <p class="text-xs sm:text-sm text-stone-200 mt-3 leading-relaxed">${job.description}</p>
+
+                <div class="flex flex-wrap gap-1.5 mt-3">
+                  ${job.benefits.map(b => `<span class="text-[11px] bg-white/10 border border-white/15 px-2.5 py-0.5 rounded-full text-stone-200">${b}</span>`).join('')}
+                </div>
+              </div>
+
+              <div class="mt-5 pt-4 border-t border-white/15 flex flex-wrap items-center justify-between gap-3">
+                <div class="text-xs text-stone-300">
+                  <span class="block text-white font-medium">${job.date} &bull; ${job.hours}</span>
+                  <span>${job.spots} vaga(s) aberta(s) &bull; Taxa se contratado: <strong>R$ 3,50</strong></span>
+                </div>
+
+                ${myApp
+                  ? `<span class="px-4 py-2.5 rounded-xl text-xs font-semibold ${myApp.status === 'Contratado' ? 'bg-emerald-500/20 border border-emerald-400/50 text-emerald-200' : 'bg-amber-400/15 border border-amber-300/40 text-amber-200'}">
+                      ${myApp.status === 'Contratado' ? 'Contratado! Veja em Candidaturas' : 'Candidatura Enviada'}
+                     </span>`
+                  : `<button onclick="applyToJob(${job.id})" class="glass-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 flex items-center gap-2 cursor-pointer">
+                      <i data-lucide="zap" class="w-4 h-4"></i>
+                      <span>${workerUser ? 'Candidatar-se com 1 Clique' : 'Entrar com Google e Candidatar'}</span>
+                     </button>`
+                }
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function renderWorkerApps() {
+      const container = document.getElementById('worker-apps-list');
+      const myApps = workerUser
+        ? applications.filter(a => a.workerEmail === workerUser.email)
+        : applications;
+
+      updateWorkerAppsCount();
+
+      if (!myApps.length) {
+        container.innerHTML = `<div class="glass-panel rounded-3xl p-8 text-center text-sm text-stone-300">Você ainda não se candidatou a nenhuma vaga.</div>`;
+        return;
+      }
+
+      container.innerHTML = myApps.map(app => {
+        const job = jobs.find(j => j.id === app.jobId);
+        if (!job) return '';
+        const isHired = app.status === 'Contratado';
+
+        return `
+          <div class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div class="flex items-center gap-4">
+                <img src="${job.photo}" alt="${job.venue}" class="w-16 h-16 rounded-2xl object-cover border border-white/20" />
+                <div>
+                  <span class="text-xs text-amber-300 font-semibold">${job.venue}</span>
+                  <h4 class="font-display text-lg font-bold text-white">${job.role}</h4>
+                  <p class="text-xs text-stone-300">${job.date} &bull; ${job.hours} &bull; <strong>R$ ${job.payAmount}</strong></p>
+                </div>
+              </div>
+
+              <span class="px-4 py-2 rounded-full text-xs font-semibold ${isHired ? 'bg-emerald-500/20 border border-emerald-400/50 text-emerald-200' : 'bg-amber-400/15 border border-amber-300/40 text-amber-200'}">
+                ${isHired ? 'Vaga Confirmada / Contratado' : 'Aguardando confirmação do bar'}
+              </span>
+            </div>
+
+            ${isHired ? `
+              <div class="pt-3 border-t border-white/15 flex flex-wrap items-center justify-between gap-3">
+                <p class="text-xs text-stone-200">
+                  Vaga confirmada! Taxa mínima do prestador: <strong class="text-amber-300">R$ 3,50</strong> (${app.workerFeePaid ? '<span class="text-emerald-300">Pago</span>' : '<span class="text-amber-200">Pendente</span>'}).
+                </p>
+
+                <div class="flex flex-wrap gap-2">
+                  <button onclick="openPixModal(${app.id}, 'worker', ${WORKER_FEE})" class="px-4 py-2 rounded-xl text-xs font-semibold bg-amber-400/20 border border-amber-300/60 text-amber-200 hover:bg-amber-400/30 flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="qr-code" class="w-4 h-4"></i>
+                    <span>${app.workerFeePaid ? 'Ver QR Code (R$ 3,50)' : 'Gerar QR Code PIX (R$ 3,50)'}</span>
+                  </button>
+
+                  <button onclick="openReviewModal(${app.id}, 'worker', '${job.venue.replace(/'/g, "\\'")}')" class="glass-btn px-4 py-2 rounded-xl text-xs font-medium text-white flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="star" class="w-4 h-4 text-amber-300"></i>
+                    <span>${app.workerReview ? `Avaliado (${app.workerReview.stars}★)` : 'Avaliar Restaurante'}</span>
+                  </button>
+                </div>
+              </div>
+            ` : `
+              <p class="text-[11px] text-stone-400">A cobrança de R$ 3,50 só é ativada após o restaurante confirmar que você foi contratado.</p>
+            `}
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function renderWorkerProfile() {
+      const container = document.getElementById('worker-profile-content');
+      if (!workerUser) {
+        container.innerHTML = `
+          <div class="text-center py-6">
+            <h3 class="font-display text-2xl font-bold text-white mb-2">Vincule sua Conta Google primeiro</h3>
+            <p class="text-xs sm:text-sm text-stone-300 mb-5">Com 1 clique puxamos seus dados básicos e liberamos sua ficha profissional.</p>
+            <button onclick="openGoogleAuthModal()" class="glass-btn px-6 py-3.5 rounded-2xl text-sm font-semibold text-amber-200 border-amber-300/60 cursor-pointer">
+              Conectar com Google
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="flex items-center gap-4 mb-6 pb-5 border-b border-white/15">
+          <img src="${workerUser.avatar}" alt="${workerUser.name}" class="w-16 h-16 rounded-full object-cover border-2 border-amber-300" />
+          <div>
+            <span class="text-[11px] uppercase tracking-wider text-emerald-300 font-semibold">Conta Google Vinculada</span>
+            <h3 class="font-display text-2xl font-bold text-white">${workerUser.name}</h3>
+            <p class="text-xs text-stone-300">${workerUser.email}</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">WhatsApp para Contato</label>
+            <input type="text" value="${workerUser.phone}" onchange="workerUser.phone = this.value" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Função Principal</label>
+            <input type="text" value="${workerUser.specialty}" onchange="workerUser.specialty = this.value" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Experiência Resumida</label>
+            <input type="text" value="${workerUser.experience}" onchange="workerUser.experience = this.value" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Chave PIX (para receber diárias)</label>
+            <input type="text" value="${workerUser.pix}" onchange="workerUser.pix = this.value" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+        </div>
+
+        <button onclick="showToast('Perfil profissional e chave PIX atualizados!')" class="glass-btn mt-6 px-6 py-3 rounded-xl text-sm font-medium text-amber-200 cursor-pointer">
+          Salvar Perfil
+        </button>
+      `;
+    }
+
+    // ==================== AVALIAÇÕES (RESTAURANTE <-> CANDIDATO) ====================
+    function openReviewModal(appId, reviewerType, targetName) {
+      const app = applications.find(a => a.id === appId);
+      if (!app) return;
+      activeReviewContext = { appId, reviewerType, targetName };
+
+      document.getElementById('review-modal-title').textContent =
+        reviewerType === 'bar' ? 'Avaliar Candidato' : 'Avaliar Restaurante';
+      document.getElementById('review-modal-target').textContent = `Referente a: ${targetName}`;
+
+      const existing = reviewerType === 'bar' ? app.barReview : app.workerReview;
+      document.getElementById('review-stars').value = existing ? existing.stars : '5';
+      document.getElementById('review-comment').value = existing ? existing.comment : '';
+      document.getElementById('review-modal').classList.remove('hidden');
+    }
+
+    function closeReviewModal() {
+      document.getElementById('review-modal').classList.add('hidden');
+      activeReviewContext = null;
+    }
+
+    function submitReview(e) {
+      e.preventDefault();
+      if (!activeReviewContext) return;
+      const app = applications.find(a => a.id === activeReviewContext.appId);
+      if (!app) return;
+
+      const stars = document.getElementById('review-stars').value;
+      const comment = document.getElementById('review-comment').value.trim();
+
+      if (activeReviewContext.reviewerType === 'bar') {
+        app.barReview = { stars, comment };
+        renderBarJobs();
+      } else {
+        app.workerReview = { stars, comment };
+        renderWorkerApps();
+        updateBarRatingHeader();
+      }
+
+      closeReviewModal();
+      showToast('Avaliação registrada com sucesso!');
+    }
+
+    function updateBarRatingHeader() {
+      const reviews = applications.map(a => a.workerReview).filter(Boolean);
+      const badge = document.getElementById('header-bar-rating');
+      if (!reviews.length) {
+        badge.textContent = '';
+        return;
+      }
+      const avg = (reviews.reduce((sum, r) => sum + Number(r.stars), 0) / reviews.length).toFixed(1);
+      badge.textContent = `• ★ ${avg} (${reviews.length})`;
+    }
+
+    function renderBarReviewsInProfile() {
+      const container = document.getElementById('bar-reviews-received');
+      const reviews = applications.filter(a => a.workerReview);
+      if (!reviews.length) {
+        container.innerHTML = `<p class="text-xs text-stone-400">Nenhuma avaliação de candidatos recebida ainda.</p>`;
+        return;
+      }
+      container.innerHTML = `
+        <h4 class="text-xs uppercase tracking-wider text-amber-200 font-semibold mb-3">Avaliações Recebidas de Candidatos</h4>
+        <div class="space-y-2">` + reviews.map(r => `
+          <div class="glass-btn rounded-xl p-3 text-xs">
+            <span class="text-amber-300 font-semibold">★ ${r.workerReview.stars}/5</span> — <strong class="text-white">${r.workerName}</strong>: "${r.workerReview.comment}"
+          </div>
+        `).join('') + `</div>`;
+    }
+
+    // ==================== GERADOR PIX EMV (BANCO CENTRAL) + CRC16 ====================
+    function tlv(id, value) {
+      const len = String(value.length).padStart(2, '0');
+      return `${id}${len}${value}`;
+    }
+
+    function crc16Ccitt(str) {
+      let crc = 0xFFFF;
+      for (let i = 0; i < str.length; i++) {
+        crc ^= str.charCodeAt(i) << 8;
+        for (let bit = 0; bit < 8; bit++) {
+          if ((crc & 0x8000) !== 0) {
+            crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+          } else {
+            crc = (crc << 1) & 0xFFFF;
+          }
+        }
+      }
+      return crc.toString(16).toUpperCase().padStart(4, '0');
+    }
+
+    function buildBacenPixPayload(pixKey, amountNumber, merchantName, merchantCity, txid) {
+      const gui = tlv('00', 'br.gov.bcb.pix');
+      const key = tlv('01', pixKey);
+      const merchantAccountInfo = tlv('26', gui + key);
+
+      const payloadFormatIndicator = tlv('00', '01');
+      const merchantCategoryCode = tlv('52', '0000');
+      const transactionCurrency = tlv('53', '986');
+      const transactionAmount = tlv('54', Number(amountNumber).toFixed(2));
+      const countryCode = tlv('58', 'BR');
+
+      const cleanName = merchantName
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^A-Za-z0-9 ]/g, '')
+        .substring(0, 25).toUpperCase() || 'SERVICEFREE';
+
+      const cleanCity = merchantCity
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^A-Za-z0-9 ]/g, '')
+        .substring(0, 15).toUpperCase() || 'SAO PAULO';
+
+      const mName = tlv('59', cleanName);
+      const mCity = tlv('60', cleanCity);
+      const additionalData = tlv('62', tlv('05', txid.substring(0, 25)));
+
+      const partialPayload =
+        payloadFormatIndicator +
+        merchantAccountInfo +
+        merchantCategoryCode +
+        transactionCurrency +
+        transactionAmount +
+        countryCode +
+        mName +
+        mCity +
+        additionalData +
+        '6304';
+
+      const crc = crc16Ccitt(partialPayload);
+      return partialPayload + crc;
+    }
+
+    function drawMatrixQrCanvas(payload) {
+      const canvas = document.getElementById('pix-qr-canvas');
+      const ctx = canvas.getContext('2d');
+      const size = canvas.width;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, size, size);
+
+      const cells = 25;
+      const margin = 12;
+      const cellSize = Math.floor((size - margin * 2) / cells);
+      const offset = Math.floor((size - cellSize * cells) / 2);
+
+      function drawFinder(r0, c0) {
+        for (let r = 0; r < 7; r++) {
+          for (let c = 0; c < 7; c++) {
+            const isBorder = r === 0 || r === 6 || c === 0 || c === 6;
+            const isCenter = r >= 2 && r <= 4 && c >= 2 && c <= 4;
+            if (isBorder || isCenter) {
+              ctx.fillStyle = '#111827';
+              ctx.fillRect(offset + (c0 + c) * cellSize, offset + (r0 + r) * cellSize, cellSize, cellSize);
+            }
+          }
+        }
+      }
+
+      drawFinder(0, 0);
+      drawFinder(0, cells - 7);
+      drawFinder(cells - 7, 0);
+
+      let hash = 2166136261;
+      for (let i = 0; i < payload.length; i++) {
+        hash ^= payload.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+      }
+
+      ctx.fillStyle = '#111827';
+      for (let r = 0; r < cells; r++) {
+        for (let c = 0; c < cells; c++) {
+          const inTopLeft = r < 8 && c < 8;
+          const inTopRight = r < 8 && c >= cells - 8;
+          const inBottomLeft = r >= cells - 8 && c < 8;
+          if (inTopLeft || inTopRight || inBottomLeft) continue;
+
+          const bitSeed = (hash ^ (r * 73856093) ^ (c * 19349663) ^ (payload.charCodeAt((r * cells + c) % payload.length) * 83492791)) >>> 0;
+          if (bitSeed % 2 === 0) {
+            ctx.fillRect(offset + c * cellSize, offset + r * cellSize, cellSize, cellSize);
+          }
+        }
+      }
+    }
+
+    function openPixModal(appId, payerType, amount) {
+      const app = applications.find(a => a.id === appId);
+      if (!app) return;
+      const job = jobs.find(j => j.id === app.jobId);
+
+      const txid = `SF${payerType === 'worker' ? 'CAND' : 'BAR'}${appId}`.substring(0, 20);
+      const payload = buildBacenPixPayload(PIX_KEY_CPF, amount, 'SERVICEFREE', 'SAO PAULO', txid);
+
+      activePixContext = { appId, payerType, amount, payload };
+
+      document.getElementById('pix-modal-title').textContent =
+        payerType === 'worker' ? 'Taxa do Prestador (Vaga Confirmada)' : 'Taxa do Estabelecimento (Contratação)';
+      document.getElementById('pix-modal-subtitle').textContent =
+        `${job ? job.role + ' • ' + job.venue : 'Servicefree'} — Candidato: ${app.workerName}`;
+      document.getElementById('pix-modal-amount-label').textContent = `R$ ${amount.toFixed(2).replace('.', ',')}`;
+      document.getElementById('pix-emv-payload').value = payload;
+
+      const alreadyPaid = payerType === 'worker' ? app.workerFeePaid : app.barFeePaid;
+      const btn = document.getElementById('pix-confirm-paid-btn');
+      btn.innerHTML = alreadyPaid
+        ? `<i data-lucide="check-circle-2" class="w-4 h-4"></i><span>Pagamento Confirmado</span>`
+        : `<i data-lucide="check-check" class="w-4 h-4"></i><span>Já Paguei</span>`;
+
+      drawMatrixQrCanvas(payload);
+      document.getElementById('pix-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closePixModal() {
+      document.getElementById('pix-modal').classList.add('hidden');
+      activePixContext = null;
+    }
+
+    function copyPixPayload() {
+      const textarea = document.getElementById('pix-emv-payload');
+      textarea.select();
+      navigator.clipboard?.writeText(textarea.value);
+      showToast('Código PIX (padrão Banco Central) copiado!');
+    }
+
+    function markPixPaid() {
+      if (!activePixContext) return;
+      const app = applications.find(a => a.id === activePixContext.appId);
+      if (!app) return;
+
+      if (activePixContext.payerType === 'worker') {
+        app.workerFeePaid = true;
+        renderWorkerApps();
+      } else {
+        app.barFeePaid = true;
+        renderBarJobs();
+      }
+
+      closePixModal();
+      showToast('Pagamento da taxa PIX confirmado!');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.remove('hidden');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.add('hidden'), 3400);
+    }
+  </script>
+</body>
+</html>
