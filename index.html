@@ -461,7 +461,7 @@
     </div>
   </div>
 
-  <!-- ==================== TELA 4: ADMINISTRADOR (ADESÃO, EXCLUSÃO E CONTROLE) ==================== -->
+  <!-- ==================== TELA 4: ADMINISTRADOR (ADESÃO, EXCLUSÃO E PASTA DOS USUÁRIOS) ==================== -->
   <div id="view-admin" class="hidden relative z-10 min-h-screen flex flex-col px-4 py-6 sm:px-8 sm:py-8">
     <div class="w-full max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3 mb-6">
       <div class="flex items-center gap-3">
@@ -502,7 +502,7 @@
       </div>
     </div>
 
-    <!-- Adesão de Usuário + Lista para Exclusão -->
+    <!-- Adesão de Usuário + Lista com Pasta Completa e Exclusão -->
     <div class="w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
       <div class="glass-panel rounded-3xl p-6 h-fit">
         <h3 class="font-display text-xl font-bold text-white mb-1">Adesão de Usuário</h3>
@@ -525,6 +525,10 @@
             <input type="text" id="admin-user-contact" placeholder="rafael@gmail.com" required class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
           </div>
           <div>
+            <label class="block text-[11px] uppercase tracking-wider text-amber-200/90 mb-1">WhatsApp</label>
+            <input type="text" id="admin-user-phone" placeholder="(11) 99999-9999" class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
+          </div>
+          <div>
             <label class="block text-[11px] uppercase tracking-wider text-amber-200/90 mb-1">Especialidade / Categoria</label>
             <input type="text" id="admin-user-role" placeholder="Ex: Bartender / Gastrobar" required class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
           </div>
@@ -536,14 +540,29 @@
       </div>
 
       <div class="lg:col-span-2 glass-panel rounded-3xl p-6">
-        <h3 class="font-display text-xl font-bold text-white mb-1">Usuários Cadastrados</h3>
-        <p class="text-xs text-stone-300 mb-4">Gerencie a adesão ou remova usuários da plataforma.</p>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div>
+            <h3 class="font-display text-xl font-bold text-white">Pastas de Candidatos e Estabelecimentos</h3>
+            <p class="text-xs text-stone-300">Clique na foto, no nome ou em <strong>Abrir Pasta</strong> para visualizar os dados completos.</p>
+          </div>
+        </div>
         <div id="admin-users-list" class="space-y-3"></div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== MODAL FICHA COMPLETA DO PROFISSIONAL (AO CLICAR NA FOTO) ==================== -->
+  <!-- ==================== MODAL PASTA COMPLETA DO USUÁRIO (ADMIN) ==================== -->
+  <div id="admin-folder-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-lg rounded-3xl p-6 sm:p-7 fade-in relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeAdminFolderModal()" class="absolute top-4 right-4 text-stone-300 hover:text-white cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div id="admin-folder-content"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL FICHA COMPLETA DO PROFISSIONAL (AO CLICAR NA FOTO NO RESTAURANTE) ==================== -->
   <div id="worker-details-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
     <div class="glass-panel w-full max-w-lg rounded-3xl p-6 sm:p-7 fade-in relative max-h-[90vh] overflow-y-auto">
       <button onclick="closeWorkerDetailsModal()" class="absolute top-4 right-4 text-stone-300 hover:text-white cursor-pointer">
@@ -634,14 +653,14 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL DE CONEXÃO COM GOOGLE ==================== -->
+  <!-- ==================== MODAL DE CONEXÃO COM GOOGLE + LOGIN SALVO COM AUTOCOMPLETAR ==================== -->
   <div id="google-auth-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="glass-panel w-full max-w-md rounded-3xl p-6 sm:p-7 fade-in relative">
+    <div class="glass-panel w-full max-w-md rounded-3xl p-6 sm:p-7 fade-in relative max-h-[90vh] overflow-y-auto">
       <button onclick="closeGoogleAuthModal()" class="absolute top-4 right-4 text-stone-300 hover:text-white cursor-pointer">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
-      <!-- Passo 1: Escolher conta Google -->
+      <!-- Passo 1: Escolher conta Google ou digitar primeiras letras para recuperar cadastro salvo -->
       <div id="google-step-accounts">
         <div class="flex items-center gap-2.5 mb-4">
           <svg class="w-6 h-6" viewBox="0 0 24 24">
@@ -653,33 +672,24 @@
           <span class="text-sm font-medium text-stone-200">Fazer login com o Google</span>
         </div>
 
-        <h3 class="font-display text-2xl font-bold text-white">Escolha uma conta</h3>
-        <p class="text-xs text-stone-300 mt-1 mb-5">para continuar no <strong class="text-amber-300">Servicefree</strong></p>
+        <h3 class="font-display text-2xl font-bold text-white">Escolha ou digite sua conta</h3>
+        <p class="text-xs text-stone-300 mt-1 mb-4">Seus cadastros ficam salvos no sistema — digite as primeiras letras para recuperar.</p>
 
-        <div class="space-y-2.5 mb-5">
-          <button onclick="selectGoogleAccount('Lucas Mendes', 'lucas.mendes.bar@gmail.com', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', '(11) 99412-8830', 'Bartender & Mixologista', '4 anos em bares de coquetelaria e eventos')" class="glass-btn w-full p-3.5 rounded-2xl flex items-center gap-3.5 text-left cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Lucas" class="w-10 h-10 rounded-full object-cover border border-amber-300/50" />
-            <div class="overflow-hidden">
-              <p class="text-sm font-semibold text-white truncate">Lucas Mendes</p>
-              <p class="text-xs text-stone-300 truncate">lucas.mendes.bar@gmail.com</p>
-            </div>
-          </button>
-
-          <button onclick="selectGoogleAccount('Mariana Costa', 'mariana.costa.eventos@gmail.com', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', '(11) 98320-5519', 'Garçonete & Hostess', '5 anos em restaurantes à la carte e casas noturnas')" class="glass-btn w-full p-3.5 rounded-2xl flex items-center gap-3.5 text-left cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Mariana" class="w-10 h-10 rounded-full object-cover border border-amber-300/50" />
-            <div class="overflow-hidden">
-              <p class="text-sm font-semibold text-white truncate">Mariana Costa</p>
-              <p class="text-xs text-stone-300 truncate">mariana.costa.eventos@gmail.com</p>
-            </div>
-          </button>
+        <!-- Campo inteligente que filtra e preenche logins salvos ao digitar as primeiras letras -->
+        <div class="mb-4">
+          <label class="block text-[11px] uppercase tracking-wider text-amber-200/90 mb-1">Buscar Login Salvo (digite as primeiras letras)</label>
+          <input type="text" id="saved-login-search" oninput="filterSavedLogins(this.value)" placeholder="Digite as primeiras letras do nome ou e-mail..." class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
         </div>
 
+        <!-- Lista dinâmica de contas salvas no sistema -->
+        <div id="saved-accounts-list" class="space-y-2.5 mb-5"></div>
+
         <div class="border-t border-white/15 pt-4">
-          <p class="text-xs text-stone-300 mb-2">Ou vincule seu próprio Gmail agora:</p>
+          <p class="text-xs text-stone-300 mb-2">Ou faça um novo vínculo com seu Gmail:</p>
           <form onsubmit="selectCustomGoogleAccount(event)" class="space-y-2.5">
-            <input type="text" id="custom-google-name" placeholder="Seu nome completo" required class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
+            <input type="text" id="custom-google-name" oninput="autoSuggestFromCustomInput()" placeholder="Seu nome completo" required class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
             <div class="flex gap-2">
-              <input type="email" id="custom-google-email" placeholder="seuemail@gmail.com" required class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
+              <input type="email" id="custom-google-email" oninput="autoSuggestFromCustomInput()" placeholder="seuemail@gmail.com" required class="glass-input w-full rounded-xl px-3.5 py-2.5 text-xs" />
               <button type="submit" class="glass-btn px-4 py-2.5 rounded-xl text-xs font-semibold text-amber-200 whitespace-nowrap cursor-pointer">Avançar</button>
             </div>
           </form>
@@ -708,7 +718,7 @@
           </li>
           <li class="flex items-center gap-2.5">
             <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
-            <span>Associar seu endereço de e-mail Google ao perfil</span>
+            <span>Salvar seu login no sistema para acesso rápido</span>
           </li>
         </ul>
 
@@ -730,9 +740,8 @@
   <script>
     lucide.createIcons();
 
+    const STORAGE_KEY = 'servicefree_system_state_v1';
     const ADMIN_PASS = '7512';
-    // Chave PIX Celular do dono do app: 11972168719 (no padrão EMV Bacen usa +5511972168719)
-    const PIX_KEY_PHONE_DISPLAY = '11972168719';
     const PIX_KEY_PHONE_BACEN = '+5511972168719';
     const WORKER_FEE = 3.50;
     const BAR_FEE = 8.50;
@@ -756,7 +765,7 @@
       'Copeiro / Limpeza': 'Lavagem contínua de taças, copos e louças do bar/cozinha e manutenção da limpeza das áreas comuns durante o evento.'
     };
 
-    let jobs = [
+    const defaultJobs = [
       {
         id: 1,
         venue: 'Oak & Barrel Lounge Bar',
@@ -789,22 +798,122 @@
       }
     ];
 
-    // Armazena dados completos do profissional para o restaurante visualizar ao clicar na foto
-    let applications = [];
-
-    let adminUsers = [
-      { id: 101, type: 'Bar / Restaurante', name: 'Oak & Barrel Lounge Bar', contact: '(11) 99842-1190', role: 'Lounge & Coquetelaria' },
-      { id: 102, type: 'Bar / Restaurante', name: 'Varanda Gastrô & Chopp', contact: '(11) 98711-4402', role: 'Gastrobar & Chopp' },
-      { id: 103, type: 'Prestador de Serviços', name: 'Rafael Silva', contact: 'rafael.bartender@gmail.com', role: 'Bartender' }
+    const defaultSavedAccounts = [
+      {
+        name: 'Lucas Mendes',
+        email: 'lucas.mendes.bar@gmail.com',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+        phone: '(11) 99412-8830',
+        specialty: 'Bartender & Mixologista',
+        experience: '4 anos em bares de coquetelaria e eventos',
+        pix: 'lucas.mendes.bar@gmail.com'
+      },
+      {
+        name: 'Mariana Costa',
+        email: 'mariana.costa.eventos@gmail.com',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+        phone: '(11) 98320-5519',
+        specialty: 'Garçonete & Hostess',
+        experience: '5 anos em restaurantes à la carte e casas noturnas',
+        pix: 'mariana.costa.eventos@gmail.com'
+      }
     ];
 
+    const defaultAdminUsers = [
+      {
+        id: 101,
+        type: 'Bar / Restaurante',
+        name: 'Oak & Barrel Lounge Bar',
+        contact: 'contato@oakbarrel.com.br',
+        phone: '(11) 99842-1190',
+        role: 'Lounge & Coquetelaria',
+        avatar: 'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=200&q=80',
+        experience: 'Casa de coquetelaria e gastronomia noturna',
+        pix: '42.819.304/0001-19'
+      },
+      {
+        id: 102,
+        type: 'Bar / Restaurante',
+        name: 'Varanda Gastrô & Chopp',
+        contact: 'gerencia@varandagastro.com.br',
+        phone: '(11) 98711-4402',
+        role: 'Gastrobar & Chopp',
+        avatar: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=200&q=80',
+        experience: 'Choperia e restaurante com área externa',
+        pix: '(11) 98711-4402'
+      },
+      {
+        id: 103,
+        type: 'Prestador de Serviços',
+        name: 'Lucas Mendes',
+        contact: 'lucas.mendes.bar@gmail.com',
+        phone: '(11) 99412-8830',
+        role: 'Bartender & Mixologista',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+        experience: '4 anos em bares de coquetelaria e eventos',
+        pix: 'lucas.mendes.bar@gmail.com'
+      },
+      {
+        id: 104,
+        type: 'Prestador de Serviços',
+        name: 'Mariana Costa',
+        contact: 'mariana.costa.eventos@gmail.com',
+        phone: '(11) 98320-5519',
+        role: 'Garçonete & Hostess',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+        experience: '5 anos em restaurantes à la carte e casas noturnas',
+        pix: 'mariana.costa.eventos@gmail.com'
+      }
+    ];
+
+    let jobs = [...defaultJobs];
+    let applications = [];
+    let savedAccounts = [...defaultSavedAccounts];
+    let adminUsers = [...defaultAdminUsers];
     let workerUser = null;
+
     let pendingGoogleUser = null;
     let pendingApplyJobId = null;
     let currentRoleFilter = 'Todas';
-
     let activePixContext = null;
     let activeReviewContext = null;
+
+    // ==================== PERSISTÊNCIA NO NAVEGADOR (LOCALSTORAGE) ====================
+    function saveSystemState() {
+      try {
+        const data = {
+          jobs,
+          applications,
+          savedAccounts,
+          adminUsers,
+          workerUser
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (err) {
+        console.warn('Não foi possível salvar localmente:', err);
+      }
+    }
+
+    function loadSystemState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed.jobs)) jobs = parsed.jobs;
+        if (Array.isArray(parsed.applications)) applications = parsed.applications;
+        if (Array.isArray(parsed.savedAccounts)) savedAccounts = parsed.savedAccounts;
+        if (Array.isArray(parsed.adminUsers)) adminUsers = parsed.adminUsers;
+        if (parsed.workerUser) workerUser = parsed.workerUser;
+      } catch (err) {
+        console.warn('Erro ao restaurar dados salvos:', err);
+      }
+    }
+
+    // Restaura dados salvos ao abrir o aplicativo
+    loadSystemState();
+    if (workerUser) {
+      applyLoggedWorkerUI();
+    }
 
     function openSection(section) {
       ['view-home', 'view-bars', 'view-workers', 'view-admin'].forEach(id => {
@@ -855,26 +964,208 @@
       const type = document.getElementById('admin-user-type').value;
       const name = document.getElementById('admin-user-name').value.trim();
       const contact = document.getElementById('admin-user-contact').value.trim();
+      const phone = document.getElementById('admin-user-phone').value.trim() || '(11) 99000-0000';
       const role = document.getElementById('admin-user-role').value.trim();
+      const avatar = type === 'Prestador de Serviços'
+        ? `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f59e0b&color=1c130d&bold=true`
+        : 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=200&q=80';
 
-      adminUsers.unshift({
+      const newUser = {
         id: Date.now(),
         type,
         name,
         contact,
-        role
-      });
+        phone,
+        role,
+        avatar,
+        experience: type === 'Prestador de Serviços' ? `Atuação como ${role}` : `Estabelecimento cadastrado (${role})`,
+        pix: contact
+      };
 
+      adminUsers.unshift(newUser);
+
+      // Se for prestador, já deixa salvo também na lista rápida de login
+      if (type === 'Prestador de Serviços' && !savedAccounts.some(a => a.email.toLowerCase() === contact.toLowerCase())) {
+        savedAccounts.unshift({
+          name,
+          email: contact,
+          avatar,
+          phone,
+          specialty: role,
+          experience: `Atuação como ${role}`,
+          pix: contact
+        });
+      }
+
+      saveSystemState();
       e.target.reset();
       renderAdminPanel();
-      showToast(`Usuário "${name}" adicionado com sucesso.`);
+      showToast(`Usuário "${name}" adicionado e salvo no sistema.`);
     }
 
     function adminDeleteUser(id) {
       const target = adminUsers.find(u => u.id === id);
       adminUsers = adminUsers.filter(u => u.id !== id);
+      if (target) {
+        savedAccounts = savedAccounts.filter(a => a.email.toLowerCase() !== (target.contact || '').toLowerCase());
+      }
+      saveSystemState();
       renderAdminPanel();
       showToast(`Usuário "${target ? target.name : ''}" removido.`);
+    }
+
+    // ==================== PASTA COMPLETA DE CANDIDATO / ESTABELECIMENTO NO ADMIN ====================
+    function openAdminUserFolder(userId) {
+      const user = adminUsers.find(u => u.id === userId);
+      if (!user) return;
+
+      const isWorker = user.type === 'Prestador de Serviços';
+      const userAvatar = user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=f59e0b&color=1c130d&bold=true`;
+
+      // Busca candidaturas e avaliações ligadas a este candidato ou estabelecimento
+      const relatedApps = isWorker
+        ? applications.filter(a => a.workerEmail.toLowerCase() === (user.contact || '').toLowerCase() || a.workerName.toLowerCase() === user.name.toLowerCase())
+        : applications.filter(a => {
+            const j = jobs.find(jobItem => jobItem.id === a.jobId);
+            return j && j.venue.toLowerCase() === user.name.toLowerCase();
+          });
+
+      const relatedJobs = !isWorker
+        ? jobs.filter(j => j.venue.toLowerCase() === user.name.toLowerCase())
+        : [];
+
+      const reviews = isWorker
+        ? relatedApps.filter(a => a.barReview).map(a => ({ stars: a.barReview.stars, comment: a.barReview.comment }))
+        : relatedApps.filter(a => a.workerReview).map(a => ({ stars: a.workerReview.stars, comment: a.workerReview.comment }));
+
+      const avgRating = reviews.length
+        ? (reviews.reduce((s, r) => s + Number(r.stars), 0) / reviews.length).toFixed(1)
+        : 'Sem avaliações';
+
+      const cleanPhone = (user.phone || '').replace(/\D/g, '');
+      const waUrl = cleanPhone ? `https://wa.me/55${cleanPhone}` : '#';
+
+      document.getElementById('admin-folder-content').innerHTML = `
+        <div class="flex flex-col items-center text-center pb-5 border-b border-white/15">
+          <div class="relative">
+            <img src="${userAvatar}" alt="${user.name}" class="w-24 h-24 rounded-full object-cover border-2 border-amber-300 shadow-xl" />
+            <span class="absolute -bottom-1 right-0 bg-amber-400 text-black text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+              Pasta Ativa
+            </span>
+          </div>
+
+          <span class="mt-3 text-[11px] uppercase tracking-wider px-3 py-0.5 rounded-full bg-amber-400/15 text-amber-200 border border-amber-300/30">
+            ${user.type}
+          </span>
+          <h3 class="font-display text-2xl font-bold text-white mt-2">${user.name}</h3>
+          <p class="text-xs text-amber-300 font-semibold">${user.role}</p>
+          <p class="text-xs text-stone-300 mt-1">Reputação: ★ ${avgRating}</p>
+        </div>
+
+        <div class="space-y-3 py-4 text-xs">
+          <div class="glass-btn rounded-2xl p-3.5 flex items-center justify-between gap-2">
+            <div>
+              <span class="text-stone-400 block text-[10px] uppercase">WhatsApp / Telefone</span>
+              <strong class="text-white text-sm">${user.phone || 'Não informado'}</strong>
+            </div>
+            ${cleanPhone ? `
+              <a href="${waUrl}" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-emerald-500/25 border border-emerald-400/50 text-emerald-200 font-semibold flex items-center gap-1.5 hover:bg-emerald-500/35">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>WhatsApp</span>
+              </a>
+            ` : ''}
+          </div>
+
+          <div class="glass-btn rounded-2xl p-3.5">
+            <span class="text-stone-400 block text-[10px] uppercase">E-mail / Login Cadastrado</span>
+            <strong class="text-white text-sm">${user.contact}</strong>
+          </div>
+
+          <div class="glass-btn rounded-2xl p-3.5">
+            <span class="text-stone-400 block text-[10px] uppercase">${isWorker ? 'Experiência / Resumo Profissional' : 'Descrição do Estabelecimento'}</span>
+            <strong class="text-white text-sm">${user.experience || user.role}</strong>
+          </div>
+
+          <div class="glass-btn rounded-2xl p-3.5">
+            <span class="text-stone-400 block text-[10px] uppercase">Chave PIX Cadastrada</span>
+            <strong class="text-amber-300 text-sm font-mono">${user.pix || user.contact}</strong>
+          </div>
+
+          ${isWorker ? `
+            <div class="glass-btn rounded-2xl p-3.5">
+              <span class="text-stone-400 block text-[10px] uppercase mb-1.5">Histórico de Vagas &amp; Contratações (${relatedApps.length})</span>
+              ${relatedApps.length ? relatedApps.map(a => {
+                const j = jobs.find(item => item.id === a.jobId);
+                return `<p class="text-stone-200 py-1 border-b border-white/10 last:border-0">• <strong>${j ? j.role : 'Vaga'}</strong> (${j ? j.venue : ''}) — <span class="${a.status === 'Contratado' ? 'text-emerald-300' : 'text-amber-200'}">${a.status}</span></p>`;
+              }).join('') : `<p class="text-stone-400">Nenhuma candidatura registrada ainda.</p>`}
+            </div>
+          ` : `
+            <div class="glass-btn rounded-2xl p-3.5">
+              <span class="text-stone-400 block text-[10px] uppercase mb-1.5">Vagas Publicadas por este Local (${relatedJobs.length})</span>
+              ${relatedJobs.length ? relatedJobs.map(j => `
+                <p class="text-stone-200 py-1 border-b border-white/10 last:border-0">• <strong>${j.role}</strong> — R$ ${j.payAmount} (${j.payType})</p>
+              `).join('') : `<p class="text-stone-400">Nenhuma vaga ativa no momento.</p>`}
+            </div>
+          `}
+
+          <div class="glass-btn rounded-2xl p-3.5">
+            <span class="text-stone-400 block text-[10px] uppercase mb-1.5">Avaliações na Pasta (${reviews.length})</span>
+            ${reviews.length ? reviews.map(r => `
+              <p class="text-stone-200 py-1">★ <strong class="text-amber-300">${r.stars}/5</strong> — "${r.comment}"</p>
+            `).join('') : `<p class="text-stone-400">Nenhuma avaliação registrada ainda.</p>`}
+          </div>
+        </div>
+
+        <div class="mt-4 flex flex-wrap gap-2.5">
+          ${isWorker ? `
+            <button onclick="adminLoginAsWorker(${user.id})" class="glass-btn flex-1 py-3 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 flex items-center justify-center gap-1.5 cursor-pointer">
+              <i data-lucide="log-in" class="w-4 h-4"></i>
+              <span>Acessar como Candidato</span>
+            </button>
+          ` : `
+            <button onclick="adminOpenBarArea('${user.name.replace(/'/g, "\\'")}')" class="glass-btn flex-1 py-3 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 flex items-center justify-center gap-1.5 cursor-pointer">
+              <i data-lucide="store" class="w-4 h-4"></i>
+              <span>Acessar Painel do Bar</span>
+            </button>
+          `}
+          <button onclick="closeAdminFolderModal(); adminDeleteUser(${user.id});" class="px-4 py-3 rounded-xl text-xs font-medium bg-red-500/20 border border-red-400/40 text-red-200 hover:bg-red-500/30 cursor-pointer">
+            Excluir
+          </button>
+        </div>
+      `;
+
+      document.getElementById('admin-folder-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeAdminFolderModal() {
+      document.getElementById('admin-folder-modal').classList.add('hidden');
+    }
+
+    function adminLoginAsWorker(userId) {
+      const user = adminUsers.find(u => u.id === userId);
+      if (!user) return;
+      workerUser = {
+        name: user.name,
+        email: user.contact,
+        avatar: user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=f59e0b&color=1c130d&bold=true`,
+        phone: user.phone || '(11) 99412-8830',
+        specialty: user.role,
+        experience: user.experience || `Atuação como ${user.role}`,
+        pix: user.pix || user.contact
+      };
+      saveSystemState();
+      applyLoggedWorkerUI();
+      closeAdminFolderModal();
+      openSection('workers');
+      showToast(`Entrou na área de ${workerUser.name}.`);
+    }
+
+    function adminOpenBarArea(barName) {
+      closeAdminFolderModal();
+      syncBarName(barName);
+      document.getElementById('profile-bar-name').value = barName;
+      openSection('bars');
     }
 
     function renderAdminPanel() {
@@ -892,30 +1183,50 @@
         return;
       }
 
-      listEl.innerHTML = adminUsers.map(u => `
-        <div class="glass-btn rounded-2xl p-3.5 flex items-center justify-between gap-3">
-          <div>
-            <span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-200 border border-amber-300/30">${u.type}</span>
-            <h4 class="text-sm font-semibold text-white mt-1">${u.name}</h4>
-            <p class="text-xs text-stone-300">${u.role} &bull; ${u.contact}</p>
+      listEl.innerHTML = adminUsers.map(u => {
+        const avatar = u.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(u.name)}&background=f59e0b&color=1c130d&bold=true`;
+        return `
+          <div class="glass-btn rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3">
+            <div onclick="openAdminUserFolder(${u.id})" title="Clique para abrir a pasta completa" class="flex items-center gap-3.5 cursor-pointer group flex-1 min-w-[200px]">
+              <div class="relative shrink-0">
+                <img src="${avatar}" alt="${u.name}" class="w-12 h-12 rounded-full object-cover border-2 border-amber-300/70 group-hover:scale-105 transition-transform" />
+                <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-amber-400 text-black flex items-center justify-center shadow">
+                  <i data-lucide="folder-open" class="w-3 h-3"></i>
+                </span>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-200 border border-amber-300/30">${u.type}</span>
+                <h4 class="text-sm font-semibold text-white group-hover:text-amber-300 transition-colors mt-1 flex items-center gap-1.5">
+                  <span>${u.name}</span>
+                  <span class="text-[10px] font-normal text-amber-200/80 underline">(Ver pasta)</span>
+                </h4>
+                <p class="text-xs text-stone-300">${u.role} &bull; ${u.contact}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="openAdminUserFolder(${u.id})" class="glass-btn px-3 py-2 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/50 hover:bg-amber-400/20 flex items-center gap-1.5 cursor-pointer">
+                <i data-lucide="folder-open" class="w-3.5 h-3.5"></i>
+                <span>Abrir Pasta</span>
+              </button>
+              <button onclick="adminDeleteUser(${u.id})" class="px-3 py-2 rounded-xl text-xs font-medium bg-red-500/20 border border-red-400/40 text-red-200 hover:bg-red-500/30 flex items-center gap-1 cursor-pointer">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                <span>Excluir</span>
+              </button>
+            </div>
           </div>
-          <button onclick="adminDeleteUser(${u.id})" class="px-3 py-2 rounded-xl text-xs font-medium bg-red-500/20 border border-red-400/40 text-red-200 hover:bg-red-500/30 flex items-center gap-1 cursor-pointer">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            <span>Excluir</span>
-          </button>
-        </div>
-      `).join('');
+        `;
+      }).join('');
       lucide.createIcons();
     }
 
-    // ==================== FICHA COMPLETA DO PROFISSIONAL (AO CLICAR NA FOTO) ====================
+    // ==================== FICHA COMPLETA DO PROFISSIONAL (AO CLICAR NA FOTO NO RESTAURANTE) ====================
     function openWorkerDetailsModal(appId) {
       const app = applications.find(a => a.id === appId);
       if (!app) return;
       const job = jobs.find(j => j.id === app.jobId);
       const isHired = app.status === 'Contratado';
 
-      // Busca todas as avaliações recebidas por esse profissional na plataforma
       const workerReviews = applications
         .filter(a => a.workerEmail === app.workerEmail && a.barReview)
         .map(a => a.barReview);
@@ -1084,6 +1395,7 @@
       };
 
       jobs.unshift(newJob);
+      saveSystemState();
       document.getElementById('bar-jobs-count').textContent = jobs.length;
       document.getElementById('worker-jobs-count').textContent = jobs.length;
       showToast('Vaga publicada com sucesso! Já visível para prestadores.');
@@ -1093,6 +1405,7 @@
     function deleteJob(id) {
       jobs = jobs.filter(j => j.id !== id);
       applications = applications.filter(a => a.jobId !== id);
+      saveSystemState();
       document.getElementById('bar-jobs-count').textContent = jobs.length;
       document.getElementById('worker-jobs-count').textContent = jobs.length;
       renderBarJobs();
@@ -1103,6 +1416,7 @@
       const app = applications.find(a => a.id === appId);
       if (!app) return;
       app.status = 'Contratado';
+      saveSystemState();
       renderBarJobs();
       renderWorkerApps();
       showToast(`Contratação de ${app.workerName} confirmada! Clique na foto para ver a ficha completa.`);
@@ -1208,11 +1522,14 @@
       lucide.createIcons();
     }
 
-    // ==================== PRESTADOR DE SERVIÇOS + GOOGLE ====================
+    // ==================== PRESTADOR DE SERVIÇOS + GOOGLE + LOGIN SALVO ====================
     function openGoogleAuthModal() {
       document.getElementById('google-step-accounts').classList.remove('hidden');
       document.getElementById('google-step-consent').classList.add('hidden');
+      document.getElementById('saved-login-search').value = '';
+      renderSavedAccountsList('');
       document.getElementById('google-auth-modal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('saved-login-search').focus(), 100);
     }
 
     function closeGoogleAuthModal() {
@@ -1220,8 +1537,60 @@
       pendingApplyJobId = null;
     }
 
+    function filterSavedLogins(query) {
+      renderSavedAccountsList(query);
+    }
+
+    function autoSuggestFromCustomInput() {
+      const nameVal = document.getElementById('custom-google-name').value.trim();
+      const emailVal = document.getElementById('custom-google-email').value.trim();
+      const query = emailVal || nameVal;
+      renderSavedAccountsList(query);
+    }
+
+    function renderSavedAccountsList(filterText = '') {
+      const container = document.getElementById('saved-accounts-list');
+      if (!container) return;
+
+      const q = filterText.trim().toLowerCase();
+      const matches = q
+        ? savedAccounts.filter(acc =>
+            acc.name.toLowerCase().includes(q) ||
+            acc.email.toLowerCase().includes(q)
+          )
+        : savedAccounts;
+
+      if (!matches.length) {
+        container.innerHTML = `<p class="text-xs text-stone-400 py-1">Nenhum cadastro salvo encontrado com "${filterText}". Preencha abaixo para criar e salvar.</p>`;
+        return;
+      }
+
+      container.innerHTML = matches.map((acc, idx) => `
+        <button type="button" onclick="selectSavedAccountByEmail('${acc.email.replace(/'/g, "\\'")}')" class="glass-btn w-full p-3.5 rounded-2xl flex items-center justify-between gap-3 text-left cursor-pointer">
+          <div class="flex items-center gap-3.5 overflow-hidden">
+            <img src="${acc.avatar}" alt="${acc.name}" class="w-10 h-10 rounded-full object-cover border border-amber-300/50 shrink-0" />
+            <div class="overflow-hidden">
+              <p class="text-sm font-semibold text-white truncate">${acc.name}</p>
+              <p class="text-xs text-stone-300 truncate">${acc.email}</p>
+            </div>
+          </div>
+          <span class="text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-400/15 text-amber-200 border border-amber-300/30 shrink-0">
+            Salvo
+          </span>
+        </button>
+      `).join('');
+    }
+
+    function selectSavedAccountByEmail(email) {
+      const found = savedAccounts.find(a => a.email.toLowerCase() === email.toLowerCase());
+      if (!found) return;
+      pendingGoogleUser = { ...found };
+      showGoogleConsentStep();
+    }
+
     function selectGoogleAccount(name, email, avatar, phone = '(11) 99412-8830', specialty = 'Bartender / Garçom', experience = '3 anos em bares e eventos') {
-      pendingGoogleUser = {
+      const existing = savedAccounts.find(a => a.email.toLowerCase() === email.toLowerCase());
+      pendingGoogleUser = existing ? { ...existing } : {
         name,
         email,
         avatar,
@@ -1255,36 +1624,54 @@
       document.getElementById('google-step-accounts').classList.remove('hidden');
     }
 
-    function confirmGooglePermission() {
-      workerUser = { ...pendingGoogleUser };
-      document.getElementById('google-auth-modal').classList.add('hidden');
+    function applyLoggedWorkerUI() {
+      if (!workerUser) return;
       document.getElementById('worker-google-cta').classList.add('hidden');
-
-      if (!adminUsers.some(u => u.contact === workerUser.email)) {
-        adminUsers.unshift({
-          id: Date.now(),
-          type: 'Prestador de Serviços',
-          name: workerUser.name,
-          contact: workerUser.email,
-          role: workerUser.specialty
-        });
-      }
-
       document.getElementById('worker-google-badge').innerHTML = `
         <div class="glass-btn px-3.5 py-1.5 rounded-full flex items-center gap-2.5 text-xs">
           <img src="${workerUser.avatar}" alt="${workerUser.name}" class="w-6 h-6 rounded-full object-cover border border-amber-300" />
           <div class="text-left">
             <span class="block font-semibold text-white leading-tight">${workerUser.name}</span>
-            <span class="block text-[10px] text-emerald-300 leading-tight">Vinculado ao Google</span>
+            <span class="block text-[10px] text-emerald-300 leading-tight">Login Salvo • Google</span>
           </div>
-          <button onclick="disconnectGoogle()" title="Desconectar" class="ml-1 text-stone-300 hover:text-red-300 cursor-pointer">
+          <button onclick="disconnectGoogle()" title="Sair da conta" class="ml-1 text-stone-300 hover:text-red-300 cursor-pointer">
             <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
           </button>
         </div>
       `;
       lucide.createIcons();
+    }
 
-      showToast(`Bem-vindo(a), ${workerUser.name}! Conta Google vinculada.`);
+    function confirmGooglePermission() {
+      workerUser = { ...pendingGoogleUser };
+      document.getElementById('google-auth-modal').classList.add('hidden');
+
+      // Salva ou atualiza o cadastro no sistema para próximos logins
+      const savedIdx = savedAccounts.findIndex(a => a.email.toLowerCase() === workerUser.email.toLowerCase());
+      if (savedIdx >= 0) {
+        savedAccounts[savedIdx] = { ...workerUser };
+      } else {
+        savedAccounts.unshift({ ...workerUser });
+      }
+
+      // Garante que o usuário apareça na pasta do Administrador
+      if (!adminUsers.some(u => (u.contact || '').toLowerCase() === workerUser.email.toLowerCase())) {
+        adminUsers.unshift({
+          id: Date.now(),
+          type: 'Prestador de Serviços',
+          name: workerUser.name,
+          contact: workerUser.email,
+          phone: workerUser.phone,
+          role: workerUser.specialty,
+          avatar: workerUser.avatar,
+          experience: workerUser.experience,
+          pix: workerUser.pix
+        });
+      }
+
+      saveSystemState();
+      applyLoggedWorkerUI();
+      showToast(`Bem-vindo(a), ${workerUser.name}! Seu login ficou salvo no sistema.`);
 
       if (pendingApplyJobId) {
         const jobId = pendingApplyJobId;
@@ -1298,7 +1685,10 @@
     }
 
     function disconnectGoogle() {
+      // Mantém savedAccounts e adminUsers salvos no sistema, apenas encerra a sessão atual
       workerUser = null;
+      saveSystemState();
+
       document.getElementById('worker-google-cta').classList.remove('hidden');
       document.getElementById('worker-google-badge').innerHTML = `
         <button onclick="openGoogleAuthModal()" class="glass-btn px-4 py-2 rounded-full flex items-center gap-2 text-xs font-medium text-white cursor-pointer">
@@ -1308,7 +1698,7 @@
       renderWorkerJobs();
       renderWorkerApps();
       renderWorkerProfile();
-      showToast('Conta Google desconectada.');
+      showToast('Você saiu da conta. Seu cadastro continua salvo para o próximo acesso.');
     }
 
     function switchWorkerTab(tab) {
@@ -1357,6 +1747,7 @@
           barReview: null,
           workerReview: null
         });
+        saveSystemState();
         updateWorkerAppsCount();
         showToast('Candidatura enviada! A taxa de R$ 3,50 só será cobrada se a contratação for confirmada.');
         renderWorkerJobs();
@@ -1374,6 +1765,21 @@
           app.workerPix = workerUser.pix;
         }
       });
+
+      const savedIdx = savedAccounts.findIndex(a => a.email.toLowerCase() === workerUser.email.toLowerCase());
+      if (savedIdx >= 0) {
+        savedAccounts[savedIdx] = { ...workerUser };
+      }
+
+      const adminIdx = adminUsers.findIndex(u => (u.contact || '').toLowerCase() === workerUser.email.toLowerCase());
+      if (adminIdx >= 0) {
+        adminUsers[adminIdx].phone = workerUser.phone;
+        adminUsers[adminIdx].role = workerUser.specialty;
+        adminUsers[adminIdx].experience = workerUser.experience;
+        adminUsers[adminIdx].pix = workerUser.pix;
+      }
+
+      saveSystemState();
     }
 
     function updateWorkerAppsCount() {
@@ -1517,7 +1923,7 @@
         container.innerHTML = `
           <div class="text-center py-6">
             <h3 class="font-display text-2xl font-bold text-white mb-2">Vincule sua Conta Google primeiro</h3>
-            <p class="text-xs sm:text-sm text-stone-300 mb-5">Com 1 clique puxamos seus dados básicos e liberamos sua ficha profissional.</p>
+            <p class="text-xs sm:text-sm text-stone-300 mb-5">Com 1 clique puxamos seus dados básicos e salvamos seu login no sistema.</p>
             <button onclick="openGoogleAuthModal()" class="glass-btn px-6 py-3.5 rounded-2xl text-sm font-semibold text-amber-200 border-amber-300/60 cursor-pointer">
               Conectar com Google
             </button>
@@ -1530,7 +1936,7 @@
         <div class="flex items-center gap-4 mb-6 pb-5 border-b border-white/15">
           <img src="${workerUser.avatar}" alt="${workerUser.name}" class="w-16 h-16 rounded-full object-cover border-2 border-amber-300" />
           <div>
-            <span class="text-[11px] uppercase tracking-wider text-emerald-300 font-semibold">Conta Google Vinculada</span>
+            <span class="text-[11px] uppercase tracking-wider text-emerald-300 font-semibold">Conta Google Salva no Sistema</span>
             <h3 class="font-display text-2xl font-bold text-white">${workerUser.name}</h3>
             <p class="text-xs text-stone-300">${workerUser.email}</p>
           </div>
@@ -1555,7 +1961,7 @@
           </div>
         </div>
 
-        <button onclick="syncWorkerProfileToApps(); showToast('Perfil profissional e chave PIX atualizados!');" class="glass-btn mt-6 px-6 py-3 rounded-xl text-sm font-medium text-amber-200 cursor-pointer">
+        <button onclick="syncWorkerProfileToApps(); showToast('Perfil profissional e chave PIX salvos no sistema!');" class="glass-btn mt-6 px-6 py-3 rounded-xl text-sm font-medium text-amber-200 cursor-pointer">
           Salvar Perfil
         </button>
       `;
@@ -1600,6 +2006,7 @@
         updateBarRatingHeader();
       }
 
+      saveSystemState();
       closeReviewModal();
       showToast('Avaliação registrada com sucesso!');
     }
@@ -1797,6 +2204,7 @@
         renderBarJobs();
       }
 
+      saveSystemState();
       closePixModal();
       showToast('Pagamento da taxa PIX confirmado!');
     }
