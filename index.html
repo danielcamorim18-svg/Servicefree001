@@ -6,6 +6,7 @@
   <title>Servicefree - Conectando Talentos a Vários Serviços</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -186,7 +187,7 @@
         <div class="mb-6">
           <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Anunciar Oportunidade de Serviço</h2>
           <p class="text-xs sm:text-sm text-stone-300 mt-1">
-            Comunicação centralizada no app para evitar negociações por fora. Após você marcar o candidato como <strong class="text-emerald-300">Apto</strong>, ao solicitar o <strong>Dossiê Completo</strong> é gerado o QR Code + Copia e Cola da taxa (<strong class="text-amber-300">R$ 8,50</strong> empresa / <strong class="text-amber-300">R$ 3,50</strong> prestador) para a chave PIX do dono (<strong class="text-amber-300">11972168719</strong>).
+            Comunicação centralizada no app para evitar negociações por fora. Após você marcar o candidato como <strong class="text-emerald-300">Apto</strong>, ao solicitar o <strong>Dossiê Completo</strong> é gerado o QR Code + Copia e Cola da taxa (<strong class="text-amber-300">R$ 8,50</strong> empresa / <strong class="text-amber-300">R$ 3,50</strong> prestador).
           </p>
         </div>
 
@@ -433,7 +434,7 @@
           <span class="inline-block text-[11px] uppercase tracking-widest text-amber-300 font-semibold mb-1">Cadastro Instantâneo</span>
           <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Entre com sua Conta Google</h2>
           <p class="text-xs sm:text-sm text-stone-200/90 mt-1 max-w-xl">
-            Seu login e histórico ficam salvos na área de <strong>Salvos</strong> toda vez que sair e entrar. Ao solicitar o <strong>Dossiê Completo</strong> após aprovação como <strong class="text-emerald-300">Apto</strong>, é gerado o QR Code + Copia e Cola da taxa (<strong class="text-amber-300">R$ 3,50</strong>) para a chave PIX <strong class="text-amber-300">11972168719</strong>.
+            Seu login e histórico ficam salvos na área de <strong>Salvos</strong> toda vez que sair e entrar. Ao solicitar o <strong>Dossiê Completo</strong> após aprovação como <strong class="text-emerald-300">Apto</strong>, é gerado o QR Code + Copia e Cola da taxa (<strong class="text-amber-300">R$ 3,50</strong>).
           </p>
         </div>
 
@@ -571,7 +572,7 @@
 
       <div class="glass-btn px-3.5 py-1.5 rounded-full text-xs text-emerald-300 flex items-center gap-1.5">
         <i data-lucide="shield-check" class="w-4 h-4"></i>
-        <span>PIX Dono (Celular): (11) 97216-8719</span>
+        <span>PIX Recebimento Ativo</span>
       </div>
     </div>
 
@@ -697,28 +698,22 @@
       </button>
 
       <span class="inline-block text-[11px] uppercase tracking-widest text-emerald-300 font-semibold mb-1">
-        Dossiê Completo &bull; QR Code PIX (Todos os Bancos)
+        Dossiê Completo &bull; QR Code PIX
       </span>
       <h3 id="pix-modal-title" class="font-display text-2xl font-bold text-white">Taxa da Ponte</h3>
       <p id="pix-modal-subtitle" class="text-xs text-stone-300 mt-1 mb-4"></p>
 
       <div class="bg-white p-4 rounded-2xl w-fit mx-auto mb-4 shadow-xl">
-        <canvas id="pix-qr-canvas" width="210" height="210"></canvas>
+        <canvas id="pix-qr-canvas" width="220" height="220"></canvas>
       </div>
 
-      <div class="glass-btn rounded-2xl p-3.5 text-left text-xs space-y-1.5 mb-4">
-        <div class="flex justify-between">
-          <span class="text-stone-300">Chave PIX do Dono (Celular):</span>
-          <strong class="text-amber-300 font-mono">11972168719</strong>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-stone-300">Valor da Taxa:</span>
-          <strong id="pix-modal-amount-label" class="text-emerald-300 text-sm">R$ 3,50</strong>
-        </div>
+      <div class="glass-btn rounded-2xl p-3.5 text-xs flex items-center justify-between mb-4">
+        <span class="text-stone-300">Valor da Taxa:</span>
+        <strong id="pix-modal-amount-label" class="text-emerald-300 text-sm">R$ 3,50</strong>
       </div>
 
       <div class="text-left mb-4">
-        <label class="block text-[11px] uppercase tracking-wider text-amber-200/90 mb-1">PIX Copia e Cola (Padrão Banco Central / EMV)</label>
+        <label class="block text-[11px] uppercase tracking-wider text-amber-200/90 mb-1">PIX Copia e Cola</label>
         <textarea id="pix-emv-payload" rows="3" readonly class="glass-input w-full rounded-xl p-2.5 text-[11px] font-mono text-amber-100"></textarea>
       </div>
 
@@ -859,7 +854,8 @@
 
     const STORAGE_KEY = 'servicefree_system_state_v5';
     const ADMIN_PASS = '7512';
-    const PIX_KEY_PHONE_BACEN = '11972168719';
+    // Chave PIX celular no padrão Bacen (+55 + DDD + número)
+    const PIX_KEY_PHONE_BACEN = '+5511972168719';
     const WORKER_FEE = 3.50;
     const BAR_FEE = 8.50;
 
@@ -1387,7 +1383,7 @@
             <span class="text-stone-400 block text-[10px] uppercase mb-1.5">Avaliações na Pasta (${reviews.length})</span>
             ${reviews.length ? reviews.map(r => `
               <p class="text-stone-200 py-1">★ <strong class="text-amber-300">${r.stars}/5</strong> — "${r.comment}"</p>
-            `).join('') : `<p class="text-stone-400">enhuma avaliação registrada ainda.</p>`}
+            `).join('') : `<p class="text-stone-400">Nenhuma avaliação registrada ainda.</p>`}
           </div>
         </div>
 
@@ -1636,7 +1632,7 @@
       document.getElementById('worker-details-modal').classList.add('hidden');
     }
 
-    // ==================== SOLICITAR / ABRIR DOSSIÊ COMPLETO -> QR CODE PIX PARA CHAVE 11972168719 ====================
+    // ==================== SOLICITAR / ABRIR DOSSIÊ COMPLETO -> QR CODE PIX ====================
     function requestOrOpenDossier(appId, requesterType) {
       const app = applications.find(a => a.id === appId);
       if (!app) return;
@@ -1652,7 +1648,7 @@
       if (!alreadyPaid) {
         recordUserLog(
           requesterType === 'bar' ? 'Empresa' : (workerUser ? workerUser.name : app.workerName),
-          `Solicitou Dossiê Completo de ${app.workerName} (QR Code PIX R$ ${feeAmount.toFixed(2).replace('.', ',')} para 11972168719)`
+          `Solicitou Dossiê Completo de ${app.workerName} (QR Code PIX R$ ${feeAmount.toFixed(2).replace('.', ',')})`
         );
         openPixModal(appId, requesterType, feeAmount);
         return;
@@ -1689,7 +1685,7 @@
             </div>
             <h3 class="font-display text-2xl font-bold text-white">Dossiê Completo Aguardando Taxas</h3>
             <p class="text-xs text-stone-300 max-w-sm mx-auto">
-              Para evitar negociações por fora, o endereço exato, horários finais e telefone são liberados quando o candidato é <strong class="text-emerald-300">Apto</strong> e <strong>ambas as taxas</strong> são pagas via PIX para a chave <strong class="text-amber-300">11972168719</strong>.
+              Para evitar negociações por fora, o endereço exato, horários finais e telefone são liberados quando o candidato é <strong class="text-emerald-300">Apto</strong> e <strong>ambas as taxas</strong> são pagas via PIX.
             </p>
             <div class="glass-btn rounded-2xl p-3.5 text-left text-xs space-y-1.5 max-w-sm mx-auto">
               <div class="flex justify-between">
@@ -2198,7 +2194,6 @@
       showToast('Vaga encerrada.');
     }
 
-    // Quando clica em Não Apto: marca como Não Apto e remove/oculta da lista de candidatos da vaga
     function setCandidateAptitude(appId, aptitudeStatus) {
       const app = applications.find(a => a.id === appId);
       if (!app) return;
@@ -3198,16 +3193,17 @@
         `).join('') + `</div>`;
     }
 
-    // ==================== GERADOR QR CODE PIX UNIVERSAL (TODOS OS BANCOS / EMV + CRC16) ====================
+    // ==================== GERADOR PIX OFICIAL BACEN (EMV + CRC16) + QR CODE ISO/IEC 18004 ====================
     function tlv(id, value) {
-      const len = String(value.length).padStart(2, '0');
-      return `${id}${len}${value}`;
+      const str = String(value);
+      const len = String(str.length).padStart(2, '0');
+      return `${id}${len}${str}`;
     }
 
     function crc16Ccitt(str) {
       let crc = 0xFFFF;
       for (let i = 0; i < str.length; i++) {
-        crc ^= str.charCodeAt(i) << 8;
+        crc ^= (str.charCodeAt(i) & 0xFF) << 8;
         for (let bit = 0; bit < 8; bit++) {
           if ((crc & 0x8000) !== 0) {
             crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
@@ -3219,9 +3215,21 @@
       return crc.toString(16).toUpperCase().padStart(4, '0');
     }
 
+    function normalizePixPhoneKey(rawKey) {
+      const digits = String(rawKey || '').replace(/\D/g, '');
+      if (digits.startsWith('55') && (digits.length === 12 || digits.length === 13)) {
+        return `+${digits}`;
+      }
+      if (digits.length === 10 || digits.length === 11) {
+        return `+55${digits}`;
+      }
+      return String(rawKey || '').trim();
+    }
+
     function buildBacenPixPayload(pixKey, amountNumber, merchantName, merchantCity, txid) {
+      const formattedKey = normalizePixPhoneKey(pixKey);
       const gui = tlv('00', 'br.gov.bcb.pix');
-      const key = tlv('01', pixKey);
+      const key = tlv('01', formattedKey);
       const merchantAccountInfo = tlv('26', gui + key);
 
       const payloadFormatIndicator = tlv('00', '01');
@@ -3230,19 +3238,24 @@
       const transactionAmount = tlv('54', Number(amountNumber).toFixed(2));
       const countryCode = tlv('58', 'BR');
 
-      const cleanName = merchantName
+      const cleanName = String(merchantName || 'SERVICEFREE')
         .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .replace(/[^A-Za-z0-9 ]/g, '')
+        .trim()
         .substring(0, 25).toUpperCase() || 'SERVICEFREE';
 
-      const cleanCity = merchantCity
+      const cleanCity = String(merchantCity || 'SAO PAULO')
         .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .replace(/[^A-Za-z0-9 ]/g, '')
+        .trim()
         .substring(0, 15).toUpperCase() || 'SAO PAULO';
 
       const mName = tlv('59', cleanName);
       const mCity = tlv('60', cleanCity);
-      const additionalData = tlv('62', tlv('05', txid.substring(0, 25)));
+
+      // TXID válido EMV PIX: alfanumérico até 25 caracteres (ou *** quando vazio)
+      const safeTxid = String(txid || '***').replace(/[^A-Za-z0-9*]/g, '').substring(0, 25) || '***';
+      const additionalData = tlv('62', tlv('05', safeTxid));
 
       const partialPayload =
         payloadFormatIndicator +
@@ -3260,115 +3273,24 @@
       return partialPayload + crc;
     }
 
-    // Gera QR Code (Model 2 / Versão 2 - 25x25) legível por leitores e câmeras bancárias
-    function drawUniversalQrCanvas(payload) {
+    function renderPixQrCode(payload) {
       const canvas = document.getElementById('pix-qr-canvas');
-      const ctx = canvas.getContext('2d');
-      const size = canvas.width;
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, size, size);
+      if (!canvas) return;
 
-      const modules = 25;
-      const quietZone = 14;
-      const cellSize = Math.floor((size - quietZone * 2) / modules);
-      const origin = Math.floor((size - cellSize * modules) / 2);
-
-      const matrix = Array.from({ length: modules }, () => Array(modules).fill(null));
-      const reserved = Array.from({ length: modules }, () => Array(modules).fill(false));
-
-      function placeFinder(r0, c0) {
-        for (let r = -1; r <= 7; r++) {
-          for (let c = -1; c <= 7; c++) {
-            const rr = r0 + r;
-            const cc = c0 + c;
-            if (rr < 0 || rr >= modules || cc < 0 || cc >= modules) continue;
-            const onBorder = r === 0 || r === 6 || c === 0 || c === 6;
-            const inCenter = r >= 2 && r <= 4 && c >= 2 && c <= 4;
-            const isSep = r === -1 || r === 7 || c === -1 || c === 7;
-            matrix[rr][cc] = isSep ? false : (onBorder || inCenter);
-            reserved[rr][cc] = true;
+      if (window.QRCode && typeof window.QRCode.toCanvas === 'function') {
+        window.QRCode.toCanvas(canvas, payload, {
+          width: 220,
+          margin: 2,
+          errorCorrectionLevel: 'M',
+          color: {
+            dark: '#0f172a',
+            light: '#ffffff'
           }
-        }
-      }
-
-      placeFinder(0, 0);
-      placeFinder(0, modules - 7);
-      placeFinder(modules - 7, 0);
-
-      // Alignment pattern em (18, 18) para QR Version 2 (25x25)
-      const ar = 18, ac = 18;
-      for (let r = -2; r <= 2; r++) {
-        for (let c = -2; c <= 2; c++) {
-          const rr = ar + r, cc = ac + c;
-          const dark = Math.max(Math.abs(r), Math.abs(c)) === 2 || (r === 0 && c === 0);
-          matrix[rr][cc] = dark;
-          reserved[rr][cc] = true;
-        }
-      }
-
-      // Timing patterns
-      for (let i = 8; i < modules - 8; i++) {
-        const dark = i % 2 === 0;
-        matrix[6][i] = dark;
-        reserved[6][i] = true;
-        matrix[i][6] = dark;
-        reserved[i][6] = true;
-      }
-
-      // Dark module fixo em (4*2 + 9, 8) = (17, 8)
-      matrix[17][8] = true;
-      reserved[17][8] = true;
-
-      // Reserva áreas de format info
-      for (let i = 0; i < 9; i++) {
-        if (i < modules) {
-          reserved[8][i] = true;
-          reserved[i][8] = true;
-        }
-      }
-      for (let i = 0; i < 8; i++) {
-        reserved[8][modules - 1 - i] = true;
-        reserved[modules - 1 - i][8] = true;
-      }
-
-      // Codifica bytes do payload em bitstream com máscara 0 ((r + c) % 2 === 0)
-      const dataBits = [];
-      for (let i = 0; i < payload.length; i++) {
-        const code = payload.charCodeAt(i) & 0xFF;
-        for (let b = 7; b >= 0; b--) {
-          dataBits.push(((code >> b) & 1) === 1);
-        }
-      }
-      while (dataBits.length < 280) {
-        dataBits.push(((dataBits.length * 13 + 7) % 3) === 0);
-      }
-
-      let bitIdx = 0;
-      let dirUp = true;
-      for (let col = modules - 1; col >= 1; col -= 2) {
-        if (col === 6) col = 5;
-        for (let step = 0; step < modules; step++) {
-          const row = dirUp ? (modules - 1 - step) : step;
-          for (let cOffset = 0; cOffset < 2; cOffset++) {
-            const c = col - cOffset;
-            if (!reserved[row][c]) {
-              const rawBit = dataBits[bitIdx % dataBits.length];
-              const maskInvert = ((row + c) % 2 === 0);
-              matrix[row][c] = maskInvert ? !rawBit : rawBit;
-              bitIdx++;
-            }
+        }, function(err) {
+          if (err) {
+            console.error('Erro ao gerar QR Code:', err);
           }
-        }
-        dirUp = !dirUp;
-      }
-
-      ctx.fillStyle = '#0f172a';
-      for (let r = 0; r < modules; r++) {
-        for (let c = 0; c < modules; c++) {
-          if (matrix[r][c]) {
-            ctx.fillRect(origin + c * cellSize, origin + r * cellSize, cellSize, cellSize);
-          }
-        }
+        });
       }
     }
 
@@ -3382,7 +3304,7 @@
       }
 
       const job = jobs.find(j => j.id === app.jobId);
-      const txid = `SF${payerType === 'worker' ? 'CAND' : 'BAR'}${appId}`.substring(0, 20);
+      const txid = `SF${payerType === 'worker' ? 'CAND' : 'BAR'}${String(appId).slice(-6)}`;
       const payload = buildBacenPixPayload(PIX_KEY_PHONE_BACEN, amount, 'SERVICEFREE', 'SAO PAULO', txid);
 
       activePixContext = { appId, payerType, amount, payload };
@@ -3400,7 +3322,7 @@
         ? `<i data-lucide="check-circle-2" class="w-4 h-4"></i><span>Pagamento Confirmado</span>`
         : `<i data-lucide="check-check" class="w-4 h-4"></i><span>Já Paguei</span>`;
 
-      drawUniversalQrCanvas(payload);
+      renderPixQrCode(payload);
       document.getElementById('pix-modal').classList.remove('hidden');
       lucide.createIcons();
     }
@@ -3410,11 +3332,28 @@
       activePixContext = null;
     }
 
-    function copyPixPayload() {
+    async function copyPixPayload() {
       const textarea = document.getElementById('pix-emv-payload');
-      textarea.select();
-      navigator.clipboard?.writeText(textarea.value);
-      recordUserLog(workerUser ? workerUser.name : 'Usuário', 'Copiou código PIX Copia e Cola (chave 11972168719)');
+      const code = textarea.value.trim();
+      if (!code) return;
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(code);
+        } else {
+          textarea.focus();
+          textarea.select();
+          textarea.setSelectionRange(0, code.length);
+          document.execCommand('copy');
+        }
+      } catch (err) {
+        textarea.focus();
+        textarea.select();
+        textarea.setSelectionRange(0, code.length);
+        document.execCommand('copy');
+      }
+
+      recordUserLog(workerUser ? workerUser.name : 'Usuário', 'Copiou código PIX Copia e Cola');
       showToast('Código PIX Copia e Cola copiado!');
     }
 
@@ -3431,7 +3370,7 @@
 
       recordUserLog(
         activePixContext.payerType === 'worker' ? app.workerName : 'Empresa',
-        `Confirmou pagamento PIX de R$ ${activePixContext.amount.toFixed(2).replace('.', ',')} para chave 11972168719`
+        `Confirmou pagamento PIX de R$ ${activePixContext.amount.toFixed(2).replace('.', ',')}`
       );
       saveSystemState();
       const bothPaid = app.workerFeePaid && app.barFeePaid;
