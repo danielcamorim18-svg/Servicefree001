@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Servicefree - Conectando Talentos a Vários Serviços</title>
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#d49b35" />
+  <link rel="apple-touch-icon" href="./ícone-512.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
@@ -3253,7 +3258,6 @@
       const mName = tlv('59', cleanName);
       const mCity = tlv('60', cleanCity);
 
-      // TXID válido EMV PIX: alfanumérico até 25 caracteres (ou *** quando vazio)
       const safeTxid = String(txid || '***').replace(/[^A-Za-z0-9*]/g, '').substring(0, 25) || '***';
       const additionalData = tlv('62', tlv('05', safeTxid));
 
@@ -3392,6 +3396,14 @@
       toast.classList.remove('hidden');
       clearTimeout(window.toastTimer);
       window.toastTimer = setTimeout(() => toast.classList.add('hidden'), 3400);
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.warn('Falha ao registrar Service Worker:', err);
+        });
+      });
     }
   </script>
 </body>
