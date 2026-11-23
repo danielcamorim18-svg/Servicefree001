@@ -180,161 +180,188 @@
       </button>
     </div>
 
-    <!-- ABA 1: PUBLICAR NOVA VAGA -->
-    <div id="bar-panel-publish" class="w-full max-w-4xl mx-auto glass-panel rounded-3xl p-6 sm:p-8 fade-in mb-8">
-      <div class="mb-6">
-        <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Anunciar Oportunidade de Serviço</h2>
-        <p class="text-xs sm:text-sm text-stone-300 mt-1">Escolha o segmento e escreva ou selecione a vaga anunciada para ver quem já demonstrou interesse antecipado. Taxa do contratante na contratação confirmada: <strong class="text-amber-300">R$ 8,50</strong>.</p>
+    <!-- ABA 1: PUBLICAR NOVA VAGA + ÁREA DE RASCUNHO COM INTERESSADOS ANTECIPADOS -->
+    <div id="bar-panel-publish" class="w-full max-w-4xl mx-auto space-y-5 fade-in mb-8">
+      <div class="glass-panel rounded-3xl p-6 sm:p-8">
+        <div class="mb-6">
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Anunciar Oportunidade de Serviço</h2>
+          <p class="text-xs sm:text-sm text-stone-300 mt-1">
+            Comunicação centralizada no app para evitar negociações por fora. Após você marcar o candidato como <strong class="text-emerald-300">Apto</strong>, o sistema libera a taxa da ponte (<strong class="text-amber-300">R$ 8,50</strong> empresa / <strong class="text-amber-300">R$ 3,50</strong> prestador) e, após ambos pagarem, abre o <strong>Dossiê Completo</strong> (endereço exato, horários finais e telefone).
+          </p>
+        </div>
+
+        <form id="form-new-job" onsubmit="publishJob(event)" class="space-y-5">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Nome da Empresa / Local *</label>
+              <input type="text" id="job-venue" value="Oak & Barrel Lounge Bar" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Segmento do Serviço *</label>
+              <select id="job-segment" onchange="onAnnouncedRoleChange()" class="glass-input w-full rounded-xl px-4 py-3 text-sm">
+                <option value="Gastronomia & Bares">Gastronomia &amp; Bares</option>
+                <option value="Barbearia & Beleza">Barbearia &amp; Beleza</option>
+                <option value="Casa & Limpeza">Casa &amp; Limpeza</option>
+                <option value="Manutenção & Elétrica">Manutenção &amp; Elétrica</option>
+                <option value="Entregas & Logística">Entregas &amp; Logística</option>
+                <option value="Eventos & Apoio">Eventos &amp; Apoio</option>
+                <option value="Vendas & Atendimento">Vendas &amp; Atendimento</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Vaga / Serviço Anunciado *</label>
+              <input type="text" id="job-role" list="announced-role-suggestions" value="Garçom / Garçonete" oninput="onAnnouncedRoleChange()" onchange="onAnnouncedRoleChange()" placeholder="Ex: Barbeiro, Eletricista, Diarista, Bartender..." required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+              <datalist id="announced-role-suggestions">
+                <option value="Garçom / Garçonete"></option>
+                <option value="Bartender / Barman"></option>
+                <option value="Cozinheiro(a) / Chapeiro"></option>
+                <option value="Barbeiro / Cabeleireiro(a)"></option>
+                <option value="Manicure / Esteticista"></option>
+                <option value="Faxineiro(a) / Diarista"></option>
+                <option value="Eletricista / Encanador"></option>
+                <option value="Motorista / Entregador"></option>
+                <option value="Promotor(a) / Recepcionista"></option>
+                <option value="Ajudante Geral / Eventos"></option>
+              </datalist>
+            </div>
+          </div>
+
+          <!-- Opções rápidas de vagas de vários segmentos para anunciar -->
+          <div>
+            <span class="block text-[11px] uppercase tracking-wider text-stone-300 mb-2">Opções rápidas de vagas de vários segmentos:</span>
+            <div id="bar-quick-roles" class="flex flex-wrap gap-2"></div>
+          </div>
+
+          <!-- Profissionais que já demonstraram interesse nesta vaga antes mesmo da publicação -->
+          <div id="bar-interested-preview" class="glass-btn rounded-2xl p-4 border-amber-300/40"></div>
+
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Endereço Completo (liberado no Dossiê após pagamento das taxas) *</label>
+            <input type="text" id="job-location" placeholder="Ex: Rua Augusta, 1420 - Consolação" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+
+          <!-- Foto do Local / Serviço -->
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Foto do Local ou Referência do Serviço</label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+              <div class="sm:col-span-2 flex flex-col gap-2">
+                <label class="glass-btn rounded-xl px-4 py-3 text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer text-amber-100">
+                  <i data-lucide="camera" class="w-4 h-4 text-amber-300"></i>
+                  <span>Enviar foto real do local</span>
+                  <input type="file" accept="image/*" onchange="handlePhotoUpload(event)" class="hidden" />
+                </label>
+                <button type="button" onclick="cycleSamplePhoto()" class="text-left text-xs text-stone-300 hover:text-amber-300 underline cursor-pointer">
+                  Ou alternar foto ilustrativa
+                </button>
+              </div>
+              <div class="relative h-24 rounded-xl overflow-hidden border border-white/25">
+                <img id="job-photo-preview" src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80" alt="Prévia do local" class="w-full h-full object-cover" />
+                <span class="absolute bottom-1 right-1 bg-black/70 text-[10px] px-2 py-0.5 rounded text-stone-200">Prévia</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">O que o profissional vai fazer na função *</label>
+            <textarea id="job-description" rows="3" required class="glass-input w-full rounded-xl px-4 py-3 text-sm">Atendimento às mesas do salão principal, anotação de pedidos, entrega de bebidas e pratos, organização e fechamento da praça.</textarea>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Modalidade de Pagamento *</label>
+              <select id="job-pay-type" class="glass-input w-full rounded-xl px-4 py-3 text-sm">
+                <option value="Por Diária / Turno">Por Diária / Turno</option>
+                <option value="Por Serviço / Demanda">Por Serviço / Demanda</option>
+                <option value="Semanal">Semanal</option>
+                <option value="Por Hora">Por Hora</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Valor a Pagar (R$) *</label>
+              <input type="number" id="job-pay-amount" placeholder="180" value="180" min="1" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Quando recebe *</label>
+              <select id="job-pay-when" class="glass-input w-full rounded-xl px-4 py-3 text-sm">
+                <option value="PIX ao final do serviço">PIX ao final do serviço</option>
+                <option value="Dinheiro no encerramento">Dinheiro no encerramento</option>
+                <option value="Toda segunda-feira via PIX">Toda segunda-feira via PIX</option>
+                <option value="Em até 24h após conclusão">Em até 24h após conclusão</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Data / Dias *</label>
+              <input type="text" id="job-date" placeholder="Ex: Sexta e Sábado" value="Sexta e Sábado" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Horário / Período Final *</label>
+              <input type="text" id="job-hours" placeholder="Ex: 18:00 às 02:00" value="18:00 às 02:00" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Vagas Disponíveis *</label>
+              <input type="number" id="job-spots" value="2" min="1" max="30" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-2">Benefícios &amp; Observações</label>
+            <div class="flex flex-wrap gap-2.5 text-xs">
+              <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" value="Alimentação no local" checked class="accent-amber-400 job-benefit" />
+                <span>Alimentação no local</span>
+              </label>
+              <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" value="Comissão / Gorjetas" checked class="accent-amber-400 job-benefit" />
+                <span>Comissão / Gorjetas</span>
+              </label>
+              <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" value="Auxílio Transporte" class="accent-amber-400 job-benefit" />
+                <span>Auxílio Transporte</span>
+              </label>
+              <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" value="Materiais / EPI fornecidos" checked class="accent-amber-400 job-benefit" />
+                <span>Materiais / EPI fornecidos</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="pt-2 flex flex-col sm:flex-row gap-3">
+            <button type="button" onclick="saveJobDraft()" class="glass-btn sm:w-2/5 py-4 rounded-2xl text-sm font-semibold text-amber-100 border-amber-300/40 hover:bg-white/15 flex items-center justify-center gap-2 cursor-pointer">
+              <i data-lucide="file-text" class="w-4 h-4 text-amber-300"></i>
+              <span>Salvar em Rascunho</span>
+            </button>
+            <button type="submit" class="glass-btn sm:w-3/5 py-4 rounded-2xl text-base font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 flex items-center justify-center gap-2 cursor-pointer">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Publicar Vaga Agora</span>
+            </button>
+          </div>
+        </form>
       </div>
 
-      <form id="form-new-job" onsubmit="publishJob(event)" class="space-y-5">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <!-- ÁREA EM RASCUNHO: OPÇÃO PARA RESTAURANTES/NEGÓCIOS VEREM QUEM SE INTERESSOU ANTECIPADO -->
+      <div id="bar-draft-section" class="glass-panel rounded-3xl p-6 sm:p-7 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Nome da Empresa / Local *</label>
-            <input type="text" id="job-venue" value="Oak & Barrel Lounge Bar" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+            <span class="text-[11px] uppercase tracking-wider text-amber-300 font-semibold">Área em Rascunho</span>
+            <h3 class="font-display text-xl sm:text-2xl font-bold text-white">Rascunhos de Vagas &amp; Interessados Antecipados</h3>
+            <p class="text-xs text-stone-300 mt-0.5">Consulte quem já demonstrou interesse antecipado antes de publicar ou abrir a vaga.</p>
           </div>
-          <div>
-            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Segmento do Serviço *</label>
-            <select id="job-segment" onchange="onAnnouncedRoleChange()" class="glass-input w-full rounded-xl px-4 py-3 text-sm">
-              <option value="Gastronomia & Bares">Gastronomia &amp; Bares</option>
-              <option value="Barbearia & Beleza">Barbearia &amp; Beleza</option>
-              <option value="Casa & Limpeza">Casa &amp; Limpeza</option>
-              <option value="Manutenção & Elétrica">Manutenção &amp; Elétrica</option>
-              <option value="Entregas & Logística">Entregas &amp; Logística</option>
-              <option value="Eventos & Apoio">Eventos &amp; Apoio</option>
-              <option value="Vendas & Atendimento">Vendas &amp; Atendimento</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Vaga / Serviço Anunciado *</label>
-            <input type="text" id="job-role" list="announced-role-suggestions" value="Garçom / Garçonete" oninput="onAnnouncedRoleChange()" onchange="onAnnouncedRoleChange()" placeholder="Ex: Barbeiro, Eletricista, Diarista, Bartender..." required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
-            <datalist id="announced-role-suggestions">
-              <option value="Garçom / Garçonete"></option>
-              <option value="Bartender / Barman"></option>
-              <option value="Cozinheiro(a) / Chapeiro"></option>
-              <option value="Barbeiro / Cabeleireiro(a)"></option>
-              <option value="Manicure / Esteticista"></option>
-              <option value="Faxineiro(a) / Diarista"></option>
-              <option value="Eletricista / Encanador"></option>
-              <option value="Motorista / Entregador"></option>
-              <option value="Promotor(a) / Recepcionista"></option>
-              <option value="Ajudante Geral / Eventos"></option>
-            </datalist>
-          </div>
-        </div>
-
-        <!-- Opções rápidas de vagas de vários segmentos para anunciar -->
-        <div>
-          <span class="block text-[11px] uppercase tracking-wider text-stone-300 mb-2">Opções rápidas de vagas de vários segmentos:</span>
-          <div id="bar-quick-roles" class="flex flex-wrap gap-2"></div>
-        </div>
-
-        <!-- Profissionais que já demonstraram interesse nesta vaga antes mesmo da publicação -->
-        <div id="bar-interested-preview" class="glass-btn rounded-2xl p-4 border-amber-300/40"></div>
-
-        <div>
-          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Endereço / Região do Serviço *</label>
-          <input type="text" id="job-location" placeholder="Ex: Rua Augusta, 1420 - Consolação" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
-        </div>
-
-        <!-- Foto do Local / Serviço -->
-        <div>
-          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Foto do Local ou Referência do Serviço</label>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
-            <div class="sm:col-span-2 flex flex-col gap-2">
-              <label class="glass-btn rounded-xl px-4 py-3 text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer text-amber-100">
-                <i data-lucide="camera" class="w-4 h-4 text-amber-300"></i>
-                <span>Enviar foto real do local</span>
-                <input type="file" accept="image/*" onchange="handlePhotoUpload(event)" class="hidden" />
-              </label>
-              <button type="button" onclick="cycleSamplePhoto()" class="text-left text-xs text-stone-300 hover:text-amber-300 underline cursor-pointer">
-                Ou alternar foto ilustrativa
-              </button>
-            </div>
-            <div class="relative h-24 rounded-xl overflow-hidden border border-white/25">
-              <img id="job-photo-preview" src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80" alt="Prévia do local" class="w-full h-full object-cover" />
-              <span class="absolute bottom-1 right-1 bg-black/70 text-[10px] px-2 py-0.5 rounded text-stone-200">Prévia</span>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">O que o profissional vai fazer na função *</label>
-          <textarea id="job-description" rows="3" required class="glass-input w-full rounded-xl px-4 py-3 text-sm">Atendimento às mesas do salão principal, anotação de pedidos, entrega de bebidas e pratos, organização e fechamento da praça.</textarea>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Modalidade de Pagamento *</label>
-            <select id="job-pay-type" class="glass-input w-full rounded-xl px-4 py-3 text-sm">
-              <option value="Por Diária / Turno">Por Diária / Turno</option>
-              <option value="Por Serviço / Demanda">Por Serviço / Demanda</option>
-              <option value="Semanal">Semanal</option>
-              <option value="Por Hora">Por Hora</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Valor a Pagar (R$) *</label>
-            <input type="number" id="job-pay-amount" placeholder="180" value="180" min="1" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
-          </div>
-          <div>
-            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Quando recebe *</label>
-            <select id="job-pay-when" class="glass-input w-full rounded-xl px-4 py-3 text-sm">
-              <option value="PIX ao final do serviço">PIX ao final do serviço</option>
-              <option value="Dinheiro no encerramento">Dinheiro no encerramento</option>
-              <option value="Toda segunda-feira via PIX">Toda segunda-feira via PIX</option>
-              <option value="Em até 24h após conclusão">Em até 24h após conclusão</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Data / Dias *</label>
-            <input type="text" id="job-date" placeholder="Ex: Sexta e Sábado" value="Sexta e Sábado" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
-          </div>
-          <div>
-            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Horário / Período *</label>
-            <input type="text" id="job-hours" placeholder="Ex: 18:00 às 02:00" value="18:00 às 02:00" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
-          </div>
-          <div>
-            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Vagas Disponíveis *</label>
-            <input type="number" id="job-spots" value="2" min="1" max="30" required class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-2">Benefícios &amp; Observações</label>
-          <div class="flex flex-wrap gap-2.5 text-xs">
-            <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" value="Alimentação no local" checked class="accent-amber-400 job-benefit" />
-              <span>Alimentação no local</span>
-            </label>
-            <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" value="Comissão / Gorjetas" checked class="accent-amber-400 job-benefit" />
-              <span>Comissão / Gorjetas</span>
-            </label>
-            <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" value="Auxílio Transporte" class="accent-amber-400 job-benefit" />
-              <span>Auxílio Transporte</span>
-            </label>
-            <label class="glass-btn px-3.5 py-2 rounded-full flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" value="Materiais / EPI fornecidos" checked class="accent-amber-400 job-benefit" />
-              <span>Materiais / EPI fornecidos</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="pt-2">
-          <button type="submit" class="glass-btn w-full py-4 rounded-2xl text-base font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 flex items-center justify-center gap-2 cursor-pointer">
-            <i data-lucide="send" class="w-4 h-4"></i>
-            <span>Publicar Vaga Agora</span>
+          <button type="button" onclick="toggleDraftAnticipatedList()" class="glass-btn px-4 py-2.5 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 flex items-center gap-2 cursor-pointer">
+            <i data-lucide="users" class="w-4 h-4"></i>
+            <span id="btn-toggle-draft-interested">Ver Quem Se Interessou Antecipado (<span id="draft-interested-count">0</span>)</span>
           </button>
         </div>
-      </form>
+
+        <div id="bar-draft-interested-panel" class="hidden glass-btn rounded-2xl p-4 border-emerald-400/40 space-y-2.5"></div>
+
+        <div id="bar-drafts-list" class="space-y-3"></div>
+      </div>
     </div>
 
-    <!-- ABA 2: MINHAS VAGAS + CANDIDATOS + INTERESSADOS ANTECIPADOS -->
+    <!-- ABA 2: MINHAS VAGAS + CANDIDATOS (COMUNICAÇÃO NO APP + FICHA TÉCNICA + APTO/NÃO APTO + TAXA + DOSSIÊ) -->
     <div id="bar-panel-myjobs" class="hidden w-full max-w-4xl mx-auto space-y-4 fade-in mb-8">
       <div id="bar-jobs-list" class="space-y-4"></div>
       <div id="bar-all-interests-box" class="glass-panel rounded-3xl p-5 sm:p-6"></div>
@@ -354,8 +381,8 @@
           <input type="text" value="Multissegmento / Serviços & Gastronomia" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
         </div>
         <div>
-          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">WhatsApp do Responsável</label>
-          <input type="text" value="(11) 99842-1190" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
+          <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">WhatsApp do Responsável (liberado no Dossiê)</label>
+          <input type="text" id="profile-bar-phone" value="(11) 99842-1190" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
         </div>
         <div>
           <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">CNPJ / CPF (Opcional)</label>
@@ -406,7 +433,7 @@
           <span class="inline-block text-[11px] uppercase tracking-widest text-amber-300 font-semibold mb-1">Cadastro Instantâneo</span>
           <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Entre com sua Conta Google</h2>
           <p class="text-xs sm:text-sm text-stone-200/90 mt-1 max-w-xl">
-            Puxamos automaticamente seu nome, foto e e-mail com sua permissão. Taxa de <strong class="text-amber-300">R$ 3,50</strong> só é cobrada após a confirmação da contratação.
+            Comunicação segura pelo app. Taxa de <strong class="text-amber-300">R$ 3,50</strong> só é liberada após o contratante aprovar que você está <strong class="text-emerald-300">Apto</strong> — e após ambos pagarem, o sistema libera o <strong>Dossiê Completo</strong>.
           </p>
         </div>
 
@@ -496,7 +523,7 @@
       <div id="worker-jobs-list" class="space-y-4"></div>
     </div>
 
-    <!-- ABA 2 DO PRESTADOR: MINHAS CANDIDATURAS & INTERESSES ANTECIPADOS -->
+    <!-- ABA 2 DO PRESTADOR: MINHAS CANDIDATURAS + COMUNICAÇÃO NO APP + INTERESSES + DOSSIÊ -->
     <div id="worker-panel-apps" class="hidden w-full max-w-4xl mx-auto space-y-4 fade-in mb-8">
       <div id="worker-interests-list" class="space-y-3"></div>
       <div id="worker-apps-list" class="space-y-4"></div>
@@ -563,7 +590,7 @@
         <p id="admin-count-jobs" class="text-2xl font-bold text-white mt-1">0</p>
       </div>
       <div class="glass-panel rounded-2xl p-4">
-        <span class="text-[11px] text-stone-300 uppercase">Contratações</span>
+        <span class="text-[11px] text-stone-300 uppercase">Aptos / Contratações</span>
         <p id="admin-count-hired" class="text-2xl font-bold text-emerald-300 mt-1">0</p>
       </div>
       <div class="glass-panel rounded-2xl p-4">
@@ -632,7 +659,7 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL FICHA COMPLETA DO PROFISSIONAL ==================== -->
+  <!-- ==================== MODAL FICHA TÉCNICA COMPLETA DO PROFISSIONAL ==================== -->
   <div id="worker-details-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
     <div class="glass-panel w-full max-w-lg rounded-3xl p-6 sm:p-7 fade-in relative max-h-[90vh] overflow-y-auto">
       <button onclick="closeWorkerDetailsModal()" class="absolute top-4 right-4 text-stone-300 hover:text-white cursor-pointer">
@@ -640,6 +667,17 @@
       </button>
 
       <div id="worker-details-content"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL DOSSIÊ COMPLETO PÓS-TAXA (AMBOS PAGOS) ==================== -->
+  <div id="dossier-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-lg rounded-3xl p-6 sm:p-7 fade-in relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeDossierModal()" class="absolute top-4 right-4 text-stone-300 hover:text-white cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div id="dossier-modal-content"></div>
     </div>
   </div>
 
@@ -651,9 +689,9 @@
       </button>
 
       <span class="inline-block text-[11px] uppercase tracking-widest text-emerald-300 font-semibold mb-1">
-        Vaga Confirmada &bull; Pagamento PIX (Padrão Bacen)
+        Candidato Apto &bull; Pagamento PIX (Padrão Bacen)
       </span>
-      <h3 id="pix-modal-title" class="font-display text-2xl font-bold text-white">Taxa da Contratação</h3>
+      <h3 id="pix-modal-title" class="font-display text-2xl font-bold text-white">Taxa da Ponte</h3>
       <p id="pix-modal-subtitle" class="text-xs text-stone-300 mt-1 mb-4"></p>
 
       <div class="bg-white p-4 rounded-2xl w-fit mx-auto mb-4 shadow-xl">
@@ -806,7 +844,7 @@
   <script>
     lucide.createIcons();
 
-    const STORAGE_KEY = 'servicefree_system_state_v3';
+    const STORAGE_KEY = 'servicefree_system_state_v4';
     const ADMIN_PASS = '7512';
     const PIX_KEY_PHONE_BACEN = '+5511972168719';
     const WORKER_FEE = 3.50;
@@ -846,6 +884,7 @@
       {
         id: 1,
         venue: 'Oak & Barrel Lounge Bar',
+        venuePhone: '(11) 99842-1190',
         segment: 'Gastronomia & Bares',
         role: 'Bartender / Barman',
         location: 'Rua Augusta, 1420 - Consolação',
@@ -862,6 +901,7 @@
       {
         id: 2,
         venue: 'Barbearia Tribo & Estilo',
+        venuePhone: '(11) 98711-4402',
         segment: 'Barbearia & Beleza',
         role: 'Barbeiro / Cabeleireiro(a)',
         location: 'Av. Brasil, 890 - Centro',
@@ -878,6 +918,7 @@
       {
         id: 3,
         venue: 'Casa Limpa & Organização',
+        venuePhone: '(11) 97654-3210',
         segment: 'Casa & Limpeza',
         role: 'Faxineiro(a) / Diarista',
         location: 'Jardim Paulista - São Paulo',
@@ -894,6 +935,7 @@
       {
         id: 4,
         venue: 'Varanda Gastrô & Chopp',
+        venuePhone: '(11) 96543-2198',
         segment: 'Gastronomia & Bares',
         role: 'Garçom / Garçonete',
         location: 'Av. Faria Lima, 2100 - Pinheiros',
@@ -906,6 +948,26 @@
         hours: '17:30 às 00:30',
         spots: 3,
         benefits: ['Alimentação no local', 'Auxílio Transporte', 'Comissão / Gorjetas']
+      }
+    ];
+
+    const defaultDrafts = [
+      {
+        id: 501,
+        venue: 'Oak & Barrel Lounge Bar',
+        venuePhone: '(11) 99842-1190',
+        segment: 'Gastronomia & Bares',
+        role: 'Garçom / Garçonete',
+        location: 'Rua Augusta, 1420 - Consolação',
+        photo: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+        description: roleDescriptions['Garçom / Garçonete'],
+        payType: 'Por Diária / Turno',
+        payAmount: '180',
+        payWhen: 'PIX ao final do serviço',
+        date: 'Sexta e Sábado',
+        hours: '18:00 às 02:00',
+        spots: 2,
+        benefits: ['Alimentação no local', 'Comissão / Gorjetas']
       }
     ];
 
@@ -978,6 +1040,7 @@
     ];
 
     let jobs = [...defaultJobs];
+    let jobDrafts = [...defaultDrafts];
     let applications = [];
     let jobInterests = [];
     let savedAccounts = [...defaultSavedAccounts];
@@ -989,6 +1052,7 @@
     let pendingInterestRole = null;
     let currentSearchQuery = '';
     let currentSegmentFilter = 'Todas';
+    let showDraftInterestedList = false;
     let activePixContext = null;
     let activeReviewContext = null;
 
@@ -996,6 +1060,7 @@
       try {
         const data = {
           jobs,
+          jobDrafts,
           applications,
           jobInterests,
           savedAccounts,
@@ -1014,6 +1079,7 @@
         if (!raw) return;
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed.jobs)) jobs = parsed.jobs;
+        if (Array.isArray(parsed.jobDrafts)) jobDrafts = parsed.jobDrafts;
         if (Array.isArray(parsed.applications)) applications = parsed.applications;
         if (Array.isArray(parsed.jobInterests)) jobInterests = parsed.jobInterests;
         if (Array.isArray(parsed.savedAccounts)) savedAccounts = parsed.savedAccounts;
@@ -1030,6 +1096,7 @@
     updateWorkerAppsCount();
     renderBarQuickRoles();
     onAnnouncedRoleChange();
+    renderBarDraftsSection();
     if (workerUser) {
       applyLoggedWorkerUI();
     }
@@ -1045,6 +1112,7 @@
       if (section === 'bars') {
         renderBarQuickRoles();
         onAnnouncedRoleChange();
+        renderBarDraftsSection();
         renderBarJobs();
       }
       if (section === 'workers') {
@@ -1228,7 +1296,7 @@
               <span class="text-stone-400 block text-[10px] uppercase mb-1.5">Histórico de Vagas &amp; Contratações (${relatedApps.length})</span>
               ${relatedApps.length ? relatedApps.map(a => {
                 const j = jobs.find(jobItem => jobItem.id === a.jobId);
-                return `<p class="text-stone-200 py-1 border-b border-white/10 last:border-0">• <strong>${j ? j.role : 'Vaga'}</strong> (${j ? j.venue : ''}) — <span class="${a.status === 'Contratado' ? 'text-emerald-300' : 'text-amber-200'}">${a.status}</span></p>`;
+                return `<p class="text-stone-200 py-1 border-b border-white/10 last:border-0">• <strong>${j ? j.role : 'Vaga'}</strong> (${j ? j.venue : ''}) — <span class="${a.status === 'Apto' ? 'text-emerald-300' : 'text-amber-200'}">${a.status}</span></p>`;
               }).join('') : `<p class="text-stone-400">Nenhuma candidatura registrada ainda.</p>`}
             </div>
           ` : `
@@ -1301,12 +1369,12 @@
     }
 
     function renderAdminPanel() {
-      const hiredApps = applications.filter(a => a.status === 'Contratado');
-      const totalFees = hiredApps.length * (WORKER_FEE + BAR_FEE);
+      const aptApps = applications.filter(a => a.status === 'Apto');
+      const totalFees = aptApps.length * (WORKER_FEE + BAR_FEE);
 
       document.getElementById('admin-count-users').textContent = adminUsers.length;
       document.getElementById('admin-count-jobs').textContent = jobs.length;
-      document.getElementById('admin-count-hired').textContent = hiredApps.length;
+      document.getElementById('admin-count-hired').textContent = aptApps.length;
       document.getElementById('admin-total-fees').textContent = `R$ ${totalFees.toFixed(2).replace('.', ',')}`;
 
       const listEl = document.getElementById('admin-users-list');
@@ -1356,12 +1424,13 @@
       lucide.createIcons();
     }
 
-    // ==================== FICHA COMPLETA DO PROFISSIONAL ====================
+    // ==================== FICHA TÉCNICA COMPLETA DO PROFISSIONAL ====================
     function openWorkerDetailsModal(appId) {
       const app = applications.find(a => a.id === appId);
       if (!app) return;
       const job = jobs.find(j => j.id === app.jobId);
-      const isHired = app.status === 'Contratado';
+      const isApt = app.status === 'Apto';
+      const dossierUnlocked = isApt && app.workerFeePaid && app.barFeePaid;
 
       const workerReviews = applications
         .filter(a => a.workerEmail === app.workerEmail && a.barReview)
@@ -1379,16 +1448,16 @@
           <div class="relative">
             <img src="${app.workerAvatar}" alt="${app.workerName}" class="w-24 h-24 rounded-full object-cover border-2 border-amber-300 shadow-xl" />
             <span class="absolute -bottom-1 right-0 bg-emerald-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-full">
-              Google OK
+              Ficha Técnica
             </span>
           </div>
 
           <h3 class="font-display text-2xl font-bold text-white mt-3">${app.workerName}</h3>
           <p class="text-xs text-amber-300 font-semibold">${app.workerSpecialty || 'Prestador de Serviços'}</p>
 
-          <div class="flex items-center gap-2 mt-2">
-            <span class="px-3 py-1 rounded-full text-[11px] font-semibold ${isHired ? 'bg-emerald-500/20 text-emerald-200 border border-emerald-400/50' : 'bg-amber-400/15 text-amber-200 border border-amber-300/40'}">
-              ${isHired ? 'Contratado Confirmado' : 'Candidato na Vaga'}
+          <div class="flex items-center gap-2 mt-2 flex-wrap justify-center">
+            <span class="px-3 py-1 rounded-full text-[11px] font-semibold ${isApt ? 'bg-emerald-500/20 text-emerald-200 border border-emerald-400/50' : app.status === 'Não Apto' ? 'bg-red-500/20 text-red-200 border border-red-400/40' : 'bg-amber-400/15 text-amber-200 border border-amber-300/40'}">
+              Status: ${app.status}
             </span>
             <span class="px-3 py-1 rounded-full text-[11px] bg-white/10 text-amber-200">
               ★ ${avgStars} ${workerReviews.length ? `(${workerReviews.length})` : ''}
@@ -1397,27 +1466,30 @@
         </div>
 
         <div class="space-y-3 py-4 text-xs">
-          <div class="glass-btn rounded-2xl p-3.5 flex items-center justify-between gap-2">
-            <div>
-              <span class="text-stone-400 block text-[10px] uppercase">WhatsApp / Telefone</span>
-              <strong class="text-white text-sm">${app.workerPhone || '(11) 99412-8830'}</strong>
-            </div>
-            ${cleanWhatsApp ? `
-              <a href="${waLink}" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-emerald-500/25 border border-emerald-400/50 text-emerald-200 font-semibold flex items-center gap-1.5 hover:bg-emerald-500/35">
-                <i data-lucide="message-circle" class="w-4 h-4"></i>
-                <span>Chamar WhatsApp</span>
-              </a>
-            ` : ''}
+          <div class="glass-btn rounded-2xl p-3.5">
+            <span class="text-stone-400 block text-[10px] uppercase">Experiência &amp; Qualificação</span>
+            <strong class="text-white text-sm">${app.workerExperience || 'Experiência comprovada em prestação de serviços'}</strong>
           </div>
 
           <div class="glass-btn rounded-2xl p-3.5">
-            <span class="text-stone-400 block text-[10px] uppercase">E-mail Google Verificado</span>
+            <span class="text-stone-400 block text-[10px] uppercase">E-mail Verificado</span>
             <strong class="text-white text-sm">${app.workerEmail}</strong>
           </div>
 
-          <div class="glass-btn rounded-2xl p-3.5">
-            <span class="text-stone-400 block text-[10px] uppercase">Experiência Profissional</span>
-            <strong class="text-white text-sm">${app.workerExperience || 'Experiência comprovada em prestação de serviços'}</strong>
+          <div class="glass-btn rounded-2xl p-3.5 flex items-center justify-between gap-2">
+            <div>
+              <span class="text-stone-400 block text-[10px] uppercase">WhatsApp / Telefone</span>
+              ${dossierUnlocked
+                ? `<strong class="text-emerald-300 text-sm">${app.workerPhone || '(11) 99412-8830'}</strong>`
+                : `<strong class="text-amber-200 text-xs">Liberado no Dossiê após aprovação (Apto) e pagamento das taxas</strong>`
+              }
+            </div>
+            ${dossierUnlocked && cleanWhatsApp ? `
+              <a href="${waLink}" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-emerald-500/25 border border-emerald-400/50 text-emerald-200 font-semibold flex items-center gap-1.5 hover:bg-emerald-500/35">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>WhatsApp</span>
+              </a>
+            ` : ''}
           </div>
 
           <div class="glass-btn rounded-2xl p-3.5">
@@ -1446,19 +1518,18 @@
           }
         </div>
 
-        <div class="mt-5 flex gap-2.5">
-          ${!isHired ? `
-            <button onclick="confirmHireApplication(${app.id}); closeWorkerDetailsModal();" class="flex-1 py-3 rounded-xl text-xs font-semibold bg-emerald-500/25 border border-emerald-400/50 text-emerald-200 hover:bg-emerald-500/35 cursor-pointer">
-              Confirmar Contratação
-            </button>
-          ` : `
-            <button onclick="closeWorkerDetailsModal(); openReviewModal(${app.id}, 'bar', '${app.workerName.replace(/'/g, "\\'")}');" class="glass-btn flex-1 py-3 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/60 cursor-pointer">
-              ${app.barReview ? 'Editar Avaliação' : 'Avaliar Profissional'}
-            </button>
-          `}
-          <button onclick="closeWorkerDetailsModal()" class="glass-btn px-5 py-3 rounded-xl text-xs text-stone-200 cursor-pointer">
-            Fechar
+        <div class="mt-5 flex flex-wrap gap-2">
+          <button onclick="setCandidateAptitude(${app.id}, 'Apto'); closeWorkerDetailsModal();" class="flex-1 py-3 rounded-xl text-xs font-semibold bg-emerald-500/25 border border-emerald-400/50 text-emerald-200 hover:bg-emerald-500/35 cursor-pointer">
+            Dar OK — Candidato Apto
           </button>
+          <button onclick="setCandidateAptitude(${app.id}, 'Não Apto'); closeWorkerDetailsModal();" class="px-4 py-3 rounded-xl text-xs font-semibold bg-red-500/20 border border-red-400/40 text-red-200 hover:bg-red-500/30 cursor-pointer">
+            Não Apto
+          </button>
+          ${isApt ? `
+            <button onclick="closeWorkerDetailsModal(); openReviewModal(${app.id}, 'bar', '${app.workerName.replace(/'/g, "\\'")}');" class="glass-btn px-4 py-3 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/60 cursor-pointer">
+              Avaliar
+            </button>
+          ` : ''}
         </div>
       `;
 
@@ -1470,7 +1541,162 @@
       document.getElementById('worker-details-modal').classList.add('hidden');
     }
 
-    // ==================== EMPRESAS E NEGÓCIOS + INTERESSES ANTECIPADOS ====================
+    // ==================== DOSSIÊ COMPLETO APÓS APTO + PAGAMENTO DAS TAXAS ====================
+    function openDossierModal(appId) {
+      const app = applications.find(a => a.id === appId);
+      if (!app) return;
+      const job = jobs.find(j => j.id === app.jobId);
+      if (!job) return;
+
+      const isApt = app.status === 'Apto';
+      const unlocked = isApt && app.workerFeePaid && app.barFeePaid;
+      const barPhone = job.venuePhone || document.getElementById('profile-bar-phone')?.value || '(11) 99842-1190';
+      const cleanBarPhone = barPhone.replace(/\D/g, '');
+      const waBarLink = cleanBarPhone ? `https://wa.me/55${cleanBarPhone}` : '#';
+
+      if (!unlocked) {
+        document.getElementById('dossier-modal-content').innerHTML = `
+          <div class="text-center py-4 space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-amber-400/15 border border-amber-300/40 flex items-center justify-center mx-auto">
+              <i data-lucide="lock" class="w-6 h-6 text-amber-300"></i>
+            </div>
+            <h3 class="font-display text-2xl font-bold text-white">Dossiê Completo Bloqueado</h3>
+            <p class="text-xs text-stone-300 max-w-sm mx-auto">
+              Para evitar negociações por fora, o endereço exato, horários finais e telefone só são liberados quando o candidato for marcado como <strong class="text-emerald-300">Apto</strong> e <strong>ambas as taxas</strong> forem pagas.
+            </p>
+            <div class="glass-btn rounded-2xl p-3.5 text-left text-xs space-y-1.5 max-w-sm mx-auto">
+              <div class="flex justify-between">
+                <span>1. Status do Candidato:</span>
+                <strong class="${isApt ? 'text-emerald-300' : 'text-amber-300'}">${app.status}</strong>
+              </div>
+              <div class="flex justify-between">
+                <span>2. Taxa Prestador (R$ 3,50):</span>
+                <strong class="${app.workerFeePaid ? 'text-emerald-300' : 'text-amber-200'}">${app.workerFeePaid ? 'Paga ✓' : 'Pendente'}</strong>
+              </div>
+              <div class="flex justify-between">
+                <span>3. Taxa Empresa (R$ 8,50):</span>
+                <strong class="${app.barFeePaid ? 'text-emerald-300' : 'text-amber-200'}">${app.barFeePaid ? 'Paga ✓' : 'Pendente'}</strong>
+              </div>
+            </div>
+          </div>
+        `;
+        document.getElementById('dossier-modal').classList.remove('hidden');
+        lucide.createIcons();
+        return;
+      }
+
+      document.getElementById('dossier-modal-content').innerHTML = `
+        <div class="text-center pb-4 border-b border-white/15">
+          <span class="inline-block text-[11px] uppercase tracking-widest text-emerald-300 font-semibold mb-1">
+            Taxas Confirmadas &bull; Dossiê Completo Liberado
+          </span>
+          <h3 class="font-display text-2xl font-bold text-white">${job.role}</h3>
+          <p class="text-xs text-amber-300 font-semibold">${job.venue} &bull; ${job.segment}</p>
+        </div>
+
+        <div class="space-y-3 py-4 text-xs">
+          <div class="rounded-2xl p-3.5 bg-emerald-500/15 border border-emerald-400/40">
+            <span class="text-emerald-200 block text-[10px] uppercase font-semibold">Endereço Exato do Local</span>
+            <strong class="text-white text-sm">${job.location}</strong>
+          </div>
+
+          <div class="glass-btn rounded-2xl p-3.5">
+            <span class="text-stone-400 block text-[10px] uppercase">Dias &amp; Horários Finais de Comparecimento</span>
+            <strong class="text-white text-sm">${job.date} &bull; ${job.hours}</strong>
+            <span class="block text-amber-200 mt-0.5">Pagamento combinado: R$ ${job.payAmount} (${job.payType} — ${job.payWhen})</span>
+          </div>
+
+          <div class="glass-btn rounded-2xl p-3.5 flex items-center justify-between gap-2">
+            <div>
+              <span class="text-stone-400 block text-[10px] uppercase">Telefone / Responsável no Local</span>
+              <strong class="text-white text-sm">${barPhone}</strong>
+            </div>
+            ${cleanBarPhone ? `
+              <a href="${waBarLink}" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-emerald-500/25 border border-emerald-400/50 text-emerald-200 font-semibold flex items-center gap-1.5 hover:bg-emerald-500/35">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>WhatsApp</span>
+              </a>
+            ` : ''}
+          </div>
+
+          <div class="glass-btn rounded-2xl p-3.5">
+            <span class="text-stone-400 block text-[10px] uppercase">Profissional Confirmado &amp; Chave PIX</span>
+            <strong class="text-white text-sm">${app.workerName}</strong>
+            <span class="block text-amber-300 font-mono mt-0.5">PIX: ${app.workerPix || app.workerEmail} &bull; Tel: ${app.workerPhone || '(11) 99412-8830'}</span>
+          </div>
+        </div>
+
+        <button onclick="closeDossierModal()" class="glass-btn w-full py-3 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/60 cursor-pointer">
+          Fechar Dossiê
+        </button>
+      `;
+
+      document.getElementById('dossier-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeDossierModal() {
+      document.getElementById('dossier-modal').classList.add('hidden');
+    }
+
+    // ==================== COMUNICAÇÃO INTERNA PELO APP ====================
+    function sendAppMessage(appId, senderRole, inputId) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+
+      const app = applications.find(a => a.id === appId);
+      if (!app) return;
+
+      if (!Array.isArray(app.messages)) app.messages = [];
+      app.messages.push({
+        sender: senderRole,
+        text,
+        time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+      });
+
+      input.value = '';
+      saveSystemState();
+      renderBarJobs();
+      renderWorkerApps();
+      showToast('Mensagem enviada pelo app.');
+    }
+
+    function renderChatBoxHtml(app, viewerRole) {
+      const msgs = Array.isArray(app.messages) ? app.messages : [];
+      const inputId = `chat-input-${viewerRole}-${app.id}`;
+      const listHtml = msgs.length
+        ? msgs.map(m => `
+            <div class="rounded-xl px-3 py-2 text-xs ${m.sender === 'Empresa' ? 'bg-amber-400/15 border border-amber-300/30 text-amber-100' : 'bg-white/10 border border-white/15 text-stone-100'}">
+              <div class="flex items-center justify-between text-[10px] text-stone-300 mb-0.5">
+                <strong class="${m.sender === 'Empresa' ? 'text-amber-300' : 'text-emerald-300'}">${m.sender}</strong>
+                <span>${m.time || ''}</span>
+              </div>
+              <p>${m.text}</p>
+            </div>
+          `).join('')
+        : `<p class="text-[11px] text-stone-400">Sem mensagens ainda. Combine detalhes gerais aqui dentro do app (evite passar contato direto antes da liberação).</p>`;
+
+      return `
+        <div class="mt-3 pt-3 border-t border-white/15 space-y-2">
+          <span class="block text-[10px] uppercase tracking-wider text-amber-200/90 font-semibold">
+            Chat Interno do App (Sem extravio por fora)
+          </span>
+          <div class="max-h-36 overflow-y-auto space-y-1.5 pr-1">
+            ${listHtml}
+          </div>
+          <div class="flex gap-2">
+            <input type="text" id="${inputId}" onkeydown="if(event.key==='Enter'){event.preventDefault(); sendAppMessage(${app.id}, '${viewerRole === 'bar' ? 'Empresa' : 'Prestador'}', '${inputId}');}" placeholder="Escreva uma mensagem no app..." class="glass-input flex-1 rounded-xl px-3 py-2 text-xs" />
+            <button type="button" onclick="sendAppMessage(${app.id}, '${viewerRole === 'bar' ? 'Empresa' : 'Prestador'}', '${inputId}')" class="glass-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-amber-200 border-amber-300/50 cursor-pointer">
+              Enviar
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // ==================== EMPRESAS E NEGÓCIOS + RASCUNHOS + INTERESSADOS ====================
     function switchBarTab(tab) {
       ['publish', 'myjobs', 'profile'].forEach(t => {
         document.getElementById('bar-panel-' + t).classList.add('hidden');
@@ -1481,9 +1707,165 @@
       if (tab === 'publish') {
         renderBarQuickRoles();
         onAnnouncedRoleChange();
+        renderBarDraftsSection();
       }
       if (tab === 'myjobs') renderBarJobs();
       if (tab === 'profile') renderBarReviewsInProfile();
+    }
+
+    function toggleDraftAnticipatedList() {
+      showDraftInterestedList = !showDraftInterestedList;
+      renderBarDraftsSection();
+    }
+
+    function saveJobDraft() {
+      const benefits = Array.from(document.querySelectorAll('.job-benefit:checked')).map(el => el.value);
+      const role = document.getElementById('job-role').value.trim();
+      const segment = document.getElementById('job-segment').value;
+      if (!role) {
+        showToast('Informe o nome da vaga para salvar em rascunho.');
+        return;
+      }
+
+      const draft = {
+        id: Date.now(),
+        venue: document.getElementById('job-venue').value.trim() || 'Oak & Barrel Lounge Bar',
+        venuePhone: document.getElementById('profile-bar-phone')?.value || '(11) 99842-1190',
+        segment,
+        role,
+        location: document.getElementById('job-location').value.trim() || 'Endereço a confirmar',
+        photo: document.getElementById('job-photo-preview').src,
+        description: document.getElementById('job-description').value.trim() || roleDescriptions[role] || '',
+        payType: document.getElementById('job-pay-type').value,
+        payAmount: document.getElementById('job-pay-amount').value || '180',
+        payWhen: document.getElementById('job-pay-when').value,
+        date: document.getElementById('job-date').value || 'A combinar',
+        hours: document.getElementById('job-hours').value || 'A combinar',
+        spots: document.getElementById('job-spots').value || '1',
+        benefits
+      };
+
+      jobDrafts.unshift(draft);
+      saveSystemState();
+      renderBarDraftsSection();
+      showToast(`Rascunho de "${role}" salvo!`);
+    }
+
+    function publishDraftById(draftId) {
+      const idx = jobDrafts.findIndex(d => d.id === draftId);
+      if (idx < 0) return;
+      const d = jobDrafts[idx];
+      jobDrafts.splice(idx, 1);
+
+      const jobId = Date.now();
+      const newJob = { ...d, id: jobId };
+      jobs.unshift(newJob);
+
+      const matchedInterests = getInterestsForRole(d.role);
+      matchedInterests.forEach(it => {
+        if (!applications.some(a => a.jobId === jobId && a.workerEmail.toLowerCase() === it.workerEmail.toLowerCase())) {
+          applications.unshift({
+            id: Date.now() + Math.floor(Math.random() * 10000),
+            jobId,
+            workerName: it.workerName,
+            workerEmail: it.workerEmail,
+            workerAvatar: it.workerAvatar,
+            workerPhone: it.workerPhone,
+            workerSpecialty: it.workerSpecialty || d.role,
+            workerExperience: it.workerExperience,
+            workerPix: it.workerPix || it.workerEmail,
+            status: 'Em Análise',
+            workerFeePaid: false,
+            barFeePaid: false,
+            barReview: null,
+            workerReview: null,
+            messages: []
+          });
+        }
+      });
+
+      saveSystemState();
+      document.getElementById('bar-jobs-count').textContent = jobs.length;
+      document.getElementById('worker-jobs-count').textContent = jobs.length;
+      renderBarDraftsSection();
+      renderBarJobs();
+      showToast(`Rascunho "${d.role}" publicado!`);
+    }
+
+    function deleteDraftById(draftId) {
+      jobDrafts = jobDrafts.filter(d => d.id !== draftId);
+      saveSystemState();
+      renderBarDraftsSection();
+      showToast('Rascunho removido.');
+    }
+
+    function renderBarDraftsSection() {
+      const countEl = document.getElementById('draft-interested-count');
+      if (countEl) countEl.textContent = jobInterests.length;
+
+      const panelEl = document.getElementById('bar-draft-interested-panel');
+      if (panelEl) {
+        panelEl.classList.toggle('hidden', !showDraftInterestedList);
+        if (showDraftInterestedList) {
+          if (!jobInterests.length) {
+            panelEl.innerHTML = `<p class="text-xs text-stone-300">Nenhum profissional demonstrou interesse antecipado até o momento.</p>`;
+          } else {
+            panelEl.innerHTML = `
+              <h4 class="text-xs uppercase tracking-wider text-emerald-300 font-semibold">Profissionais Interessados Antecipadamente (${jobInterests.length})</h4>
+              <div class="space-y-2">` + jobInterests.map(it => `
+                <div class="bg-black/35 border border-white/15 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                  <div class="flex items-center gap-2.5">
+                    <img src="${it.workerAvatar}" alt="${it.workerName}" class="w-10 h-10 rounded-full object-cover border border-amber-300/60" />
+                    <div>
+                      <p class="font-semibold text-white">${it.workerName}</p>
+                      <p class="text-[11px] text-amber-300">Interesse em: <strong>${it.role}</strong> ${it.segment ? `(${it.segment})` : ''}</p>
+                      <p class="text-[11px] text-stone-300">${it.workerExperience || it.workerSpecialty || 'Prestador'}</p>
+                    </div>
+                  </div>
+                  <button type="button" onclick="hireFromInterest(${it.id})" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 border border-emerald-400/50 text-emerald-200 hover:bg-emerald-500/30 cursor-pointer">
+                    Abrir Vaga e Apto
+                  </button>
+                </div>
+              `).join('') + `</div>`;
+          }
+        }
+      }
+
+      const draftsListEl = document.getElementById('bar-drafts-list');
+      if (!draftsListEl) return;
+
+      if (!jobDrafts.length) {
+        draftsListEl.innerHTML = `<p class="text-xs text-stone-400">Nenhum rascunho salvo no momento.</p>`;
+        return;
+      }
+
+      draftsListEl.innerHTML = jobDrafts.map(d => {
+        const interestedCount = countInterestsForRole(d.role);
+        return `
+          <div class="glass-btn rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-[10px] uppercase px-2.5 py-0.5 rounded-full bg-amber-400/15 text-amber-200 border border-amber-300/30">${d.segment || 'Serviços'}</span>
+                <span class="text-[10px] px-2.5 py-0.5 rounded-full ${interestedCount ? 'bg-emerald-500/20 text-emerald-200 border border-emerald-400/40' : 'bg-white/10 text-stone-300'}">
+                  ${interestedCount} interessado(s) antecipado(s)
+                </span>
+              </div>
+              <h4 class="font-display text-lg font-bold text-white mt-1">${d.role}</h4>
+              <p class="text-xs text-stone-300">${d.venue} &bull; R$ ${d.payAmount} (${d.payType}) &bull; ${d.date} (${d.hours})</p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="publishDraftById(${d.id})" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500/25 border border-emerald-400/50 text-emerald-200 hover:bg-emerald-500/35 cursor-pointer">
+                Publicar Rascunho
+              </button>
+              <button type="button" onclick="deleteDraftById(${d.id})" class="px-3 py-2 rounded-xl text-xs bg-red-500/20 border border-red-400/40 text-red-200 hover:bg-red-500/30 cursor-pointer">
+                Excluir
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
     }
 
     function renderBarQuickRoles() {
@@ -1572,7 +1954,7 @@
               <img src="${it.workerAvatar}" alt="${it.workerName}" class="w-9 h-9 rounded-full object-cover border border-amber-300/60" />
               <div>
                 <p class="font-semibold text-white">${it.workerName}</p>
-                <p class="text-[11px] text-stone-300">${it.workerPhone || it.workerEmail} &bull; Interesse em: <strong class="text-amber-300">${it.role}</strong></p>
+                <p class="text-[11px] text-stone-300">${it.workerSpecialty || 'Profissional'} &bull; Interesse em: <strong class="text-amber-300">${it.role}</strong></p>
               </div>
             </div>
             <span class="text-[10px] px-2.5 py-1 rounded-full bg-amber-400/15 text-amber-200 border border-amber-300/30">
@@ -1614,6 +1996,7 @@
       const newJob = {
         id: jobId,
         venue: document.getElementById('job-venue').value,
+        venuePhone: document.getElementById('profile-bar-phone')?.value || '(11) 99842-1190',
         segment,
         role,
         location: document.getElementById('job-location').value,
@@ -1643,11 +2026,16 @@
             workerSpecialty: it.workerSpecialty || role,
             workerExperience: it.workerExperience,
             workerPix: it.workerPix || it.workerEmail,
-            status: 'Candidatado (Interesse Antecipado)',
+            status: 'Em Análise',
             workerFeePaid: false,
             barFeePaid: false,
             barReview: null,
-            workerReview: null
+            workerReview: null,
+            messages: [{
+              sender: 'Empresa',
+              text: `Olá ${it.workerName}, vimos seu interesse antecipado na vaga de ${role}.`,
+              time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+            }]
           });
         }
       });
@@ -1673,14 +2061,26 @@
       showToast('Vaga encerrada.');
     }
 
-    function confirmHireApplication(appId) {
+    function setCandidateAptitude(appId, aptitudeStatus) {
       const app = applications.find(a => a.id === appId);
       if (!app) return;
-      app.status = 'Contratado';
+      app.status = aptitudeStatus;
+      if (!Array.isArray(app.messages)) app.messages = [];
+      app.messages.push({
+        sender: 'Empresa',
+        text: aptitudeStatus === 'Apto'
+          ? 'Você foi marcado como APTO para a vaga! A taxa da ponte foi liberada para prosseguirmos com o dossiê.'
+          : 'Atualização na análise da candidatura: perfil marcado como Não Apto para esta vaga.',
+        time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+      });
       saveSystemState();
       renderBarJobs();
       renderWorkerApps();
-      showToast(`Contratação de ${app.workerName} confirmada!`);
+      showToast(
+        aptitudeStatus === 'Apto'
+          ? `${app.workerName} marcado como APTO! Taxas liberadas para liberar o Dossiê Completo.`
+          : `${app.workerName} marcado como Não Apto.`
+      );
     }
 
     function hireFromInterest(interestId) {
@@ -1692,16 +2092,17 @@
         targetJob = {
           id: Date.now(),
           venue: document.getElementById('header-bar-name').textContent || 'Oak & Barrel Lounge Bar',
+          venuePhone: document.getElementById('profile-bar-phone')?.value || '(11) 99842-1190',
           segment: it.segment || 'Gastronomia & Bares',
           role: it.role,
-          location: 'Endereço a combinar no serviço',
+          location: 'Rua Augusta, 1420 - Consolação',
           photo: samplePhotos[0],
           description: roleDescriptions[it.role] || `Atuação na função de ${it.role}.`,
           payType: 'Por Diária / Turno',
           payAmount: '180',
           payWhen: 'PIX ao final do serviço',
           date: 'Próximo período',
-          hours: 'A combinar',
+          hours: '18:00 às 02:00',
           spots: 1,
           benefits: ['Alimentação no local', 'Comissão / Gorjetas']
         };
@@ -1720,21 +2121,28 @@
           workerSpecialty: it.workerSpecialty || it.role,
           workerExperience: it.workerExperience,
           workerPix: it.workerPix || it.workerEmail,
-          status: 'Contratado',
+          status: 'Apto',
           workerFeePaid: false,
           barFeePaid: false,
           barReview: null,
-          workerReview: null
+          workerReview: null,
+          messages: [{
+            sender: 'Empresa',
+            text: `Aprovamos seu interesse antecipado como APTO para ${it.role}! Agora basta a quitação das taxas para liberar o Dossiê Completo.`,
+            time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+          }]
         };
         applications.unshift(app);
       } else {
-        app.status = 'Contratado';
+        app.status = 'Apto';
       }
 
       saveSystemState();
+      renderBarDraftsSection();
       renderBarJobs();
       renderWorkerApps();
-      showToast(`${it.workerName} contratado para ${it.role}!`);
+      switchBarTab('myjobs');
+      showToast(`${it.workerName} marcado como APTO para ${it.role}! Taxas liberadas.`);
     }
 
     function renderBarJobs() {
@@ -1779,50 +2187,72 @@
                   <p class="text-xs uppercase tracking-wider text-amber-200 font-semibold">
                     Candidatos na vaga (${jobApps.length})
                   </p>
-                  ${jobApps.length ? `<span class="text-[11px] text-stone-300">Toque na foto para ver os dados completos</span>` : ''}
+                  ${jobApps.length ? `<span class="text-[11px] text-stone-300">Ficha técnica, comunicação pelo app e aprovação de aptidão</span>` : ''}
                 </div>
                 ${!jobApps.length
                   ? `<p class="text-xs text-stone-400">Nenhum candidato aplicou ainda.</p>`
-                  : `<div class="space-y-2.5">` + jobApps.map(app => {
-                      const isHired = app.status === 'Contratado';
+                  : `<div class="space-y-3">` + jobApps.map(app => {
+                      const isApt = app.status === 'Apto';
+                      const isNotApt = app.status === 'Não Apto';
+                      const dossierUnlocked = isApt && app.workerFeePaid && app.barFeePaid;
+
                       return `
-                        <div class="glass-btn rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3">
-                          <div onclick="openWorkerDetailsModal(${app.id})" title="Clique para ver todos os dados do profissional" class="flex items-center gap-3 cursor-pointer group">
-                            <div class="relative">
-                              <img src="${app.workerAvatar}" alt="${app.workerName}" class="w-12 h-12 rounded-full object-cover border-2 border-amber-300/70 group-hover:scale-105 transition-transform" />
-                              <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-amber-400 text-black flex items-center justify-center shadow">
-                                <i data-lucide="id-card" class="w-3 h-3"></i>
-                              </span>
+                        <div class="glass-btn rounded-2xl p-4 space-y-2">
+                          <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div onclick="openWorkerDetailsModal(${app.id})" title="Clique para ver a ficha técnica completa" class="flex items-center gap-3 cursor-pointer group">
+                              <div class="relative">
+                                <img src="${app.workerAvatar}" alt="${app.workerName}" class="w-12 h-12 rounded-full object-cover border-2 border-amber-300/70 group-hover:scale-105 transition-transform" />
+                                <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-amber-400 text-black flex items-center justify-center shadow">
+                                  <i data-lucide="id-card" class="w-3 h-3"></i>
+                                </span>
+                              </div>
+                              <div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                  <p class="text-sm font-semibold text-white group-hover:text-amber-300 transition-colors">${app.workerName}</p>
+                                  <span class="text-[10px] px-2.5 py-0.5 rounded-full font-semibold ${isApt ? 'bg-emerald-500/20 text-emerald-200 border border-emerald-400/50' : isNotApt ? 'bg-red-500/20 text-red-200 border border-red-400/40' : 'bg-amber-400/15 text-amber-200 border border-amber-300/40'}">
+                                    ${app.status}
+                                  </span>
+                                </div>
+                                <p class="text-[11px] text-stone-300">${app.workerSpecialty || 'Profissional'} &bull; ${app.workerExperience || 'Experiência em serviços'}</p>
+                                ${app.workerReview ? `<p class="text-[11px] text-amber-300 mt-0.5">Avaliação do candidato: ★ ${app.workerReview.stars}/5 — "${app.workerReview.comment}"</p>` : ''}
+                              </div>
                             </div>
-                            <div>
-                              <p class="text-sm font-semibold text-white group-hover:text-amber-300 transition-colors flex items-center gap-1.5">
-                                <span>${app.workerName}</span>
-                                <span class="text-[10px] font-normal text-amber-200/80 underline">(Ver ficha)</span>
-                              </p>
-                              <p class="text-[11px] text-stone-300">${app.workerSpecialty || 'Profissional'} &bull; ${app.workerPhone || app.workerEmail}</p>
-                              ${app.workerReview ? `<p class="text-[11px] text-amber-300 mt-0.5">Avaliação do candidato: ★ ${app.workerReview.stars}/5 — "${app.workerReview.comment}"</p>` : ''}
+
+                            <div class="flex flex-wrap items-center gap-2">
+                              <button onclick="openWorkerDetailsModal(${app.id})" class="glass-btn px-3 py-2 rounded-xl text-xs font-medium text-amber-200 cursor-pointer">
+                                Ficha Técnica
+                              </button>
+                              <button onclick="setCandidateAptitude(${app.id}, 'Apto')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 border border-emerald-400/50 text-emerald-200 hover:bg-emerald-500/30 cursor-pointer">
+                                ${isApt ? 'Apto ✓' : 'Marcar Apto'}
+                              </button>
+                              <button onclick="setCandidateAptitude(${app.id}, 'Não Apto')" class="px-3 py-2 rounded-xl text-xs font-medium bg-red-500/20 border border-red-400/40 text-red-200 hover:bg-red-500/30 cursor-pointer">
+                                Não Apto
+                              </button>
                             </div>
                           </div>
 
-                          <div class="flex flex-wrap items-center gap-2">
-                            ${!isHired
-                              ? `<button onclick="confirmHireApplication(${app.id})" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 border border-emerald-400/50 text-emerald-200 hover:bg-emerald-500/30 cursor-pointer">
-                                  Confirmar Contratação
-                                 </button>`
-                              : `
-                                <button onclick="openWorkerDetailsModal(${app.id})" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-400/50 hover:bg-emerald-500/30 flex items-center gap-1.5 cursor-pointer">
-                                  <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
-                                  <span>Ficha do Profissional</span>
-                                </button>
+                          ${isApt ? `
+                            <div class="pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs">
+                              <span class="text-stone-200">
+                                Taxa Empresa: <strong>R$ 8,50</strong> (${app.barFeePaid ? '<span class="text-emerald-300">Pago ✓</span>' : '<span class="text-amber-200">Pendente</span>'}) &bull; Taxa Prestador: (${app.workerFeePaid ? '<span class="text-emerald-300">Pago ✓</span>' : '<span class="text-amber-200">Aguardando</span>'})
+                              </span>
+                              <div class="flex flex-wrap gap-2">
                                 <button onclick="openPixModal(${app.id}, 'bar', ${BAR_FEE})" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-400/20 border border-amber-300/60 text-amber-200 hover:bg-amber-400/30 cursor-pointer">
                                   ${app.barFeePaid ? 'Taxa Empresa Paga (R$ 8,50)' : 'Pagar Taxa Empresa (R$ 8,50 PIX)'}
                                 </button>
-                                <button onclick="openReviewModal(${app.id}, 'bar', '${app.workerName.replace(/'/g, "\\'")}')" class="glass-btn px-3.5 py-2 rounded-xl text-xs font-medium text-white cursor-pointer">
-                                  ${app.barReview ? 'Editar Avaliação' : 'Avaliar Candidato'}
+                                <button onclick="openDossierModal(${app.id})" class="px-3.5 py-2 rounded-xl text-xs font-semibold ${dossierUnlocked ? 'bg-emerald-500/25 border border-emerald-400/60 text-emerald-200' : 'glass-btn text-stone-300'} cursor-pointer">
+                                  ${dossierUnlocked ? 'Abrir Dossiê Completo' : 'Dossiê (Após Taxas)'}
                                 </button>
-                              `
-                            }
-                          </div>
+                                <button onclick="openReviewModal(${app.id}, 'bar', '${app.workerName.replace(/'/g, "\\'")}')" class="glass-btn px-3.5 py-2 rounded-xl text-xs font-medium text-white cursor-pointer">
+                                  ${app.barReview ? 'Editar Avaliação' : 'Avaliar'}
+                                </button>
+                              </div>
+                            </div>
+                          ` : `
+                            <p class="text-[11px] text-stone-400">A cobrança da taxa da ponte só é liberada após você dar OK marcando o candidato como <strong>Apto</strong>.</p>
+                          `}
+
+                          ${renderChatBoxHtml(app, 'bar')}
                         </div>
                       `;
                     }).join('') + `</div>`
@@ -1851,11 +2281,11 @@
                   <div>
                     <p class="text-sm font-semibold text-white">${it.workerName}</p>
                     <p class="text-xs text-amber-300 font-medium">Vaga desejada: ${it.role} ${it.segment ? `&bull; ${it.segment}` : ''}</p>
-                    <p class="text-[11px] text-stone-300">${it.workerPhone || it.workerEmail}</p>
+                    <p class="text-[11px] text-stone-300">${it.workerSpecialty || 'Prestador'} &bull; ${it.workerExperience || ''}</p>
                   </div>
                 </div>
                 <button onclick="hireFromInterest(${it.id})" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 border border-emerald-400/50 text-emerald-200 hover:bg-emerald-500/30 cursor-pointer">
-                  Contratar / Vincular Vaga
+                  Aprovar como Apto &amp; Vincular
                 </button>
               </div>
             `).join('') + `</div>`;
@@ -1939,7 +2369,7 @@
                 <i data-lucide="info" class="w-4 h-4"></i>
                 <span>No momento NÃO há vaga aberta para "${currentSearchQuery}".</span>
               </p>
-              <p class="text-stone-200 mt-0.5">Deixe seu interesse mostrado! Quando uma empresa for anunciar essa vaga, ela já verá você.</p>
+              <p class="text-stone-200 mt-0.5">Deixe seu interesse mostrado! Quando uma empresa for anunciar ou salvar rascunho, ela já verá você.</p>
             </div>
             <button type="button" onclick="expressInterestInRole('${currentSearchQuery.replace(/'/g, "\\'")}')" class="px-4 py-2.5 rounded-xl text-xs font-semibold ${alreadyExpressedInterest ? 'bg-emerald-500/20 border border-emerald-400/50 text-emerald-200' : 'bg-amber-400/25 border border-amber-300/70 text-amber-200 hover:bg-amber-400/35'} cursor-pointer">
               ${alreadyExpressedInterest ? 'Interesse Já Mostrado ✓' : 'Mostrar Interesse na Vaga'}
@@ -1989,6 +2419,7 @@
       renderWorkerApps();
       renderBarQuickRoles();
       onAnnouncedRoleChange();
+      renderBarDraftsSection();
     }
 
     function removeInterest(interestId) {
@@ -1998,6 +2429,7 @@
       renderWorkerApps();
       renderBarQuickRoles();
       onAnnouncedRoleChange();
+      renderBarDraftsSection();
       showToast('Interesse removido.');
     }
 
@@ -2229,15 +2661,20 @@
           workerSpecialty: workerUser.specialty,
           workerExperience: workerUser.experience,
           workerPix: workerUser.pix,
-          status: 'Candidatado',
+          status: 'Em Análise',
           workerFeePaid: false,
           barFeePaid: false,
           barReview: null,
-          workerReview: null
+          workerReview: null,
+          messages: [{
+            sender: 'Prestador',
+            text: `Olá, candidatei-me à vaga (${workerUser.specialty}). Fico à disposição pelo chat do app.`,
+            time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+          }]
         });
         saveSystemState();
         updateWorkerAppsCount();
-        showToast('Candidatura enviada! A taxa de R$ 3,50 só será cobrada se a contratação for confirmada.');
+        showToast('Candidatura enviada pelo app! A taxa de R$ 3,50 só será cobrada após aprovação como Apto.');
         renderWorkerJobs();
         renderWorkerApps();
       }
@@ -2327,6 +2764,8 @@
 
       container.innerHTML = filtered.map(job => {
         const myApp = workerUser ? applications.find(a => a.jobId === job.id && a.workerEmail === workerUser.email) : null;
+        const unlockedLocation = myApp && myApp.status === 'Apto' && myApp.workerFeePaid && myApp.barFeePaid;
+
         return `
           <div class="glass-panel rounded-3xl overflow-hidden flex flex-col sm:flex-row">
             <img src="${job.photo}" alt="${job.venue}" class="w-full sm:w-52 h-48 sm:h-auto object-cover" />
@@ -2345,7 +2784,8 @@
                 </div>
 
                 <p class="text-xs text-stone-300 mt-1 flex items-center gap-1.5">
-                  <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-300"></i> ${job.location}
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-300"></i>
+                  <span>${unlockedLocation ? job.location : `${job.segment} • Endereço exato liberado no Dossiê após aprovação e taxas`}</span>
                 </p>
 
                 <p class="text-xs sm:text-sm text-stone-200 mt-3 leading-relaxed">${job.description}</p>
@@ -2358,16 +2798,16 @@
               <div class="mt-5 pt-4 border-t border-white/15 flex flex-wrap items-center justify-between gap-3">
                 <div class="text-xs text-stone-300">
                   <span class="block text-white font-medium">${job.date} &bull; ${job.hours}</span>
-                  <span>${job.spots} vaga(s) aberta(s) &bull; Taxa se contratado: <strong>R$ 3,50</strong></span>
+                  <span>${job.spots} vaga(s) aberta(s) &bull; Taxa se Apto: <strong>R$ 3,50</strong></span>
                 </div>
 
                 ${myApp
-                  ? `<span class="px-4 py-2.5 rounded-xl text-xs font-semibold ${myApp.status === 'Contratado' ? 'bg-emerald-500/20 border border-emerald-400/50 text-emerald-200' : 'bg-amber-400/15 border border-amber-300/40 text-amber-200'}">
-                      ${myApp.status === 'Contratado' ? 'Contratado! Veja em Candidaturas' : 'Candidatura Enviada'}
+                  ? `<span class="px-4 py-2.5 rounded-xl text-xs font-semibold ${myApp.status === 'Apto' ? 'bg-emerald-500/20 border border-emerald-400/50 text-emerald-200' : 'bg-amber-400/15 border border-amber-300/40 text-amber-200'}">
+                      ${myApp.status === 'Apto' ? 'Apto! Veja em Candidaturas' : `Status: ${myApp.status}`}
                      </span>`
                   : `<button onclick="applyToJob(${job.id})" class="glass-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-amber-200 border-amber-300/60 hover:bg-amber-400/20 flex items-center gap-2 cursor-pointer">
                       <i data-lucide="zap" class="w-4 h-4"></i>
-                      <span>${workerUser ? 'Candidatar-se com 1 Clique' : 'Entrar com Google e Candidatar'}</span>
+                      <span>${workerUser ? 'Candidatar-se pelo App' : 'Entrar com Google e Candidatar'}</span>
                      </button>`
                 }
               </div>
@@ -2396,7 +2836,7 @@
         interestsContainer.innerHTML = `
           <div class="glass-panel rounded-3xl p-5 space-y-2.5">
             <h4 class="font-display text-lg font-bold text-amber-300">Interesses Mostrados em Vagas (${myInterests.length})</h4>
-            <p class="text-xs text-stone-300">As empresas que anunciarem essas vagas já enxergam seu interesse.</p>
+            <p class="text-xs text-stone-300">As empresas que anunciarem ou criarem rascunho dessas vagas já enxergam seu interesse.</p>
             ` + myInterests.map(it => `
               <div class="glass-btn rounded-2xl p-3 flex items-center justify-between gap-2 text-xs">
                 <div>
@@ -2420,7 +2860,8 @@
       container.innerHTML = myApps.map(app => {
         const job = jobs.find(j => j.id === app.jobId);
         if (!job) return '';
-        const isHired = app.status === 'Contratado';
+        const isApt = app.status === 'Apto';
+        const dossierUnlocked = isApt && app.workerFeePaid && app.barFeePaid;
 
         return `
           <div class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
@@ -2434,21 +2875,26 @@
                 </div>
               </div>
 
-              <span class="px-4 py-2 rounded-full text-xs font-semibold ${isHired ? 'bg-emerald-500/20 border border-emerald-400/50 text-emerald-200' : 'bg-amber-400/15 border border-amber-300/40 text-amber-200'}">
-                ${isHired ? 'Vaga Confirmada / Contratado' : app.status}
+              <span class="px-4 py-2 rounded-full text-xs font-semibold ${isApt ? 'bg-emerald-500/20 border border-emerald-400/50 text-emerald-200' : 'bg-amber-400/15 border border-amber-300/40 text-amber-200'}">
+                ${isApt ? 'Apto Confirmado' : `Status: ${app.status}`}
               </span>
             </div>
 
-            ${isHired ? `
+            ${isApt ? `
               <div class="pt-3 border-t border-white/15 flex flex-wrap items-center justify-between gap-3">
                 <p class="text-xs text-stone-200">
-                  Vaga confirmada! Taxa mínima do prestador: <strong class="text-amber-300">R$ 3,50</strong> (${app.workerFeePaid ? '<span class="text-emerald-300">Pago</span>' : '<span class="text-amber-200">Pendente</span>'}).
+                  Candidatura aprovada como <strong>Apto</strong>! Taxa prestador: <strong class="text-amber-300">R$ 3,50</strong> (${app.workerFeePaid ? '<span class="text-emerald-300">Pago ✓</span>' : '<span class="text-amber-200">Pendente</span>'}) &bull; Empresa: (${app.barFeePaid ? '<span class="text-emerald-300">Pago ✓</span>' : '<span class="text-amber-200">Pendente</span>'}).
                 </p>
 
                 <div class="flex flex-wrap gap-2">
                   <button onclick="openPixModal(${app.id}, 'worker', ${WORKER_FEE})" class="px-4 py-2 rounded-xl text-xs font-semibold bg-amber-400/20 border border-amber-300/60 text-amber-200 hover:bg-amber-400/30 flex items-center gap-1.5 cursor-pointer">
                     <i data-lucide="qr-code" class="w-4 h-4"></i>
-                    <span>${app.workerFeePaid ? 'Ver QR Code (R$ 3,50)' : 'Gerar QR Code PIX (R$ 3,50)'}</span>
+                    <span>${app.workerFeePaid ? 'Taxa Paga (R$ 3,50)' : 'Pagar Taxa PIX (R$ 3,50)'}</span>
+                  </button>
+
+                  <button onclick="openDossierModal(${app.id})" class="px-4 py-2 rounded-xl text-xs font-semibold ${dossierUnlocked ? 'bg-emerald-500/25 border border-emerald-400/60 text-emerald-200' : 'glass-btn text-stone-300'} flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="file-check" class="w-4 h-4"></i>
+                    <span>${dossierUnlocked ? 'Abrir Dossiê Completo' : 'Dossiê Bloqueado'}</span>
                   </button>
 
                   <button onclick="openReviewModal(${app.id}, 'worker', '${job.venue.replace(/'/g, "\\'")}')" class="glass-btn px-4 py-2 rounded-xl text-xs font-medium text-white flex items-center gap-1.5 cursor-pointer">
@@ -2458,8 +2904,10 @@
                 </div>
               </div>
             ` : `
-              <p class="text-[11px] text-stone-400">A cobrança de R$ 3,50 só é ativada após a confirmação da contratação.</p>
+              <p class="text-[11px] text-stone-400">A taxa da ponte só será liberada após o contratante dar OK marcando você como <strong>Apto</strong>. Use o chat abaixo para alinhar dúvidas pelo app.</p>
             `}
+
+            ${renderChatBoxHtml(app, 'worker')}
           </div>
         `;
       }).join('');
@@ -2493,7 +2941,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">WhatsApp para Contato</label>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">WhatsApp (liberado no Dossiê)</label>
             <input type="text" value="${workerUser.phone}" onchange="workerUser.phone = this.value; syncWorkerProfileToApps();" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
           </div>
           <div>
@@ -2501,7 +2949,7 @@
             <input type="text" value="${workerUser.specialty}" onchange="workerUser.specialty = this.value; syncWorkerProfileToApps();" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
           </div>
           <div>
-            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Experiência Resumida</label>
+            <label class="block text-xs uppercase tracking-wider text-amber-200/90 mb-1.5">Experiência Resumida (Ficha Técnica)</label>
             <input type="text" value="${workerUser.experience}" onchange="workerUser.experience = this.value; syncWorkerProfileToApps();" class="glass-input w-full rounded-xl px-4 py-3 text-sm" />
           </div>
           <div>
@@ -2703,15 +3151,20 @@
     function openPixModal(appId, payerType, amount) {
       const app = applications.find(a => a.id === appId);
       if (!app) return;
-      const job = jobs.find(j => j.id === app.jobId);
 
+      if (app.status !== 'Apto') {
+        showToast('A taxa só é liberada após o contratante aprovar o candidato como APTO.');
+        return;
+      }
+
+      const job = jobs.find(j => j.id === app.jobId);
       const txid = `SF${payerType === 'worker' ? 'CAND' : 'BAR'}${appId}`.substring(0, 20);
       const payload = buildBacenPixPayload(PIX_KEY_PHONE_BACEN, amount, 'SERVICEFREE', 'SAO PAULO', txid);
 
       activePixContext = { appId, payerType, amount, payload };
 
       document.getElementById('pix-modal-title').textContent =
-        payerType === 'worker' ? 'Taxa do Prestador (Vaga Confirmada)' : 'Taxa da Empresa (Contratação)';
+        payerType === 'worker' ? 'Taxa do Prestador (Candidato Apto)' : 'Taxa da Empresa (Candidato Apto)';
       document.getElementById('pix-modal-subtitle').textContent =
         `${job ? job.role + ' • ' + job.venue : 'Servicefree'} — Candidato: ${app.workerName}`;
       document.getElementById('pix-modal-amount-label').textContent = `R$ ${amount.toFixed(2).replace('.', ',')}`;
@@ -2747,15 +3200,22 @@
 
       if (activePixContext.payerType === 'worker') {
         app.workerFeePaid = true;
-        renderWorkerApps();
       } else {
         app.barFeePaid = true;
-        renderBarJobs();
       }
 
       saveSystemState();
+      const bothPaid = app.workerFeePaid && app.barFeePaid;
       closePixModal();
-      showToast('Pagamento da taxa PIX confirmado!');
+      renderWorkerApps();
+      renderBarJobs();
+
+      if (bothPaid) {
+        showToast('Ambas as taxas pagas! Dossiê Completo liberado.');
+        openDossierModal(app.id);
+      } else {
+        showToast('Taxa confirmada! Aguardando o pagamento da outra parte para liberar o Dossiê Completo.');
+      }
     }
 
     function showToast(msg) {
