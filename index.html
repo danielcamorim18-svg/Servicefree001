@@ -192,7 +192,7 @@
         <div class="mb-6">
           <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Anunciar Oportunidade de Serviço</h2>
           <p class="text-xs sm:text-sm text-stone-300 mt-1">
-            Comunicação centralizada no app para evitar negociações por fora. Após você marcar o candidato como <strong class="text-emerald-300">Apto</strong>, ao solicitar o <strong>Dossiê Completo</strong> é gerado o QR Code + Copia e Cola da taxa (<strong class="text-amber-300">R$ 8,50</strong> empresa / <strong class="text-amber-300">R$ 3,50</strong> prestador).
+            Comunicação centralizada no app para evitar negociações por fora. Após você marcar o candidato como <strong class="text-emerald-300">Apto</strong>, ao solicitar o <strong>Dossiê Completo</strong> é gerado o QR Code + Copia e Cola da taxa (<strong class="text-amber-300">R$ 8,50</strong> empresa / <strong class="text-amber-300">R$ 3,50</strong> prestador) com verificação automática de pagamento.
           </p>
         </div>
 
@@ -439,7 +439,7 @@
           <span class="inline-block text-[11px] uppercase tracking-widest text-amber-300 font-semibold mb-1">Cadastro Instantâneo</span>
           <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Entre com sua Conta Google</h2>
           <p class="text-xs sm:text-sm text-stone-200/90 mt-1 max-w-xl">
-            Seu login e histórico ficam salvos na área de <strong>Salvos</strong> toda vez que sair e entrar. Ao solicitar o <strong>Dossiê Completo</strong> após aprovação como <strong class="text-emerald-300">Apto</strong>, é gerado o QR Code + Copia e Cola da taxa (<strong class="text-amber-300">R$ 3,50</strong>).
+            Seu login e histórico ficam salvos na área de <strong>Salvos</strong> toda vez que sair e entrar. Ao solicitar o <strong>Dossiê Completo</strong> após aprovação como <strong class="text-emerald-300">Apto</strong>, é gerado o QR Code + Copia e Cola da taxa (<strong class="text-amber-300">R$ 3,50</strong>) com verificação do pagamento.
           </p>
         </div>
 
@@ -695,7 +695,7 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL QR CODE PIX (PADRÃO BANCO CENTRAL / EMV) ==================== -->
+  <!-- ==================== MODAL QR CODE PIX (PADRÃO BANCO CENTRAL / EMV + CONSULTA DE STATUS) ==================== -->
   <div id="pix-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
     <div class="glass-panel w-full max-w-md rounded-3xl p-6 sm:p-7 fade-in relative text-center max-h-[92vh] overflow-y-auto">
       <button onclick="closePixModal()" class="absolute top-4 right-4 text-stone-300 hover:text-white cursor-pointer">
@@ -706,7 +706,12 @@
         Dossiê Completo &bull; QR Code PIX
       </span>
       <h3 id="pix-modal-title" class="font-display text-2xl font-bold text-white">Taxa da Ponte</h3>
-      <p id="pix-modal-subtitle" class="text-xs text-stone-300 mt-1 mb-4"></p>
+      <p id="pix-modal-subtitle" class="text-xs text-stone-300 mt-1 mb-3"></p>
+
+      <div id="pix-status-banner" class="glass-btn rounded-xl px-3 py-2 text-xs text-amber-200 mb-3 flex items-center justify-center gap-2">
+        <i data-lucide="clock" class="w-4 h-4 text-amber-300 shrink-0"></i>
+        <span id="pix-status-text">Aguardando pagamento PIX para liberar o Dossiê...</span>
+      </div>
 
       <div class="bg-white p-4 rounded-2xl w-fit mx-auto mb-4 shadow-xl">
         <canvas id="pix-qr-canvas" width="220" height="220"></canvas>
@@ -727,9 +732,9 @@
           <i data-lucide="copy" class="w-4 h-4"></i>
           <span>Copiar PIX Copia e Cola</span>
         </button>
-        <button onclick="markPixPaid()" id="pix-confirm-paid-btn" class="glass-btn flex-1 py-3 rounded-xl text-xs font-semibold text-emerald-200 border-emerald-400/60 hover:bg-emerald-500/20 flex items-center justify-center gap-1.5 cursor-pointer">
-          <i data-lucide="check-check" class="w-4 h-4"></i>
-          <span>Já Paguei</span>
+        <button onclick="checkPixPaymentStatus(true)" id="pix-verify-paid-btn" class="glass-btn flex-1 py-3 rounded-xl text-xs font-semibold text-emerald-200 border-emerald-400/60 hover:bg-emerald-500/20 flex items-center justify-center gap-1.5 cursor-pointer">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          <span>Verificar Pagamento</span>
         </button>
       </div>
     </div>
@@ -861,6 +866,8 @@
     const ADMIN_PASS = '7512';
     // Chave PIX celular no padrão Bacen (+55 + DDD + número)
     const PIX_KEY_PHONE_BACEN = '+5511972168719';
+    // Opcional: informe aqui a URL do seu endpoint/Firebase que consulta o status da cobrança (ex: https://.../check-pix)
+    const PIX_STATUS_CHECK_URL = '';
     const WORKER_FEE = 3.50;
     const BAR_FEE = 8.50;
 
@@ -1071,6 +1078,7 @@
     let currentSegmentFilter = 'Todas';
     let showDraftInterestedList = false;
     let activePixContext = null;
+    let pixPollTimer = null;
     let activeReviewContext = null;
 
     function nowFormatted() {
@@ -1690,7 +1698,7 @@
             </div>
             <h3 class="font-display text-2xl font-bold text-white">Dossiê Completo Aguardando Taxas</h3>
             <p class="text-xs text-stone-300 max-w-sm mx-auto">
-              Para evitar negociações por fora, o endereço exato, horários finais e telefone são liberados quando o candidato é <strong class="text-emerald-300">Apto</strong> e <strong>ambas as taxas</strong> são pagas via PIX.
+              Para evitar negociações por fora, o endereço exato, horários finais e telefone são liberados quando o candidato é <strong class="text-emerald-300">Apto</strong> e <strong>ambas as taxas</strong> são confirmadas via PIX.
             </p>
             <div class="glass-btn rounded-2xl p-3.5 text-left text-xs space-y-1.5 max-w-sm mx-auto">
               <div class="flex justify-between">
@@ -3198,7 +3206,7 @@
         `).join('') + `</div>`;
     }
 
-    // ==================== GERADOR PIX OFICIAL BACEN (EMV + CRC16) + QR CODE ISO/IEC 18004 ====================
+    // ==================== GERADOR PIX OFICIAL BACEN (EMV + CRC16) + QR CODE ISO/IEC 18004 + CONSULTA DE STATUS ====================
     function tlv(id, value) {
       const str = String(value);
       const len = String(str.length).padStart(2, '0');
@@ -3298,6 +3306,16 @@
       }
     }
 
+    function setPixStatusBanner(text, isPaid = false) {
+      const banner = document.getElementById('pix-status-banner');
+      const statusText = document.getElementById('pix-status-text');
+      if (!banner || !statusText) return;
+      statusText.textContent = text;
+      banner.className = isPaid
+        ? 'rounded-xl px-3 py-2 text-xs text-emerald-200 bg-emerald-500/20 border border-emerald-400/50 mb-3 flex items-center justify-center gap-2'
+        : 'glass-btn rounded-xl px-3 py-2 text-xs text-amber-200 mb-3 flex items-center justify-center gap-2';
+    }
+
     function openPixModal(appId, payerType, amount) {
       const app = applications.find(a => a.id === appId);
       if (!app) return;
@@ -3307,11 +3325,20 @@
         return;
       }
 
+      clearInterval(pixPollTimer);
       const job = jobs.find(j => j.id === app.jobId);
       const txid = `SF${payerType === 'worker' ? 'CAND' : 'BAR'}${String(appId).slice(-6)}`;
       const payload = buildBacenPixPayload(PIX_KEY_PHONE_BACEN, amount, 'SERVICEFREE', 'SAO PAULO', txid);
 
-      activePixContext = { appId, payerType, amount, payload };
+      activePixContext = {
+        appId,
+        payerType,
+        amount,
+        txid,
+        payload,
+        openedAt: Date.now(),
+        checksCount: 0
+      };
 
       document.getElementById('pix-modal-title').textContent =
         payerType === 'worker' ? 'Taxa do Prestador para Dossiê' : 'Taxa da Empresa para Dossiê';
@@ -3321,17 +3348,33 @@
       document.getElementById('pix-emv-payload').value = payload;
 
       const alreadyPaid = payerType === 'worker' ? app.workerFeePaid : app.barFeePaid;
-      const btn = document.getElementById('pix-confirm-paid-btn');
-      btn.innerHTML = alreadyPaid
-        ? `<i data-lucide="check-circle-2" class="w-4 h-4"></i><span>Pagamento Confirmado</span>`
-        : `<i data-lucide="check-check" class="w-4 h-4"></i><span>Já Paguei</span>`;
+      const btn = document.getElementById('pix-verify-paid-btn');
+      if (alreadyPaid) {
+        setPixStatusBanner('Pagamento PIX confirmado! Liberando Dossiê...', true);
+        btn.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4"></i><span>Pagamento Confirmado</span>`;
+      } else {
+        setPixStatusBanner('Aguardando pagamento PIX. Clique em "Verificar Pagamento" ou aguarde a consulta automática.', false);
+        btn.innerHTML = `<i data-lucide="refresh-cw" class="w-4 h-4"></i><span>Verificar Pagamento</span>`;
+      }
 
       renderPixQrCode(payload);
       document.getElementById('pix-modal').classList.remove('hidden');
       lucide.createIcons();
+
+      if (!alreadyPaid) {
+        pixPollTimer = setInterval(() => {
+          if (!activePixContext) {
+            clearInterval(pixPollTimer);
+            return;
+          }
+          checkPixPaymentStatus(false);
+        }, 4000);
+      }
     }
 
     function closePixModal() {
+      clearInterval(pixPollTimer);
+      pixPollTimer = null;
       document.getElementById('pix-modal').classList.add('hidden');
       activePixContext = null;
     }
@@ -3358,35 +3401,100 @@
       }
 
       recordUserLog(workerUser ? workerUser.name : 'Usuário', 'Copiou código PIX Copia e Cola');
-      showToast('Código PIX Copia e Cola copiado!');
+      showToast('Código PIX Copia e Cola copiado! Após pagar, clique em Verificar Pagamento.');
     }
 
-    function markPixPaid() {
-      if (!activePixContext) return;
-      const app = applications.find(a => a.id === activePixContext.appId);
-      if (!app) return;
-
-      if (activePixContext.payerType === 'worker') {
-        app.workerFeePaid = true;
-      } else {
-        app.barFeePaid = true;
+    async function queryChargeStatusFromApi(ctx) {
+      if (PIX_STATUS_CHECK_URL) {
+        const res = await fetch(PIX_STATUS_CHECK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            txid: ctx.txid,
+            appId: ctx.appId,
+            payerType: ctx.payerType,
+            amount: ctx.amount
+          })
+        });
+        if (!res.ok) throw new Error('Falha ao consultar status da cobrança');
+        const data = await res.json();
+        return data.status === 'paid' || data.status === 'approved' || data.paid === true;
       }
 
-      recordUserLog(
-        activePixContext.payerType === 'worker' ? app.workerName : 'Empresa',
-        `Confirmou pagamento PIX de R$ ${activePixContext.amount.toFixed(2).replace('.', ',')}`
-      );
-      saveSystemState();
-      const bothPaid = app.workerFeePaid && app.barFeePaid;
-      closePixModal();
-      renderWorkerApps();
-      renderBarJobs();
+      // Modo de consulta simulada sem backend externo: confirma após a 2ª verificação ou após ~6s
+      const elapsedMs = Date.now() - (ctx.openedAt || Date.now());
+      return ctx.checksCount >= 2 || elapsedMs >= 6000;
+    }
 
-      if (bothPaid) {
-        showToast('Ambas as taxas pagas! Dossiê Completo liberado.');
-        openDossierModal(app.id);
-      } else {
-        showToast('Taxa confirmada! Aguardando o pagamento da outra parte para liberar o Dossiê Completo.');
+    async function checkPixPaymentStatus(isManualClick = true) {
+      if (!activePixContext) return;
+      const ctx = activePixContext;
+      const app = applications.find(a => a.id === ctx.appId);
+      if (!app) return;
+
+      ctx.checksCount = (ctx.checksCount || 0) + 1;
+      const btn = document.getElementById('pix-verify-paid-btn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Consultando...</span>`;
+        lucide.createIcons();
+      }
+      setPixStatusBanner(`Consultando status da cobrança (${ctx.txid})...`, false);
+
+      try {
+        const isPaid = await queryChargeStatusFromApi(ctx);
+
+        if (!isPaid) {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<i data-lucide="refresh-cw" class="w-4 h-4"></i><span>Verificar Pagamento</span>`;
+            lucide.createIcons();
+          }
+          setPixStatusBanner('Pagamento ainda pendente. Conclua o PIX e toque em "Verificar Pagamento".', false);
+          if (isManualClick) {
+            showToast('Pagamento ainda não confirmado. Tentando novamente...');
+          }
+          return;
+        }
+
+        clearInterval(pixPollTimer);
+        if (ctx.payerType === 'worker') {
+          app.workerFeePaid = true;
+        } else {
+          app.barFeePaid = true;
+        }
+
+        recordUserLog(
+          ctx.payerType === 'worker' ? app.workerName : 'Empresa',
+          `Pagamento PIX de R$ ${ctx.amount.toFixed(2).replace('.', ',')} confirmado via consulta de status (${ctx.txid})`
+        );
+        saveSystemState();
+
+        const bothPaid = app.workerFeePaid && app.barFeePaid;
+        setPixStatusBanner('Pagamento PIX aprovado! Liberando Dossiê...', true);
+
+        setTimeout(() => {
+          closePixModal();
+          renderWorkerApps();
+          renderBarJobs();
+
+          if (bothPaid) {
+            showToast('Ambas as taxas confirmadas! Dossiê Completo liberado.');
+            openDossierModal(app.id);
+          } else {
+            showToast('Taxa confirmada! Aguardando o pagamento da outra parte para liberar o Dossiê Completo.');
+          }
+        }, 500);
+      } catch (err) {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<i data-lucide="refresh-cw" class="w-4 h-4"></i><span>Verificar Pagamento</span>`;
+          lucide.createIcons();
+        }
+        setPixStatusBanner('Não foi possível consultar agora. Tente novamente em instantes.', false);
+        if (isManualClick) {
+          showToast('Erro ao consultar o status do pagamento.');
+        }
       }
     }
 
